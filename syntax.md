@@ -87,7 +87,7 @@ Do define mutable variables we defined the _keyword var_ for basic data types, w
 
 Conditional statements in this language, like in any other, allow us to _control the flow of execution_ based on different conditions, providing a structured decision-making mechanism.
 
-We plan to use _<i>if</i>_ keyword for the first conditional statement, <i>elseif</i> (note- without space) for subsequent cases, and <i>else</i> keyword for last declaration. <br>
+We plan to use _if_ keyword for the first conditional statement, _elseif_ (note- without space) for subsequent cases, and _else_ keyword for last declaration. <br>
 _Curly braces_ <b>{}</b> is to be used after every declaration of a conditional statement and to mark the start and close of that block of code. <br>
 **Note**: We will put brackets even if only one statement is under a condition (unlike in C) to make it uniform and simpler. <br>
 
@@ -192,12 +192,12 @@ We account for this '_child function_' with the keyword _cfunc_. Other than this
 
 ```go
 func <func_name>( <datatype> <parameter_name>, …) : <return datatype> {
-	// lines of code
-	cfunc <func_name>( <datatype> <parameter_name>, …) : <return datatype> {
-		// lines of code
-        return <datatype>
-    }
-	return <datatype>
+  // lines of code
+  cfunc <func_name>( <datatype> <parameter_name>, …) : <return datatype> {
+    // lines of code
+    return <datatype>
+  }
+  return <datatype>
 }
 ```
 
@@ -206,11 +206,11 @@ func <func_name>( <datatype> <parameter_name>, …) : <return datatype> {
 ```go
 func outer(int num, int a, int b) : int {
 
-    cfunc inner(int x) : int{
-        return num + x;
-    }
+  cfunc inner(int x) : int{
+    return num + x;
+  }
 
-    return inner(a) * inner(b);
+  return inner(a) * inner(b);
 }
 ```
 
@@ -356,7 +356,8 @@ throw Exception_type("error message");
 
 ## Comments
 
-- Structure for _single line comments_, `shrey_joshi: <- comment line -> ;` and use `;` to terminate, we also plan to support `\n` character to terminate comments, but as of now the underlying implementation is unclear for the case (say if `\n` character is part of the comments).
+- Structure for _single line comments_, `#` we plan to support `\n` character to terminate comments, but as of now the underlying implementation is unclear for the case (say if `\n` character is part of the comments).
+- Another way to mention _single line comments_, `shrey_joshi: <- comment line ->`
 - Structure for _multi-line comments_, which is similar to _multi-line comments in c++_ `/*` followed by multi line comments or paragraph and end with `*/` to terminate the comment section.
 
 ```
@@ -365,5 +366,7 @@ Example for multi-line comments
 Hello, World!
 */
 
-shrey_joshi: This is an example for single line comment ;
+# This is an example for single line comment
+
+shrey_joshi: This is an example for single line comment
 ```
