@@ -56,7 +56,7 @@ const (
 	LessEqual    = "<="
 	Greater      = ">"
 	GreaterEqual = ">="
-	BangEqual    = "!="
+	NotEqual     = "!="
 	PlusEqual    = "+="
 	SlashEqual   = "/="
 	StarEqual    = "*="
