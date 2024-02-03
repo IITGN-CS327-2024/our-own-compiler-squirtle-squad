@@ -262,8 +262,10 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) readIdentifier() string {
+	
 	pos := l.position
-	for isLetter(l.ch) {
+	l.readChar()
+	for isLetter(l.ch) || isDigit(l.ch) {
 		l.readChar()
 	}
 

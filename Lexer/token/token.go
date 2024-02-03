@@ -41,6 +41,7 @@ const (
 	Or            = "OR"
 	And           = "AND"
 	Not           = "NOT"
+	String_k        = "STRING_K"
 
 	// Operators
 	Equal        = "=="
@@ -73,8 +74,6 @@ const (
 	RightShift   = ">>"
 	LeftShiftEqual = "<<="
 	RightShiftEqual = ">>="
-
-
 
 	// Delimiters
 	Comma        = ","
@@ -127,6 +126,7 @@ var keywords = map[string]TokenType{
 	"or":        Or,
 	"and":       And,
 	"not":       Not,
+	"string":    String_k,	
 }
 
 // checks our keywords map for the scanned keyword.
