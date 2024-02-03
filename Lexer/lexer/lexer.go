@@ -167,6 +167,9 @@ func (l *Lexer) NextToken() token.Token {
 	case '"':
 		tok.Type = token.String
 		tok.Literal = l.readString()
+		if tok.Literal == "" {
+			tok.Type = token.EmptyString
+		}
 	case '~':
 		tok.Type = token.BitwiseNot 
 		tok.Literal = string(l.ch )
@@ -248,7 +251,7 @@ func (l *Lexer) readString() string {
 	}
 
 	if pos == l.position { 
-		return token.EmptyString}
+		return ""}
 
 	return l.input[pos:l.position]
 }
@@ -262,7 +265,7 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) readIdentifier() string {
-	
+
 	pos := l.position
 	l.readChar()
 	for isLetter(l.ch) || isDigit(l.ch) {
