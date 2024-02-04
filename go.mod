@@ -1,3 +1,3 @@
-module github.com/IITGN-CS327-2024/our-own-compiler-squirtle-squad
+module myproject
 
-go 1.21
+go 1.21.6

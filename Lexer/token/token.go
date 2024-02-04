@@ -1,14 +1,14 @@
-package token  
+package token
 
 const (
 	Illegal = "ILLEGAL" // Error token
 	EOF     = "EOF"     // End of file
 
 	// Identifies & Literals
-	Identifier = "IDENTIFIER"
-	Number     = "NUMBER"
-	Char       = "CHARACTER"
-	String     = "STRING"
+	Identifier  = "IDENTIFIER"
+	Number      = "NUMBER"
+	Char        = "CHARACTER"
+	String      = "STRING"
 	EmptyString = ""
 
 	// Keywords
@@ -41,38 +41,39 @@ const (
 	Or            = "OR"
 	And           = "AND"
 	Not           = "NOT"
-	String_k        = "STRING_K"
+	String_k      = "STRING_K"
 
 	// Operators
-	Equal        = "=="
-	Assign       = "="
-	Plus         = "+"
-	Increment    = "++"
-	Minus        = "-"
-	Decrement   = "--"
-	Star         = "*"
-	Slash        = "/"
-	Mod          = "%"
-	Bang         = "!"
-	Less         = "<"
-	LessEqual    = "<="
-	Greater      = ">"
-	GreaterEqual = ">="
-	NotEqual     = "!="
-	PlusEqual    = "+="
-	SlashEqual   = "/="
-	StarEqual    = "*="
-	MinusEqual   = "-="
-	ModEqual     = "%="
-	Power        = "**"
-	BitwiseNot   = "~"
-	BitwiseAnd   = "&"
-	BitwiseOr    = "|"
-	AndEqual     = "&="
-	OrEqual      = "|="
-	LeftShift    = "<<"
-	RightShift   = ">>"
-	LeftShiftEqual = "<<="
+	Equal           = "=="
+	Assign          = "="
+	Plus            = "+"
+	Increment       = "++"
+	Minus           = "-"
+	Decrement       = "--"
+	Star            = "*"
+	Slash           = "/"
+	Mod             = "%"
+	Bang            = "!"
+	Dot             = "."
+	Less            = "<"
+	LessEqual       = "<="
+	Greater         = ">"
+	GreaterEqual    = ">="
+	NotEqual        = "!="
+	PlusEqual       = "+="
+	SlashEqual      = "/="
+	StarEqual       = "*="
+	MinusEqual      = "-="
+	ModEqual        = "%="
+	Power           = "**"
+	BitwiseNot      = "~"
+	BitwiseAnd      = "&"
+	BitwiseOr       = "|"
+	AndEqual        = "&="
+	OrEqual         = "|="
+	LeftShift       = "<<"
+	RightShift      = ">>"
+	LeftShiftEqual  = "<<="
 	RightShiftEqual = ">>="
 
 	// Delimiters
@@ -85,6 +86,7 @@ const (
 	RightBrace   = "}"
 	LeftBracket  = "["
 	RightBracket = "]"
+	Paranthesis  = "PARANTHESIS"
 )
 
 // tokenType alias for a string -> just to keep things differentiated
@@ -93,7 +95,6 @@ type TokenType string
 type Token struct {
 	Type    TokenType
 	Literal string
-	Line    int
 }
 
 var keywords = map[string]TokenType{
@@ -126,7 +127,7 @@ var keywords = map[string]TokenType{
 	"or":        Or,
 	"and":       And,
 	"not":       Not,
-	"string":    String_k,	
+	"string":    String_k,
 }
 
 // checks our keywords map for the scanned keyword.

@@ -1,7 +1,7 @@
 package lexer 
 
 import (
-	"Lexer/token"
+	"myproject/Lexer/token"
 )
 
 type Lexer struct {
@@ -46,6 +46,8 @@ func (l *Lexer) NextToken() token.Token {
 		}else {
 			tok = newToken(token.Plus, l.ch)
 		}
+	case '.':
+		tok = newToken(token.Dot, l.ch)
 
 	case '-':
 		if l.peekChar() == '=' {
@@ -153,17 +155,17 @@ func (l *Lexer) NextToken() token.Token {
 	case ':':
 		tok = newToken(token.Colon, l.ch)
 	case '(':
-		tok = newToken(token.LeftParen, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case ')':
-		tok = newToken(token.RightParen, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case '{':
-		tok = newToken(token.LeftBrace, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case '}':
-		tok = newToken(token.RightBrace, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case '[':
-		tok = newToken(token.LeftBracket, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case ']':
-		tok = newToken(token.RightBracket, l.ch)
+		tok = newToken(token.Paranthesis, l.ch)
 	case '"':
 		tok.Type = token.String
 		tok.Literal = l.readString()

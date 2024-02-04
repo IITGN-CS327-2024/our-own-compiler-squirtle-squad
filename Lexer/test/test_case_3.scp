@@ -1,0 +1,71 @@
+/*
+This is test case 3.
+This deals with all arithmetic operations (unary and binary)
+*/
+
+func main() : void {
+    var int num1 = 15;
+    var int num2 = 5;
+    var bool b = true;
+
+    var bool b_;
+    var int num_;
+
+    // Unary Operations
+
+    b_ = not b;
+    num_ = ~ num1;
+
+    num1++;
+    num1--;
+
+    // Comparison Operations
+
+    b_ = num1 < num2;
+    b_ = num1 > num2;
+    b_ = num1 <= num2;
+    b_ = num1 >= num2;
+    b_ = num1 == num2;
+    b_ = num1 != num2;
+
+    // Bitwise Operations
+
+    num_ = num1 & num2;
+    num_ = num1 | num2;
+    num_ = num1 << 2
+    num_ = num1 >> 2
+
+    num_ >>= 3;
+    num_ <<= 3;
+
+    // Arithmetic Operations
+
+    num_ = num1 + num2;
+    num_ = num1 - num2;
+    num_ = num1 * num2;
+    num_ = num1 / num2;
+
+    num_ += 5 ;
+    num_ -= 4 ;
+    num_ *= 50; 
+    num_ /= 4 ;
+
+    ;;;;
+
+    // String Operations
+
+    var string s = "Hello";
+
+    var char c = ",";
+    s = s + c;
+
+    s += "World";
+
+    var char c = "!";
+    s = s + c;
+
+    var string name = "Sahil";
+    var string sentence = s + name;
+
+    print: sentence;
+}
