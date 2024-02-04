@@ -42,6 +42,11 @@ const (
 	And           = "AND"
 	Not           = "NOT"
 	String_k      = "STRING_K"
+	Cons		  = "CONS"
+	Head		  = "HEAD"
+	Tail		  = "TAIL"
+	Format		  = "FORMAT"
+	Substr		  = "SUBSTR"
 
 	// Operators
 	Equal           = "=="
@@ -128,6 +133,12 @@ var keywords = map[string]TokenType{
 	"and":       And,
 	"not":       Not,
 	"string":    String_k,
+	"cons" :	 Cons,
+	"head" :	 Head,
+	"tail" :	 Tail,
+	"format" :	 Format,
+	"substr" :	 Substr,
+
 }
 
 // checks our keywords map for the scanned keyword.

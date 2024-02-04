@@ -25,7 +25,7 @@
 {Type:: Literal::}
 {Type:STRING Literal:Us four total = {}. Sachin Jhalan = {}}
 {Type:. Literal:.}
-{Type:IDENTIFIER Literal:format}
+{Type:FORMAT Literal:format}
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:num1}
 {Type:, Literal:,}
@@ -108,7 +108,7 @@
 {Type:, Literal:,}
 {Type:NUMBER Literal:3}
 {Type:, Literal:,}
-{Type:IDENTIFIER Literal:tail}
+{Type:TAIL Literal:tail}
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:sample_arr}
 {Type:PARANTHESIS Literal:)}
@@ -122,7 +122,7 @@
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:sample_arr}
 {Type:, Literal:,}
-{Type:IDENTIFIER Literal:head}
+{Type:HEAD Literal:head}
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:sample_arr}
 {Type:PARANTHESIS Literal:)}
@@ -130,7 +130,7 @@
 {Type:NUMBER Literal:3}
 {Type:PARANTHESIS Literal:)}
 {Type:; Literal:;}
-{Type:IDENTIFIER Literal:cons}
+{Type:CONS Literal:cons}
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:sample_arr}
 {Type:, Literal:,}
@@ -147,7 +147,7 @@
 {Type:STRING_K Literal:string}
 {Type:IDENTIFIER Literal:sub_Str}
 {Type:= Literal:=}
-{Type:IDENTIFIER Literal:substr}
+{Type:SUBSTR Literal:substr}
 {Type:PARANTHESIS Literal:(}
 {Type:IDENTIFIER Literal:sample_str}
 {Type:, Literal:,}
