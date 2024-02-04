@@ -1,0 +1,30 @@
+shrey_joshi : This is our 2nd test case.
+
+func looper(int n_iteration, string message) : bool {
+    
+    var int iter = 1;
+
+    while (iter < n_iteration) {
+        print : message;
+        iter++;
+    }
+
+    return true;
+}
+
+func main() : int {
+    const string text = "Calling all Autobots";
+    const int no_iteration = 6;
+
+    var bool output = looper(no_iteration, text);
+
+    if (output==false){
+        print : "Loop Failed";
+    }
+    elseif (output==true){
+        print : "Function Works!";
+    }
+    else{
+        print : "Function Failed";
+    }
+}
