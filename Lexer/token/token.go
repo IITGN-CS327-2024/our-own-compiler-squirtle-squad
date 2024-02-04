@@ -48,6 +48,7 @@ const (
 	Format        = "FORMAT"
 	Substr        = "SUBSTR"
 	Type          = "TYPE"
+	Main          = "MAIN"
 
 	// Operators
 	Equal           = "=="
@@ -140,6 +141,7 @@ var keywords = map[string]TokenType{
 	"format":    Format,
 	"substr":    Substr,
 	"type":      Type,
+	"main":      Main,
 }
 
 // checks our keywords map for the scanned keyword.

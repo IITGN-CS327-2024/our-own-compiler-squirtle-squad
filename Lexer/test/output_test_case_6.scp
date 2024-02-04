@@ -1,5 +1,5 @@
 {Type:FUNCTION Literal:func}
-{Type:IDENTIFIER Literal:main}
+{Type:MAIN Literal:main}
 {Type:PARANTHESIS Literal:(}
 {Type:PARANTHESIS Literal:)}
 {Type:: Literal::}
