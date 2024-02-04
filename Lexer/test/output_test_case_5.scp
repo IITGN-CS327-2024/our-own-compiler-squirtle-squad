@@ -144,7 +144,7 @@
 {Type:: Literal::}
 {Type:VOID Literal:void}
 {Type:PARANTHESIS Literal:{}
-{Type:IDENTIFIER Literal:type}
+{Type:TYPE Literal:type}
 {Type:IDENTIFIER Literal:MyFunc}
 {Type:= Literal:=}
 {Type:FUNCTION Literal:func}
