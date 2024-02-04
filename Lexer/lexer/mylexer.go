@@ -155,17 +155,17 @@ func (l *Lexer) NextToken() token.Token {
 	case ':':
 		tok = newToken(token.Colon, l.ch)
 	case '(':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.LeftParen, l.ch)
 	case ')':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.RightParen, l.ch)
 	case '{':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.LeftBrace, l.ch)
 	case '}':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.RightBrace, l.ch)
 	case '[':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.LeftBracket, l.ch)
 	case ']':
-		tok = newToken(token.Paranthesis, l.ch)
+		tok = newToken(token.RightBracket, l.ch)
 	case '"':
 		tok.Type = token.String
 		tok.Literal = l.readString()

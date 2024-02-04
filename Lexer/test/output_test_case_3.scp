@@ -1,10 +1,10 @@
 {Type:FUNCTION Literal:func}
 {Type:MAIN Literal:main}
-{Type:PARANTHESIS Literal:(}
-{Type:PARANTHESIS Literal:)}
+{Type:( Literal:(}
+{Type:) Literal:)}
 {Type:: Literal::}
 {Type:VOID Literal:void}
-{Type:PARANTHESIS Literal:{}
+{Type:{ Literal:{}
 {Type:VARIABLE Literal:var}
 {Type:INTEGER Literal:int}
 {Type:IDENTIFIER Literal:num1}
@@ -229,5 +229,5 @@
 {Type:: Literal::}
 {Type:IDENTIFIER Literal:sentence}
 {Type:; Literal:;}
-{Type:PARANTHESIS Literal:}}
+{Type:} Literal:}}
 {Type:EOF Literal:}

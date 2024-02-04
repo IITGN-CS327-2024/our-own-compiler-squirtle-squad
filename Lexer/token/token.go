@@ -93,7 +93,6 @@ const (
 	RightBrace   = "}"
 	LeftBracket  = "["
 	RightBracket = "]"
-	Paranthesis  = "PARANTHESIS"
 )
 
 // tokenType alias for a string -> just to keep things differentiated

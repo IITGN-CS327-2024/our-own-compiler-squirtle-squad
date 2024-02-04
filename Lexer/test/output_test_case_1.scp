@@ -1,10 +1,10 @@
 {Type:FUNCTION Literal:func}
 {Type:MAIN Literal:main}
-{Type:PARANTHESIS Literal:(}
-{Type:PARANTHESIS Literal:)}
+{Type:( Literal:(}
+{Type:) Literal:)}
 {Type:: Literal::}
 {Type:INTEGER Literal:int}
-{Type:PARANTHESIS Literal:{}
+{Type:{ Literal:{}
 {Type:VARIABLE Literal:var}
 {Type:INTEGER Literal:int}
 {Type:IDENTIFIER Literal:number}
@@ -47,7 +47,7 @@
 {Type:STRING_K Literal:string}
 {Type:IDENTIFIER Literal:array1}
 {Type:= Literal:=}
-{Type:PARANTHESIS Literal:[}
+{Type:[ Literal:[}
 {Type:STRING Literal:Rachit}
 {Type:, Literal:,}
 {Type:STRING Literal:Sachin}
@@ -55,7 +55,7 @@
 {Type:STRING Literal:Shetty}
 {Type:, Literal:,}
 {Type:STRING Literal:Yashraj}
-{Type:PARANTHESIS Literal:]}
+{Type:] Literal:]}
 {Type:; Literal:;}
 {Type:ARRAY Literal:arr}
 {Type:IDENTIFIER Literal:char}
@@ -75,7 +75,7 @@
 {Type:INTEGER Literal:int}
 {Type:IDENTIFIER Literal:tup}
 {Type:= Literal:=}
-{Type:PARANTHESIS Literal:[}
+{Type:[ Literal:[}
 {Type:NUMBER Literal:1}
 {Type:, Literal:,}
 {Type:NUMBER Literal:2}
@@ -83,11 +83,11 @@
 {Type:NUMBER Literal:3}
 {Type:, Literal:,}
 {Type:NUMBER Literal:4}
-{Type:PARANTHESIS Literal:]}
+{Type:] Literal:]}
 {Type:; Literal:;}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
 {Type:STRING Literal:Hello, World!}
 {Type:; Literal:;}
-{Type:PARANTHESIS Literal:}}
+{Type:} Literal:}}
 {Type:EOF Literal:}
