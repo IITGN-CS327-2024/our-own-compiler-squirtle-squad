@@ -18,7 +18,7 @@
 {Type:TRUE Literal:true}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
-{Type:IDENTIFIER Literal:char}
+{Type:CHARACTER Literal:char}
 {Type:IDENTIFIER Literal:sport}
 {Type:= Literal:=}
 {Type:STRING Literal:C}
@@ -58,7 +58,7 @@
 {Type:] Literal:]}
 {Type:; Literal:;}
 {Type:ARRAY Literal:arr}
-{Type:IDENTIFIER Literal:char}
+{Type:CHARACTER Literal:char}
 {Type:IDENTIFIER Literal:array2}
 {Type:: Literal::}
 {Type:NUMBER Literal:5}

@@ -49,7 +49,7 @@ const (
 	Substr        = "SUBSTR"
 	Type          = "TYPE"
 	Main          = "MAIN"
-	Null		  = "NULL"
+	Null          = "NULL"
 
 	// Operators
 	Equal           = "=="
@@ -111,6 +111,7 @@ var keywords = map[string]TokenType{
 	"const":     Constant,
 	"int":       Integer,
 	"bool":      Boolean,
+	"char":      Char,
 	"arr":       Array,
 	"tuple":     Tuple,
 	"Exception": Exception,

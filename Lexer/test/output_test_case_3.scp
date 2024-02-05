@@ -184,7 +184,7 @@
 {Type:STRING Literal:Hello}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
-{Type:IDENTIFIER Literal:char}
+{Type:CHARACTER Literal:char}
 {Type:IDENTIFIER Literal:c}
 {Type:= Literal:=}
 {Type:STRING Literal:,}
@@ -200,7 +200,7 @@
 {Type:STRING Literal:World}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
-{Type:IDENTIFIER Literal:char}
+{Type:CHARACTER Literal:char}
 {Type:IDENTIFIER Literal:c}
 {Type:= Literal:=}
 {Type:STRING Literal:!}
