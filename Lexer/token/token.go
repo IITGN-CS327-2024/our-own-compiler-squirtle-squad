@@ -10,6 +10,7 @@ const (
 	Char        = "CHARACTER"
 	String      = "STRING"
 	EmptyString = ""
+	EmptyChar   = ""
 
 	// Keywords
 	Function      = "FUNCTION"
@@ -42,6 +43,7 @@ const (
 	And           = "AND"
 	Not           = "NOT"
 	String_k      = "STRING_K"
+	Char_k        = "CHARACTER_K"
 	Cons          = "CONS"
 	Head          = "HEAD"
 	Tail          = "TAIL"
@@ -94,6 +96,12 @@ const (
 	RightBrace   = "}"
 	LeftBracket  = "["
 	RightBracket = "]"
+
+	// Quotations
+	SingleQuote       = "'"
+	DoubleQuote       = "\""
+	StartMultiComment = "/*"
+	EndMultiComment   = "*/"
 )
 
 // tokenType alias for a string -> just to keep things differentiated
@@ -111,7 +119,7 @@ var keywords = map[string]TokenType{
 	"const":     Constant,
 	"int":       Integer,
 	"bool":      Boolean,
-	"char":      Char,
+	"char":      Char_k,
 	"arr":       Array,
 	"tuple":     Tuple,
 	"Exception": Exception,
