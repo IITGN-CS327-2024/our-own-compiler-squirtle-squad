@@ -25,6 +25,7 @@ func (l *Lexer) NextToken() token.Token {
 
 	if l.reader == 1 {
 		tok.Type = token.String
+		l.resetPos()
 		tok.Literal = l.readString()
 		if tok.Literal == "" {
 			tok.Type = token.EmptyString
@@ -35,11 +36,13 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = string(l.ch)
 		if tok.Literal == "'" {
 			tok.Type = token.EmptyChar
-			l.position -= 1
+			tok.Literal = ""
+			l.resetPos()
 		} else if l.peekChar() != '\'' {
 			tok.Type = token.Illegal
 		}
 		l.reader = 4
+		l.readChar()
 		return tok
 	} else if l.reader == 5 {
 		l.skipMultiLineComment()
@@ -284,22 +287,24 @@ func (l *Lexer) readChar() {
 
 func (l *Lexer) readString() string {
 	pos := l.position + 1
+	str := ""
 	for {
 		l.readChar()
 		if l.ch == '"' {
-			l.position -= 1
 			l.reader = 2
+			if l.position == pos {
+				l.resetPos()
+				return ""
+			}
+			str = l.input[pos:l.position]
+			l.resetPos()
 			break
 		} else if l.ch == 0 {
+			str = l.input[pos:l.position]
 			break
 		}
 	}
-
-	if pos == l.position {
-		return ""
-	}
-
-	return l.input[pos:l.position]
+	return str
 }
 
 func (l *Lexer) readNumber() string {
@@ -319,6 +324,12 @@ func (l *Lexer) readIdentifier() string {
 	}
 
 	return l.input[pos:l.position]
+}
+
+func (l *Lexer) resetPos() {
+	l.position -= 1
+	l.nextPosition -= 1
+	l.ch = l.input[l.position]
 }
 
 func isLetter(ch byte) bool {

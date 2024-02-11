@@ -6,6 +6,7 @@ This deals with all arithmetic operations (unary and binary)
 func main() : void {
     var int num1 = 15;
     var int num2 = 5;
+    var string trial = '';
     var bool b = true;
 
     var bool b_;
@@ -56,7 +57,7 @@ func main() : void {
 
     var string s = "Hello";
 
-    var char c = ",";
+    var char c = ',';
     s = s + c;
 
     s += "World";
