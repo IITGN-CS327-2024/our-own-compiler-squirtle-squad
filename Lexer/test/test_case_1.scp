@@ -1,7 +1,7 @@
 func main() : int {
     var int number = 7;
     var bool T_F = true;
-    var char sport = "C";
+    var char sport = 'C';
     var string player = "Thala";
 
     var int declare;
