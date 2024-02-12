@@ -6,13 +6,14 @@ This deals with all arithmetic operations (unary and binary)
 func main() : void {
     var int num1 = 15;
     var int num2 = 5;
-    var string trial = '';
+    var char khali = '';
+    var string trial = "";
     var bool b = true;
 
     var bool b_;
     var int num_;
 
-    // Unary Operations
+    shrey_joshi : Unary Operations
 
     b_ = not b;
     num_ = ~ num1;
@@ -20,7 +21,7 @@ func main() : void {
     num1++;
     num1--;
 
-    // Comparison Operations
+    shrey_joshi : Comparison Operations
 
     b_ = num1 < num2;
     b_ = num1 > num2;
@@ -29,7 +30,7 @@ func main() : void {
     b_ = num1 == num2;
     b_ = num1 != num2;
 
-    // Bitwise Operations
+    shrey_joshi : Bitwise Operations
 
     num_ = num1 & num2;
     num_ = num1 | num2;
@@ -39,7 +40,7 @@ func main() : void {
     num_ >>= 3;
     num_ <<= 3;
 
-    // Arithmetic Operations
+    shrey_joshi : Arithmetic Operations
 
     num_ = num1 + num2;
     num_ = num1 - num2;
@@ -53,7 +54,7 @@ func main() : void {
 
     ;;;;
 
-    // String Operations
+    shrey_joshi : String Operations
 
     var string s = "Hello";
 

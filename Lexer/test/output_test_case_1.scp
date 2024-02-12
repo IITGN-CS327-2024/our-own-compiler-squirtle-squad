@@ -31,7 +31,6 @@
 {Type:= Literal:=}
 {Type:" Literal:"}
 {Type:STRING Literal:Thala}
-{Type:IDENTIFIER Literal:a}
 {Type:" Literal:"}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
@@ -55,22 +54,18 @@
 {Type:[ Literal:[}
 {Type:" Literal:"}
 {Type:STRING Literal:Rachit}
-{Type:IDENTIFIER Literal:t}
 {Type:" Literal:"}
 {Type:, Literal:,}
 {Type:" Literal:"}
 {Type:STRING Literal:Sachin}
-{Type:IDENTIFIER Literal:n}
 {Type:" Literal:"}
 {Type:, Literal:,}
 {Type:" Literal:"}
 {Type:STRING Literal:Shetty}
-{Type:IDENTIFIER Literal:y}
 {Type:" Literal:"}
 {Type:, Literal:,}
 {Type:" Literal:"}
 {Type:STRING Literal:Yashraj}
-{Type:IDENTIFIER Literal:j}
 {Type:" Literal:"}
 {Type:] Literal:]}
 {Type:; Literal:;}
@@ -106,7 +101,6 @@
 {Type:: Literal::}
 {Type:" Literal:"}
 {Type:STRING Literal:Hello, World!}
-{Type:! Literal:!}
 {Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}

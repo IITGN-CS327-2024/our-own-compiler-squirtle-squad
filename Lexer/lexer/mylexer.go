@@ -30,6 +30,7 @@ func (l *Lexer) NextToken() token.Token {
 		if tok.Literal == "" {
 			tok.Type = token.EmptyString
 		}
+		l.readChar()
 		return tok
 	} else if l.reader == 3 {
 		tok.Type = token.Char

@@ -1,4 +1,4 @@
-// Additional Operations
+shrey_joshi : Additional Operations
 
 func main() : void {
 
@@ -9,7 +9,7 @@ func main() : void {
 
     arr int sample_arr = [1, 2, 3, 4, 5];
     print: arr[0];
-    print: "\n";                            // escape character: new-line
+    print: "\n";                            shrey_joshi escape character: new-line
     sample_arr[0] = 5;
     print: arr[0];
 

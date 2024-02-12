@@ -5,7 +5,7 @@ func main() : void {
 
     try {
         dvd = dvd / 1;
-        //quo = dvd / dvr;
+        shrey_joshi : quo = dvd / dvr;
 
         if (dvr==0){
             throw ValueError("Division by zero not permitted");

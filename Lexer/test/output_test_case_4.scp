@@ -1,7 +1,3 @@
-{Type:/ Literal:/}
-{Type:/ Literal:/}
-{Type:IDENTIFIER Literal:Additional}
-{Type:IDENTIFIER Literal:Operations}
 {Type:FUNCTION Literal:func}
 {Type:MAIN Literal:main}
 {Type:( Literal:(}
@@ -23,7 +19,9 @@
 {Type:; Literal:;}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Us four total = {}. Sachin Jhalan = {}}
+{Type:" Literal:"}
 {Type:. Literal:.}
 {Type:FORMAT Literal:format}
 {Type:( Literal:(}
@@ -57,16 +55,10 @@
 {Type:; Literal:;}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:\n}
+{Type:" Literal:"}
 {Type:; Literal:;}
-{Type:/ Literal:/}
-{Type:/ Literal:/}
-{Type:IDENTIFIER Literal:escape}
-{Type:IDENTIFIER Literal:character}
-{Type:: Literal::}
-{Type:IDENTIFIER Literal:new}
-{Type:- Literal:-}
-{Type:IDENTIFIER Literal:line}
 {Type:IDENTIFIER Literal:sample_arr}
 {Type:[ Literal:[}
 {Type:NUMBER Literal:0}
@@ -141,7 +133,9 @@
 {Type:STRING_K Literal:string}
 {Type:IDENTIFIER Literal:sample_str}
 {Type:= Literal:=}
+{Type:" Literal:"}
 {Type:STRING Literal:abcdefg}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
 {Type:STRING_K Literal:string}

@@ -5,7 +5,7 @@ func header(arr int sample_arr) : int {
         return sample_arr[0];
 
     else {
-        return NULL;
+        return null;
     }
 }
 

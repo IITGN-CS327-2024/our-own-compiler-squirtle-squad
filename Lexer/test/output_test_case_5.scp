@@ -27,7 +27,7 @@
 {Type:ELSE Literal:else}
 {Type:{ Literal:{}
 {Type:RETURN Literal:return}
-{Type:IDENTIFIER Literal:NULL}
+{Type:NULL Literal:null}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:} Literal:}}
@@ -144,6 +144,8 @@
 {Type:: Literal::}
 {Type:VOID Literal:void}
 {Type:{ Literal:{}
+{Type:/* Literal:/*}
+{Type:*/ Literal:*/}
 {Type:TYPE Literal:type}
 {Type:IDENTIFIER Literal:MyFunc}
 {Type:= Literal:=}
@@ -161,7 +163,9 @@
 {Type:= Literal:=}
 {Type:IDENTIFIER Literal:substring}
 {Type:( Literal:(}
+{Type:" Literal:"}
 {Type:STRING Literal:abcdef}
+{Type:" Literal:"}
 {Type:) Literal:)}
 {Type:; Literal:;}
 {Type:VARIABLE Literal:var}
