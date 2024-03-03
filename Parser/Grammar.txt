@@ -16,7 +16,7 @@ statement : variable_declaration
           | variable_change
           | variable_change_cont
           | cons_op 
-
+ 
 loop_control : Break Semicolon | Continue Semicolon
 cons_op : Cons LeftParen Identifier Comma vals RightParen
 variable_declaration : Variable datatype Identifier Semicolon
@@ -36,10 +36,12 @@ opeq : PlusEqual
 
 variable_change_cont: Identifier LeftBracket number_nt Colon number_nt RightBracket Assign cont_vals
 
-array_tuple_declaration: datatype Identifier Colon number_nt end_arr Semicolon 
-                       | datatype Identifier Assign LeftBracket items
+array_declaration: Array datatype Identifier Colon number_nt end_arr Semicolon 
+                       | Array datatype Identifier Assign LeftBracket items
 
-string_nt : String | LeftParen string_nt RightParen Dot Format LeftParen string_items | Identifier LeftBracket number_nt RightBracket | Substr LeftParen Identifier number_nt Comma number_nt RightParen
+tuple_declaration: Tuple datatype Identifier Assign LeftBracket items 
+
+string_nt : String | string_nt Dot Format LeftParen string_items | Identifier LeftBracket number_nt RightBracket | Substr LeftParen Identifier number_nt Comma number_nt RightParen
 string_items : Identifier Comma string_items | Identifier RightParen Semicolon
 
 number_nt : Number | Length LeftBracket Identifier RightBracket | Identifier LeftBracket number_nt RightBracket | Head LeftParen Identifier RightParen | Tail LeftParen Identifier RightParen
@@ -57,7 +59,6 @@ datatype : Number
          | Tuple
          
 function_declaration : Function identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
-                      | ChildFunction identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
 
 parameters_def : /* empty */
            | parameter_def
@@ -74,7 +75,10 @@ else_statement : /* empty */
                | Else LeftBrace statements RightBrace
 
 loop_statement : While LeftParen condition RightParen LeftBrace statements RightBrace
-               | For LeftParen expression Semicolon expression Semicolon expression RightParen LeftBrace statements RightBrace
+               | For LeftParen var_init Semicolon condition Semicolon iterating RightParen LeftBrace statements RightBrace
+
+var_init : variable_declaration | variable_change | Identifier
+iterating: /* empty */ | variable_change
 
 print_statement : Print Colon expression Semicolon
 
