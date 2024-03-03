@@ -37,7 +37,7 @@ opeq : PlusEqual
 variable_change_cont: Identifier LeftBracket number_nt Colon number_nt RightBracket Assign cont_vals
 
 array_declaration: Array datatype Identifier Colon number_nt end_arr Semicolon 
-                       | Array datatype Identifier Assign LeftBracket items
+                 | Array datatype Identifier Assign LeftBracket items
 
 tuple_declaration: Tuple datatype Identifier Assign LeftBracket items 
 
@@ -58,7 +58,7 @@ datatype : Number
          | Array
          | Tuple
          
-function_declaration : Function identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
+function_declaration : Function Identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
 
 parameters_def : /* empty */
            | parameter_def
@@ -84,8 +84,8 @@ print_statement : Print Colon expression Semicolon
 
 exception_handling : Try LeftBrace statements RightBrace catch_blocks
 
-catch_blocks :  Catch LeftParen exception_type identifier RightParen LeftBrace statements RightBrace catch_blocks
-              | Catch LeftParen Exception identifier RightParen LeftBrace statements RightBrace
+catch_blocks :  Catch LeftParen exception_type Identifier RightParen LeftBrace statements RightBrace catch_blocks
+              | Catch LeftParen Exception Identifier RightParen LeftBrace statements RightBrace
 
 exception_type : ArithmeticException | NullException | IndexException | ValueException | TypeException
 
@@ -94,37 +94,36 @@ expression_statement : expression Semicolon
 condition : expression bi_operators expression | un_operators_pre expression | expression un_operators_post | condition' condition | Not condition | cont_vals Equal cont_vals | cont_vals NotEqual cont_vals
 condition' :  condition Or | condition And 
 
-un_operators_pre  :  Bang | BitwiseNot
+un_operators_pre  : Bang | BitwiseNot
 un_operators_post : Increment | Decrement
 
 bi_operators : 
+                 BitwiseOr    
+                |BitwiseAnd
 
-	BitwiseOr    
-    |BitwiseAnd
+                |Equal
+                |NotEqual  
 
-    |Equal
-    |NotEqual  
+                |Less           
+                |LessEqual       
+                |Greater        
+                |GreaterEqual    
+                
+                |LeftShift       
+                |RightShift    
+                
+                |Plus            
+                |Minus     
 
-    |Less           
-	|LessEqual       
-	|Greater        
-	|GreaterEqual    
-	
-    |LeftShift       
-	|RightShift    
-     
-	|Plus            
-	|Minus     
+                |Star            
+                |Slash  
+                |Mod 
 
-	|Star            
-	|Slash  
-    |Mod 
-
-    |Power   
+                |Power   
 
 
 vals : number_nt | char_nt | string_nt | bool_nt | expression | Identifier LeftParen parameters_call RightParen | Identifier
-cont_vals : Slice LeftParen Identifier Comma number_nt Comma number_nt RightParen | LeftBracket number_conts | RightBracket string_conts | RightBracket char_conts | RightBracket bool_conts 
+cont_vals : Slice LeftParen Identifier Comma number_nt Comma number_nt RightParen | LeftBracket number_conts | LeftBracket string_conts | LeftBracket char_conts | LeftBracket bool_conts 
 number_conts : number_nt Comma number_conts | number_nt RightBracket
 string_conts : string_nt Comma string_conts | string_nt RightBracket
 char_conts: char_nt Comma char_conts | char_nt RightBracket
