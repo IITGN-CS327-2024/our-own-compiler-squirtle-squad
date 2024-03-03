@@ -1,0 +1,143 @@
+program : statements
+
+statements : statement
+           | statement statements
+           | /empty/
+
+statement : variable_declaration
+          | function_declaration
+          | conditional_statement
+          | loop_statement
+          | print_statement
+          | exception_handling
+          | expression_statement
+          | return_statement
+          | loop_control
+          | variable_change
+          | variable_change_cont
+          | cons_op 
+
+loop_control : Break Semicolon | Continue Semicolon
+cons_op : Cons LeftParen Identifier vals RightParen
+variable_declaration : Variable datatype Identifier Semicolon
+                      | Variable datatype Identifier Assign expression Semicolon
+                      | Constant datatype Identifier Assign expression Semicolon
+
+variable_change : Identifier Assign vals | Identifier opeq vals  
+opeq : PlusEqual       
+	  |SlashEqual      
+	  |StarEqual       
+	  |MinusEqual      
+	  |ModEqual        
+      |AndEqual  
+      |OrEqual   
+      |LeftShiftEqual  
+      |RightShiftEqual 
+
+variable_change_cont: Identifier LeftBracket number_nt Colon number_nt RightBracket Assign cont_vals
+
+array_tuple_declaration: datatype Identifier Colon number_nt end_arr Semicolon 
+                       | datatype Identifier Assign LeftBracket items
+
+string_nt : String | LeftParen string_nt RightParen Dot Format LeftParen string_items | Identifier LeftBracket number_nt RightBracket | Substr LeftParen Identifier number_nt Comma number_nt RightParen
+string_items : Identifier Comma string_items | Identifier RightParen Semicolon
+
+number_nt : Number | Length LeftBracket Identifier RightBracket | Identifier LeftBracket number_nt RightBracket | Head LeftParen Identifier RightParen | Tail LeftParen Identifier RightParen
+char_nt : Char | Identifier LeftBracket number_nt RightBracket
+bool_nt  : Boolean | Identifier LeftBracket number_nt RightBracket | condition
+
+end_arr :  /* empty */ | Colon number_nt | Colon char_nt | Colon string_nt | Colon bool_nt
+items : number_nt Comma items | number_nt RightBracket Semicolon | char_nt Comma items | char_nt RightBracket Semicolon | string_nt Comma items | string_nt RightBracket Semicolon | bool_nt Comma items | bool_nt RightBracket Semicolon
+     
+datatype : Number 
+         | Boolean
+         | Char
+         | String_k
+         | Array
+         | Tuple
+         | Exception
+         
+function_declaration : Function identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
+                      | ChildFunction identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
+
+parameters_def : /* empty */
+           | parameter_def
+           | parameter_def Comma parameters_def  
+
+parameter_def : datatype Identifier
+
+conditional_statement : If LeftParen condition RightParen LeftBrace statements RightBrace elseif_statements else_statement
+
+elseif_statements : /* empty */
+                  | ElseIf LeftParen condition RightParen LeftBrace statements RightBrace elseif_statements
+
+else_statement : /* empty */
+               | Else LeftBrace statements RightBrace
+
+loop_statement : While LeftParen condition RightParen LeftBrace statements RightBrace
+               | For LeftParen expression Semicolon expression Semicolon expression RightParen LeftBrace statements RightBrace
+
+print_statement : Print Colon expression Semicolon
+
+exception_handling : Try LeftBrace statements RightBrace catch_blocks
+
+catch_blocks : /* empty */
+             | Catch LeftParen exception_type identifier RightParen LeftBrace statements RightBrace catch_blocks
+
+expression_statement : expression Semicolon
+
+condition : expression bi_operators expression | un_operators_pre expression | expression un_operators_post | condition' condition | Not condition | cont_vals Equal cont_vals | cont_vals NotEqual cont_vals
+condition' :  condition Or | condition And 
+
+un_operators_pre  :  Bang | BitwiseNot
+un_operators_post : Increment | Decrement
+
+bi_operators : 
+
+	BitwiseOr    
+    |BitwiseAnd
+
+    |Equal
+    |NotEqual  
+
+    |Less           
+	|LessEqual       
+	|Greater        
+	|GreaterEqual    
+	
+    |LeftShift       
+	|RightShift    
+     
+	|Plus            
+	|Minus     
+
+	|Star            
+	|Slash  
+    |Mod 
+
+    |Power   
+
+
+vals : number_nt | char_nt | string_nt | bool_nt | expression | Identifier LeftParen parameters_call RightParen | Identifier
+cont_vals : Slice LeftParen Identifier Comma number_nt Comma number_nt RightParen | LeftBracket number_conts | RightBracket string_conts | RightBracket char_conts | RightBracket bool_conts 
+number_conts : number_nt Comma number_conts | number_nt RightBracket
+string_conts : string_nt Comma string_conts | string_nt RightBracket
+char_conts: char_nt Comma char_conts | char_nt RightBracket
+bool_conts: bool_nt Comma bool_conts | bool_nt RightBracket
+
+parameters_call : Identifier Comma parameters_call | Identifier
+
+return_statement : Return expression Semicolon
+
+expression : un_operators_pre expression | expression un_operators_post | LeftParen expression bi_operators expression RightParen | vals | cont_vals
+
+expression : bitwiseExpr
+bitwiseExpr: bitwiseExpr BitwiseOr eqExpr| bitwiseExpr BitwiseAnd eqExpr| eqExpr 
+eqExpr : eqExpr Equal relExpr | eqExpr NotEqual relExpr | relExpr
+relExpr : relExpr Less shiftExpr | relExpr LessEqual shiftExpr | relExpr Greater shiftExpr | relExpr GreaterEqual shiftExpr | shiftExpr
+shiftExpr : shiftExpr LeftShift addExpr | shiftExpr RightShift addExpr | addExpr
+addExpr : addExpr Plus multExpr | addExpr Minus multExpr | multExpr
+multExpr : multExpr Star powerExpr | multExpr Slash powerExpr | powerExpr
+powerExpr : powerExpr Power unExpr | unExpr
+unExpr : un_operators_pre terminalExpr | terminalExpr un_operators_post
+terminalExpr -> vals | LeftParen expression RightParen Semicolon
