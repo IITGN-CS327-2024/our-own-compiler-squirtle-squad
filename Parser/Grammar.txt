@@ -1,3 +1,11 @@
+%left '|' '&'
+%nonassoc '==' '!='
+%nonassoc '<=' '>=' '>' '<'
+%left '>>' '<<'
+%left '+' '-'
+%left '*' '/' '%'
+%right '**'
+
 program : statements
 
 statements : statement
@@ -16,6 +24,8 @@ statement : variable_declaration Semicolon
           | variable_change Semicolon
           | cons_op 
           | throw_statement
+          | array_declaration
+          | tuple_declaration
  
 loop_control : Break Semicolon | Continue Semicolon
 cons_op : Cons LeftParen Identifier Comma vals RightParen Semicolon
@@ -39,7 +49,7 @@ array_declaration: Array datatype Identifier Colon number_nt end_arr Semicolon
 
 tuple_declaration: Tuple datatype Identifier Assign LeftBracket items 
 
-string_nt : String | string_nt Dot Format LeftParen string_items | Identifier LeftBracket number_nt RightBracket | Substr LeftParen Identifier number_nt Comma number_nt RightParen
+string_nt : String | String Dot Format LeftParen string_items | Identifier LeftBracket number_nt RightBracket | Substr LeftParen Identifier number_nt Comma number_nt RightParen
 string_items : Identifier Comma string_items | Identifier RightParen Semicolon
 
 number_nt : Number | Length LeftBracket Identifier RightBracket | Identifier LeftBracket number_nt RightBracket | Head LeftParen Identifier RightParen | Tail LeftParen Identifier RightParen
@@ -59,8 +69,8 @@ datatype : Number
 function_declaration : Function Identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
 
 parameters_def : /* empty */
-           | parameter_def
-           | parameter_def Comma parameters_def  
+                | parameter_def
+                | parameter_def Comma parameters_def  
 
 parameter_def : datatype Identifier
 
@@ -91,7 +101,7 @@ throw_statement : Throw exception_type LeftParen string_nt RightParen Semicolon
 
 expression_statement : expression Semicolon
 
-condition : expression bi_operators expression | un_operators_pre expression | expression un_operators_post | condition' condition | Not condition | cont_vals Equal cont_vals | cont_vals NotEqual cont_vals
+condition : expression bi_operators expression | un_operators_pre expression | expression un_operators_post | condition' condition | Not condition
 condition' :  condition Or | condition And 
 
 un_operators_pre  : Bang | BitwiseNot
@@ -133,14 +143,5 @@ parameters_call : Identifier Comma parameters_call | Identifier
 
 return_statement : Return expression Semicolon
 
-expression : bitwiseExpr | un_operators_pre expression | expression un_operators_post
-bitwiseExpr: bitwiseExpr BitwiseOr eqExpr| bitwiseExpr BitwiseAnd eqExpr| eqExpr 
-eqExpr : eqExpr Equal relExpr | eqExpr NotEqual relExpr | relExpr
-relExpr : relExpr Less shiftExpr | relExpr LessEqual shiftExpr | relExpr Greater shiftExpr | relExpr GreaterEqual shiftExpr | shiftExpr
-shiftExpr : shiftExpr LeftShift addExpr | shiftExpr RightShift addExpr | addExpr
-addExpr : addExpr Plus multExpr | addExpr Minus multExpr | multExpr
-multExpr : multExpr Star powerExpr | multExpr Slash powerExpr | powerExpr
-powerExpr : powerExpr Power unExpr | unExpr
-unExpr : un_operators_pre terminalExpr | terminalExpr un_operators_post
-terminalExpr : values | LeftParen expression RightParen Semicolon
-values : number_nt | char_nt | string_nt | bool_nt | Identifier LeftParen parameters_call RightParen | Identifier
+expression: values | expression bi_operators expression | expression un_operators_post | un_operators_pre expression | LeftParen expression RightParen
+values : number_nt | char_nt | string_nt | bool_nt | Identifier LeftParen parameters_call RightParen | Identifier        
