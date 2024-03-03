@@ -18,7 +18,7 @@ statement : variable_declaration
           | cons_op 
 
 loop_control : Break Semicolon | Continue Semicolon
-cons_op : Cons LeftParen Identifier vals RightParen
+cons_op : Cons LeftParen Identifier Comma vals RightParen
 variable_declaration : Variable datatype Identifier Semicolon
                       | Variable datatype Identifier Assign expression Semicolon
                       | Constant datatype Identifier Assign expression Semicolon
