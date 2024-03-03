@@ -4,7 +4,7 @@ statements : statement
            | statement statements
            | /empty/
 
-statement : variable_declaration
+statement : variable_declaration Semicolon
           | function_declaration
           | conditional_statement
           | loop_statement
@@ -13,15 +13,15 @@ statement : variable_declaration
           | expression_statement
           | return_statement
           | loop_control
-          | variable_change
-          | variable_change_cont
+          | variable_change Semicolon
           | cons_op 
+          | throw_statement
  
 loop_control : Break Semicolon | Continue Semicolon
-cons_op : Cons LeftParen Identifier Comma vals RightParen
-variable_declaration : Variable datatype Identifier Semicolon
-                      | Variable datatype Identifier Assign expression Semicolon
-                      | Constant datatype Identifier Assign expression Semicolon
+cons_op : Cons LeftParen Identifier Comma vals RightParen Semicolon
+variable_declaration : Variable datatype Identifier 
+                      | Variable datatype Identifier Assign expression 
+                      | Constant datatype Identifier Assign expression 
 
 variable_change : Identifier Assign vals | Identifier opeq vals  
 opeq : PlusEqual       
@@ -33,8 +33,6 @@ opeq : PlusEqual
       |OrEqual   
       |LeftShiftEqual  
       |RightShiftEqual 
-
-variable_change_cont: Identifier LeftBracket number_nt Colon number_nt RightBracket Assign cont_vals
 
 array_declaration: Array datatype Identifier Colon number_nt end_arr Semicolon 
                  | Array datatype Identifier Assign LeftBracket items
@@ -50,10 +48,10 @@ bool_nt  : Boolean | Identifier LeftBracket number_nt RightBracket | condition
 
 end_arr :  /* empty */ | Colon number_nt | Colon char_nt | Colon string_nt | Colon bool_nt
 items : number_nt Comma items | number_nt RightBracket Semicolon | char_nt Comma items | char_nt RightBracket Semicolon | string_nt Comma items | string_nt RightBracket Semicolon | bool_nt Comma items | bool_nt RightBracket Semicolon
-     
+
 datatype : Number 
          | Boolean
-         | Char
+         | Char_k
          | String_k
          | Array
          | Tuple
@@ -88,6 +86,8 @@ catch_blocks :  Catch LeftParen exception_type Identifier RightParen LeftBrace s
               | Catch LeftParen Exception Identifier RightParen LeftBrace statements RightBrace
 
 exception_type : ArithmeticException | NullException | IndexException | ValueException | TypeException
+
+throw_statement : Throw exception_type LeftParen string_nt RightParen Semicolon
 
 expression_statement : expression Semicolon
 
@@ -133,9 +133,7 @@ parameters_call : Identifier Comma parameters_call | Identifier
 
 return_statement : Return expression Semicolon
 
-expression : un_operators_pre expression | expression un_operators_post | LeftParen expression bi_operators expression RightParen | vals | cont_vals
-
-expression : bitwiseExpr
+expression : bitwiseExpr | un_operators_pre expression | expression un_operators_post
 bitwiseExpr: bitwiseExpr BitwiseOr eqExpr| bitwiseExpr BitwiseAnd eqExpr| eqExpr 
 eqExpr : eqExpr Equal relExpr | eqExpr NotEqual relExpr | relExpr
 relExpr : relExpr Less shiftExpr | relExpr LessEqual shiftExpr | relExpr Greater shiftExpr | relExpr GreaterEqual shiftExpr | shiftExpr
@@ -144,4 +142,5 @@ addExpr : addExpr Plus multExpr | addExpr Minus multExpr | multExpr
 multExpr : multExpr Star powerExpr | multExpr Slash powerExpr | powerExpr
 powerExpr : powerExpr Power unExpr | unExpr
 unExpr : un_operators_pre terminalExpr | terminalExpr un_operators_post
-terminalExpr -> vals | LeftParen expression RightParen Semicolon
+terminalExpr : values | LeftParen expression RightParen Semicolon
+values : number_nt | char_nt | string_nt | bool_nt | Identifier LeftParen parameters_call RightParen | Identifier
