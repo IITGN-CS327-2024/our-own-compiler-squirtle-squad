@@ -55,7 +55,6 @@ datatype : Number
          | String_k
          | Array
          | Tuple
-         | Exception
          
 function_declaration : Function identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
                       | ChildFunction identifier LeftParen parameters_def RightParen Colon datatype LeftBrace statements RightBrace
@@ -81,8 +80,10 @@ print_statement : Print Colon expression Semicolon
 
 exception_handling : Try LeftBrace statements RightBrace catch_blocks
 
-catch_blocks : /* empty */
-             | Catch LeftParen exception_type identifier RightParen LeftBrace statements RightBrace catch_blocks
+catch_blocks :  Catch LeftParen exception_type identifier RightParen LeftBrace statements RightBrace catch_blocks
+              | Catch LeftParen Exception identifier RightParen LeftBrace statements RightBrace
+
+exception_type : ArithmeticException | NullException | IndexException | ValueException | TypeException
 
 expression_statement : expression Semicolon
 
