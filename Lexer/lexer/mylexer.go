@@ -47,11 +47,14 @@ func (l *Lexer) NextToken() token.Token {
 		return tok
 	} else if l.reader == 5 {
 		l.skipMultiLineComment()
-		if l.reader == 0 {
-			return token.Token{Type: token.EndMultiComment, Literal: "*/"}
-		} else {
-			return l.NextToken()
-		}
+		// if l.reader == 0 {
+		// 	// return token.Token{Type: token.EndMultiComment, Literal: "*/"}
+		// 	return l.NextToken()
+		// } else {
+		// 	return l.NextToken()
+		// }
+		l.readChar()
+		return l.NextToken()
 	}
 
 	switch l.ch {
@@ -133,6 +136,7 @@ func (l *Lexer) NextToken() token.Token {
 		} else if l.peekChar() == '*' {
 			tok = token.Token{Type: token.StartMultiComment, Literal: "/*"}
 			l.reader = 5
+			return l.NextToken()
 		} else {
 			tok = newToken(token.Slash, l.ch)
 		}
@@ -204,6 +208,8 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			l.reader = 0
 		}
+		l.readChar()
+		return l.NextToken()
 	case '~':
 		tok.Type = token.BitwiseNot
 		tok.Literal = string(l.ch)
@@ -249,6 +255,8 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			l.reader = 0
 		}
+		l.readChar()
+		return l.NextToken()
 
 	case 0:
 		tok.Literal = ""
