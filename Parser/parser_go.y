@@ -10,40 +10,18 @@ package parser
 %token If Else ElseIf While For Try Catch Throw
 %token Exception ArithmeticException NullException IndexException ValueException TypeException
 %token Function EOF
-%token Or And Not Assign
+%token True False Null
+%token Or And Not Assign Void
 %token Bang Less Greater BitwiseNot Plus Minus Star Slash Mod BitwiseAnd BitwiseOr /* Dispensible*/
 %token Equal NotEqual LessEqual GreaterEqual LeftShift RightShift Power Increment Decrement
 
 %start program
 
-%left BitwiseOr BitwiseAnd
-%nonassoc Equal NotEqual
-%nonassoc LessEqual GreaterEqual Greater Less
-%left RightShift LeftShift
-%left Plus Minus
-%left Star Slash Mod
-%right Power
-
 %% 
-program : statements
+program : statements EOF
 
 statements : statement
            | statement statements
-
-/* statement : variable_declaration ';'
-          | function_declaration
-          | conditional_statement
-          | loop_statement
-          | print_statement
-          | exception_handling
-          | expression_statement
-          | return_statement
-          | loop_control
-          | variable_change ';'
-          | cons_op 
-          | throw_statement
-          | array_declaration
-          | tuple_declaration */
 
 statement : variable_declaration_statement
           | function_declaration
@@ -56,7 +34,6 @@ statement : variable_declaration_statement
           | loop_control
           | variable_change_statement
           | cons_op 
-          | EOF
           | throw_statement
           | array_declaration
           | tuple_declaration
@@ -81,7 +58,7 @@ opeq : PlusEqual
       |LeftShiftEqual  
       |RightShiftEqual 
 
-array_declaration: Array datatype Identifier ':' Number end_arr ';' 
+array_declaration: Array datatype Identifier ':' Number ';' 
                  | Array datatype Identifier Assign cont_vals ';'
 
 tuple_declaration: Tuple datatype Identifier Assign cont_vals ';'
@@ -89,12 +66,14 @@ tuple_declaration: Tuple datatype Identifier Assign cont_vals ';'
 string_nt : String | String '.' Format '(' string_items | Identifier '[' Number ']' | Substr '(' Identifier Number ',' Number ')'
 string_items : Identifier ',' string_items | Identifier ')'
 
-/* number_nt : Number | Length '[' Identifier ']' | Identifier '[' Number ']' | Head '(' Identifier ')' | Tail '(' Identifier ')' */
-char_nt : Char /*| Identifier '[' Number ']'*/
-bool_nt  : Boolean /*| Identifier '[' Number ']'*/ | condition
+number_nt : Number | Length '[' Identifier ']' | Head '(' Identifier ')' | Tail '(' Identifier ')'
+/* char_nt : Char | Identifier '[' Number ']' */
 
-end_arr :  /* empty */ | ':' Number | ':' char_nt | ':' string_nt | ':' bool_nt
-/* items : Number ',' items | Number ']' ';' | char_nt ',' items | char_nt ']' ';' | string_nt ',' items | string_nt ']' ';' | bool_nt ',' items | bool_nt ']' ';' */
+/* bool_nt  : bool_literals | condition */
+
+bool_literals: True | False
+
+/* end_arr :   | '(' number_nt ')' | '(' Char ')' | '(' string_nt ')' | '(' bool_nt ')' */
 
 datatype : Number 
          | Boolean
@@ -102,10 +81,11 @@ datatype : Number
          | String_k
          | Array
          | Tuple
+         | Void
          
 function_declaration : Function Identifier '(' parameters_def ')' ':' datatype '{' statements '}'
 
-parameters_def : /* empty */
+parameters_def : 
                 | parameter_def
                 | parameter_def ',' parameters_def  
 
@@ -113,17 +93,17 @@ parameter_def : datatype Identifier
 
 conditional_statement : If '(' condition ')' '{' statements '}' elseif_statements else_statement
 
-elseif_statements : /* empty */
+elseif_statements : 
                   | ElseIf '(' condition ')' '{' statements '}' elseif_statements
 
-else_statement : /* empty */
+else_statement : 
                | Else '{' statements '}'
 
 loop_statement : While '(' condition ')' '{' statements '}'
                | For '(' var_init ';' condition ';' iterating ')' '{' statements '}'
 
 var_init : variable_declaration | variable_change | Identifier
-iterating: /* empty */ | variable_change
+iterating:  | variable_change
 
 print_statement : Print ':' expression ';'
 
@@ -136,55 +116,39 @@ exception_type : ArithmeticException | NullException | IndexException | ValueExc
 
 throw_statement : Throw exception_type '(' string_nt ')' ';'
 
-expression_statement : expression ';'
+expression_statement : values ';'
 
-condition : expression bi_operators expression | un_operators_pre expression | expression un_operators_post | condition_ condition | Not condition
-condition_ :  condition Or | condition And 
+condition:  condition_ 
+condition_:  condition_ Or condition__ | condition__ 
+condition__: condition__ And condition___ | condition___
+condition___: Not cond_terminal | cond_terminal
+cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
 
 un_operators_pre  : Bang | BitwiseNot
 un_operators_post : Increment | Decrement
 
-bi_operators : 
-                 BitwiseOr    
-                |BitwiseAnd
-
-                |Equal
-                |NotEqual  
-
-                |Less           
+comp_operators:  Less           
                 |LessEqual       
                 |Greater        
                 |GreaterEqual    
-                
-                |LeftShift       
-                |RightShift    
-                
-                |Plus            
-                |Minus     
 
-                |Star            
-                |Slash  
-                |Mod 
+cont_vals : Slice '(' Identifier ',' number_nt ',' number_nt ')' | '[' value_conts
 
-                |Power   
-
-
-/* vals : Number | char_nt | string_nt | bool_nt | expression | Identifier '(' parameters_call ')' | Identifier */
-cont_vals : Slice '(' Identifier ',' Number ',' Number ')' | '[' value_conts
-/* number_conts : Number ',' number_conts | Number ']' */
-/* string_conts : string_nt ',' string_conts | string_nt ']'
-char_conts: char_nt ',' char_conts | char_nt ']'
-bool_conts: bool_nt ',' bool_conts | bool_nt ']' */
 value_conts : values ',' value_conts | values ']'
 
 parameters_call : Identifier ',' parameters_call | Identifier
 
 return_statement : Return expression ';'
 
-/* expression: values | expression bi_operators expression | expression un_operators_post | un_operators_pre expression | '(' expression ')' */
-expression: values | expression_ expression | expression__ | un_operators_pre expression | '(' expression ')'
-expression_ : expression bi_operators
-expression__ : expression un_operators_post
-values : Number | Char | string_nt | Boolean | Identifier '(' parameters_call ')' | Identifier /*| Identifier '[' Number ']'*/
+expression : bitwise_expr
+bitwise_expr: bitwise_expr BitwiseOr eq_expr| bitwise_expr BitwiseAnd eq_expr| eq_expr 
+eq_expr : eq_expr Equal shift_expr | eq_expr NotEqual shift_expr | shift_expr
+shift_expr : shift_expr LeftShift add_expr | shift_expr RightShift add_expr | add_expr
+add_expr : add_expr Plus mult_expr | add_expr Minus mult_expr | mult_expr
+mult_expr : mult_expr Star power_expr | mult_expr Slash power_expr | mult_expr Mod power_expr | power_expr
+power_expr : power_expr Power terminal_expr | terminal_expr
+terminal_expr : values | '(' expression ')'
+
+values: number_nt | Char | string_nt | bool_literals | Identifier '{' parameters_call '}' | Identifier | Null 
 
 %%

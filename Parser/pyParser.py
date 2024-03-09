@@ -24,14 +24,14 @@ class CustomLexer(Lexer):
                 yield Token(line[0].upper(), line[1])
 
 grammar = '''
-start: program "Eof"
+start: program "EOF"
 
-program: statements
+program : statements 
 
-statements: statement
+statements : statement
            | statement statements
 
-statement: variable_declaration_statement
+statement : variable_declaration_statement
           | function_declaration
           | conditional_statement
           | loop_statement
@@ -46,101 +46,113 @@ statement: variable_declaration_statement
           | array_declaration
           | tuple_declaration
 
-variable_declaration_statement: variable_declaration "Semicolon"
-variable_change_statement: variable_change "Semicolon"
+variable_declaration_statement : variable_declaration "Semicolon"
+variable_change_statement : variable_change "Semicolon"
  
-loop_control: "Break" "Semicolon" | "Continue" "Semicolon"
-cons_op: "Cons" "LeftParen" "Identifier" "Comma" expression "RightParen" "Semicolon"
-variable_declaration: "Variable" datatype "Identifier" 
-                      | "Variable" datatype "Identifier" "Assign" expression 
-                      | "Constant" datatype "Identifier" "Assign" expression 
+loop_control : "Break" "Semicolon" | "Continue" "Semicolon"
+cons_op : "Cons" "LeftParen" "Identifier" "Comma" expression "RightParen" "Semicolon"
+variable_declaration : "Variable" datatype "Identifier" 
+                      | "Variable" datatype "Identifier" "Assign" condition 
+                      | "Constant" datatype "Identifier" "Assign" condition 
 
-variable_change: "Identifier" "Assign" expression | "Identifier" opeq expression  
-opeq: "PlusEqual"       
-	|"SlashEqual"      
-	  |"StarEqual"       
-	  |"MinusEqual" | "ModEqual" |"AndEqual"  
+variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition  
+opeq : "PlusEqual"       
+	  | "SlashEqual"      
+	  | "StarEqual"       
+	  | "MinusEqual"      
+	  | "ModEqual"        
+      | "AndEqual"  
       | "OrEqual"   
       | "LeftShiftEqual"  
       | "RightShiftEqual" 
 
-array_declaration: "Array" datatype "Identifier" "Colon" number_nt end_arr "Semicolon" 
+array_declaration: "Array" datatype "Identifier" "Colon" "Number" "Semicolon" 
                  | "Array" datatype "Identifier" "Assign" cont_vals "Semicolon"
 
 tuple_declaration: "Tuple" datatype "Identifier" "Assign" cont_vals "Semicolon"
 
-string_nt: "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" number_nt "RightBracket" | "Substr" "LeftParen" "Identifier" "Comma" number_nt "Comma" number_nt "RightParen"
-string_items: "Identifier" "Comma" string_items | "Identifier" "RightParen"
+string_nt : "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" "Number" "RightBracket" | "Substr" "LeftParen" "Identifier" "Number" "Comma" "Number" "RightParen"
+string_items : "Identifier" "Comma" string_items | "Identifier" "RightParen"
 
-number_nt: "Number" | "Length" "LeftParen" "Identifier" "RightParen"  | "Head" "LeftParen" "Identifier" "RightParen" | "Tail" "LeftParen" "Identifier" "RightParen"
-bool_nt : bool_literals | condition
+number_nt : "Number" | "Length" "LeftBracket" "Identifier" "RightBracket" | "Head" "LeftParen" "Identifier" "RightParen" | "Tail" "LeftParen" "Identifier" "RightParen"
+
 bool_literals: "True" | "False"
 
-end_arr: | "Colon" number_nt | "Colon" "Char" | "Colon" string_nt | "Colon" bool_nt
-datatype: "Integer" 
+datatype : "Integer" 
          | "Boolean"
          | "Char_k"
          | "String_k"
          | "Array"
          | "Tuple"
-         | "Void" 
+         | "Void"
          
-function_declaration: "Function" "Identifier" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace" | "Function" "Main" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace"
+function_declaration : "Function" "Identifier" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace" | "Function" "Main" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace"
 
-parameters_def: | parameter_def | parameter_def "Comma" parameters_def  
+parameters_def : 
+                | parameter_def
+                | parameter_def "Comma" parameters_def  
 
-parameter_def: datatype "Identifier"
+parameter_def : datatype "Identifier"
 
-conditional_statement: "If" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements else_statement
+conditional_statement : "If" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements else_statement
 
-elseif_statements: | "ElseIf" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements
+elseif_statements : 
+                  | "ElseIf" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements
 
-else_statement: | "Else" "LeftBrace" statements "RightBrace"
+else_statement : 
+               | "Else" "LeftBrace" statements "RightBrace"
 
-loop_statement: "While" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace"
+loop_statement : "While" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace"
                | "For" "LeftParen" var_init "Semicolon" condition "Semicolon" iterating "RightParen" "LeftBrace" statements "RightBrace"
 
-var_init: variable_declaration | variable_change | "Identifier"
-iterating: | variable_change
+var_init : variable_declaration | variable_change | "Identifier"
+iterating:  | variable_change
 
-print_statement: "Print" "Colon" values "Semicolon"
+print_statement : "Print" "Colon" expression "Semicolon"
 
-exception_handling: "Try" "LeftBrace" statements "RightBrace" catch_blocks
+exception_handling : "Try" "LeftBrace" statements "RightBrace" catch_blocks
 
-catch_blocks: "Catch" "LeftParen" exception_type "Identifier" "RightParen" "LeftBrace" statements "RightBrace" catch_blocks | "Catch" "LeftParen" "Exception" "Identifier" "RightParen" "LeftBrace" statements "RightBrace"
+catch_blocks :  "Catch" "LeftParen" exception_type "Identifier" "RightParen" "LeftBrace" statements "RightBrace" catch_blocks
+              | "Catch" "LeftParen" "Exception" "Identifier" "RightParen" "LeftBrace" statements "RightBrace"
 
-exception_type: "ArithmeticException" | "NullException" | "IndexException" | "ValueException" | "TypeException"
+exception_type : "ArithmeticException" | "NullException" | "IndexException" | "ValueException" | "TypeException"
 
-throw_statement: "Throw" exception_type "LeftParen" string_nt "RightParen" "Semicolon"
+throw_statement : "Throw" exception_type "LeftParen" string_nt "RightParen" "Semicolon"
 
-expression_statement: values "Semicolon"
+expression_statement : condition "Semicolon"
 
-condition: expression bi_operators expression  | condition_ condition | "Not" condition | un_operators_pre expression | expression un_operators_post
-condition_:  condition "Or" | condition "And" 
+condition:  condition_ 
+condition_:  condition_ "Or" condition__ | condition__ 
+condition__: condition__ "And" condition___ | condition___
+condition___: "Not" cond_terminal | cond_terminal
+cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
 
-un_operators_pre: "Bang" | "BitwiseNot"
-un_operators_post: "Increment" | "Decrement" 
+un_operators_pre  : "Bang" | "BitwiseNot"
+un_operators_post : "Increment" | "Decrement"
 
-bi_operators: "BitwiseOr" |"BitwiseAnd" |"Equal" |"NotEqual" |"Less" |"LessEqual" |"Greater" |"GreaterEqual" |"LeftShift" |"RightShift" |"Plus" |"Minus" |"Star" |"Slash" |"Mod" |"Power"   
+comp_operators:  "Less"           
+                |"LessEqual"       
+                |"Greater"        
+                |"GreaterEqual"    
 
-cont_vals: "Slice" "LeftParen" "Identifier" "Comma" number_nt "Comma" number_nt "RightParen" | "LeftBracket" value_conts
-value_conts: values "Comma" value_conts | values "RightBracket"
+cont_vals : "Slice" "LeftParen" "Identifier" "Comma" number_nt "Comma" number_nt "RightParen" | "LeftBracket" value_conts
 
-parameters_call: "Identifier" "Comma" parameters_call | "Identifier" | 
+value_conts : values "Comma" value_conts | values "RightBracket"
 
-return_statement: "Return" expression "Semicolon"
+parameters_call : "Identifier" "Comma" parameters_call | "Identifier"
+
+return_statement : "Return" expression "Semicolon"
 
 expression : bitwise_expr
 bitwise_expr: bitwise_expr "BitwiseOr" eq_expr| bitwise_expr "BitwiseAnd" eq_expr| eq_expr 
-eq_expr : eq_expr "Equal" rel_expr | eq_expr "NotEqual" rel_expr | rel_expr
-rel_expr : rel_expr "Less" shift_expr | rel_expr "LessEqual" shift_expr | rel_expr "Greater" shift_expr | rel_expr "GreaterEqual" shift_expr | shift_expr
+eq_expr : eq_expr "Equal" shift_expr | eq_expr "NotEqual" shift_expr | shift_expr
 shift_expr : shift_expr "LeftShift" add_expr | shift_expr "RightShift" add_expr | add_expr
 add_expr : add_expr "Plus" mult_expr | add_expr "Minus" mult_expr | mult_expr
-mult_expr : mult_expr "Star" power_expr | mult_expr "Slash" power_expr | power_expr
+mult_expr : mult_expr "Star" power_expr | mult_expr "Slash" power_expr | mult_expr "Mod" power_expr | power_expr
 power_expr : power_expr "Power" terminal_expr | terminal_expr
 terminal_expr : values | "LeftParen" expression "RightParen"
 
-values: number_nt | "Char" | string_nt | bool_literals | "Identifier" "LeftParen" parameters_call "RightParen" | "Identifier" | "Null" 
+values: number_nt | "Char" | string_nt | bool_literals | "Identifier" "LeftBrace" parameters_call "RightBrace" | "Identifier" | "Null" 
 '''
 
 if __name__ == "__main__":
