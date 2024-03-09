@@ -381,7 +381,7 @@ func (l *Lexer) skipMultiLineComment() {
 		if l.ch == '*' && l.peekChar() == '/' {
 			endFound = true
 			l.reader = 0
-			l.readChar()
+			// l.readChar()
 		}
 
 		l.readChar()
