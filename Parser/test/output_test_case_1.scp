@@ -68,8 +68,9 @@ Integer,int
 Identifier,array3
 Colon,:
 Number,7
-Colon,:
+LeftBracket, [
 Number,1
+RightBracket, ]
 Semicolon,;
 Tuple,tuple
 Integer,int

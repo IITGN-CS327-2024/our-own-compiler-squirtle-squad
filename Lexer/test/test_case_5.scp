@@ -13,7 +13,7 @@ func subarr(arr int sample_arr, int start_index, int sub_arr_size) : arr int {
 
     arr int sub_Arr : sub_arr_size;
 
-    cfunc fill(int index){
+    func fill(int index){
         sub_Arr = sample_arr[index + start_index];
     }
 
@@ -26,7 +26,7 @@ func subarr(arr int sample_arr, int start_index, int sub_arr_size) : arr int {
 
 func substring(string s) : func(int, int) : string {
 
-    return cfunc slicing(int start_index, int sub_str_size) : string {
+    return func slicing(int start_index, int sub_str_size) : string {
 
         return slice(s, start_index, start_index + sub_str_size);
 

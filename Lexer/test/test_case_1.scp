@@ -11,7 +11,7 @@ func main() : int {
 
     arr string array1 = ["Rachit" , "Sachin", "Shetty", "Yashraj"];
     arr char array2 : 5;
-    arr int array3 : 7 : 1;
+    arr int array3 : 7 [1] ;
 
     tuple int tup = [1, 2, 3, 4];
 
