@@ -2,6 +2,8 @@ package lexer
 
 import (
 	"myproject/Lexer/token"
+	//"errors"
+	"log"
 )
 
 type Lexer struct {
@@ -309,8 +311,9 @@ func (l *Lexer) readString() string {
 			l.resetPos()
 			break
 		} else if l.ch == 0 {
-			str = l.input[pos:l.position]
-			break
+			// str = l.input[pos:l.position]
+			// break
+			log.Fatal("String Literal was not terminated")
 		}
 	}
 	return str
@@ -375,7 +378,10 @@ func (l *Lexer) skipMultiLineComment() {
 
 	for !endFound {
 		if l.ch == 0 {
-			endFound = true
+			// endFound = true
+			// return errors.New("Comment Literal was not terminated")
+			// panic("Error: Comment Literal was not terminated")
+			log.Fatal("Comment Literal was not terminated")
 		}
 
 		if l.ch == '*' && l.peekChar() == '/' {

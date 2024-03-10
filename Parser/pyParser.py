@@ -66,10 +66,12 @@ opeq : "PlusEqual"
       | "LeftShiftEqual"  
       | "RightShiftEqual" 
 
-array_declaration: "Array" datatype "Identifier" "Colon" "Number" "Semicolon" 
+array_declaration: "Array" datatype "Identifier" "Colon" "Number" end_arr "Semicolon" 
                  | "Array" datatype "Identifier" "Assign" cont_vals "Semicolon"
 
 tuple_declaration: "Tuple" datatype "Identifier" "Assign" cont_vals "Semicolon"
+
+end_arr :  | "LeftBracket" "Number" "RightBracket" | "LeftBracket" "Char" "RightBracket" | "LeftBracket" string_nt "RightBracket" | "LeftBracket" bool_literals "RightBracket"
 
 string_nt : "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" "Number" "RightBracket" | "Substr" "LeftParen" "Identifier" "Number" "Comma" "Number" "RightParen"
 string_items : "Identifier" "Comma" string_items | "Identifier" "RightParen"
