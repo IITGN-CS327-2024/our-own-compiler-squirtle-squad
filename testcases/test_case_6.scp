@@ -8,13 +8,13 @@ func main() : void {
         shrey_joshi : quo = dvd / dvr;
 
         if (dvr==0){
-            throw ValueError("Division by zero not permitted");
+            throw ValueException("Division by zero not permitted");
         }
     }
-    catch (TypeError te){
+    catch (TypeException te){
         print: "Input Numbers!";
     }
-    catch (ValueError ve){
+    catch (ValueException ve){
         print: "Division by zero not possible";
     }
     catch (Exception e){

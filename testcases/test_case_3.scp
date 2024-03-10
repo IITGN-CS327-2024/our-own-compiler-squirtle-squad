@@ -34,8 +34,8 @@ func main() : void {
 
     num_ = num1 & num2;
     num_ = num1 | num2;
-    num_ = num1 << 2
-    num_ = num1 >> 2
+    num_ = num1 << 2;
+    num_ = num1 >> 2;
 
     num_ >>= 3;
     num_ <<= 3;

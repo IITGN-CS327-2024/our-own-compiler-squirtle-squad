@@ -8,16 +8,16 @@ func main() : void {
     print: "Us four total = {}. Sachin Jhalan = {}".format(num1, num2);
 
     arr int sample_arr = [1, 2, 3, 4, 5];
-    print: arr[0];
+    print: sample_arr[0];
     print: "\n";                            shrey_joshi escape character: new-line
     sample_arr[0] = 5;
-    print: arr[0];
+    print: sample_arr[0];
 
     arr int sub_arr1 : 3;
     sub_arr1 = slice(sample_arr, 2, 4);
 
-    arr int sub_arr2 : slice(sample_arr, 3, tail(sample_arr));
-    arr int sub_arr2 : slice(sample_arr, head(sample_arr), 3);
+    arr int sub_arr2 = slice(sample_arr, 3, tail(sample_arr));
+    arr int sub_arr3 = slice(sample_arr, head(sample_arr), 3);
 
     cons(sample_arr, 0);
 

@@ -1,9 +1,9 @@
 shrey_joshi please ignore this as it is a comment
 func header(arr int sample_arr) : int {
     
-    if ( len(sample_arr) > 0):
+    if ( len(sample_arr) > 0){
         return sample_arr[0];
-
+    }
     else {
         return null;
     }
@@ -13,7 +13,7 @@ func subarr(arr int sample_arr, int start_index, int sub_arr_size) : arr int {
 
     arr int sub_Arr : sub_arr_size;
 
-    func fill(int index){
+    func fill(int index) : void {
         sub_Arr = sample_arr[index + start_index];
     }
 
