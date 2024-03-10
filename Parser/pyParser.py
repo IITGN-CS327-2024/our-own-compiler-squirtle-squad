@@ -1,6 +1,6 @@
 from lark import Lark, Transformer, v_args, Tree
 from lark.lexer import Lexer, Token
-from graphviz import Digraph
+# from graphviz import Digraph
 import sys
 
 class CustomLexer(Lexer):
@@ -60,6 +60,7 @@ grammar = '''
           | throw_statement
           | array_declaration
           | tuple_declaration
+          | "Semicolon"
 
 !variable_declaration_statement : variable_declaration "Semicolon"
 !variable_change_statement : variable_change "Semicolon"
@@ -69,8 +70,18 @@ grammar = '''
 !variable_declaration : "Variable" datatype "Identifier" 
                       | "Variable" datatype "Identifier" "Assign" condition 
                       | "Constant" datatype "Identifier" "Assign" condition 
+                    #   | "Variable" datatype "Identifier" "Assign" function_call 
+                    #   | "Constant" datatype "Identifier" "Assign" function_call 
 
-!variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition  
+!variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition
+                 | "Identifier" "LeftBracket" "Number" "RightBracket" "Assign" condition
+                 | "Identifier" "LeftBracket" "Number" "RightBracket" opeq condition
+                 | "Identifier" "Assign" cont_vals
+                #  | "Identifier" "Assign" function_call
+
+# !function_call : "Identifier" "LeftParen" parameters_call "RightParen"
+# !parameters_call :  | "Identifier" | "Identifier" "Comma" parameters_call  
+
 !opeq : "PlusEqual"       
 	  | "SlashEqual"      
 	  | "StarEqual"       
@@ -82,16 +93,17 @@ grammar = '''
       | "RightShiftEqual" 
 
 !array_declaration: "Array" datatype "Identifier" "Colon" "Number" end_arr "Semicolon" 
-                 | "Array" datatype "Identifier" "Assign" cont_vals "Semicolon"
+                  | "Array" datatype "Identifier" "Colon" "Identifier" end_arr "Semicolon" 
+                  | "Array" datatype "Identifier" "Assign" cont_vals "Semicolon"
 
 !tuple_declaration: "Tuple" datatype "Identifier" "Assign" cont_vals "Semicolon"
 
 !end_arr :  | "LeftBracket" "Number" "RightBracket" | "LeftBracket" "Char" "RightBracket" | "LeftBracket" string_nt "RightBracket" | "LeftBracket" bool_literals "RightBracket"
 
-!string_nt : "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" "Number" "RightBracket" | "Substr" "LeftParen" "Identifier" "Number" "Comma" "Number" "RightParen"
+!string_nt : "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" "Number" "RightBracket" | "Substr" "LeftParen" "Identifier" "Comma" "Number" "Comma" "Number" "RightParen"
 !string_items : "Identifier" "Comma" string_items | "Identifier" "RightParen"
 
-!number_nt : "Number" | "Length" "LeftBracket" "Identifier" "RightBracket" | "Head" "LeftParen" "Identifier" "RightParen" | "Tail" "LeftParen" "Identifier" "RightParen"
+!number_nt : "Number" | "Length" "LeftParen" "Identifier" "RightParen" | "Head" "LeftParen" "Identifier" "RightParen" | "Tail" "LeftParen" "Identifier" "RightParen"
 
 !bool_literals: "True" | "False"
 
@@ -152,11 +164,11 @@ grammar = '''
                 |"Greater"        
                 |"GreaterEqual"    
 
-!cont_vals : "Slice" "LeftParen" "Identifier" "Comma" number_nt "Comma" number_nt "RightParen" | "LeftBracket" value_conts
+!cont_vals : "Slice" "LeftParen" "Identifier" "Comma" number_nt "Comma" number_nt "RightParen" | "LeftBracket" value_conts 
 
 !value_conts : values "Comma" value_conts | values "RightBracket"
 
-!parameters_call : "Identifier" "Comma" parameters_call | "Identifier"
+!parameters_call : "Identifier" "Comma" parameters_call | "Identifier" |
 
 !return_statement : "Return" expression "Semicolon"
 
@@ -169,7 +181,7 @@ grammar = '''
 !power_expr : power_expr "Power" terminal_expr | terminal_expr
 !terminal_expr : values | "LeftParen" expression "RightParen"
 
-!values: number_nt | "Char" | string_nt | bool_literals | "Identifier" "LeftBrace" parameters_call "RightBrace" | "Identifier" | "Null" 
+!values: number_nt | "Char" | string_nt | bool_literals | "Identifier" "LeftParen" parameters_call "RightParen" | "Identifier" | "Null" 
 '''
 
 if __name__ == "__main__":
@@ -177,5 +189,6 @@ if __name__ == "__main__":
 
     parser = Lark(grammar, parser='lalr', lexer=CustomLexer, strict=True)
     tree = parser.parse(file_path)
-    graph = tree_to_graphviz(tree)
-    graph.render('tree', format='png', view=True)
+    print(tree)
+    # graph = tree_to_graphviz(tree)
+    # graph.render('tree', format='png', view=True)
