@@ -1,50 +1,25 @@
-shrey_joshi please ignore this as it is a comment
-func header(arr int sample_arr) : int {
-    
-    if ( len(sample_arr) > 0){
-        return sample_arr[0];
-    }
-    else {
-        return null;
-    }
-}
-
-func subarr(arr int sample_arr, int start_index, int sub_arr_size) : arr int {
-
-    arr int sub_Arr : sub_arr_size;
-
-    func fill(int index) : void {
-        sub_Arr = sample_arr[index + start_index];
-    }
-
-    var int i = 0;
-    while (i < sub_arr_size){
-        fill(i);
-        i++;
-    }
-}
-
-func substring(string s) : func(int, int) : string {
-
-    return func slicing(int start_index, int sub_str_size) : string {
-
-        return slice(s, start_index, start_index + sub_str_size);
-
-    }
-}
-
-
 func main() : void {
+    var int dvd = 5;
+    var int dvr = 0;
+    var int quo;
 
-    /*
-    func x = substring("abcdef");
-    var string sub = x(1,3);
+    try {
+        dvd = dvd / 1;
+        shrey_joshi : quo = dvd / dvr;
 
-        shrey_joshi : Orrr...
-    */
-    
-    type MyFunc = func(int, int) : string;
+        if (dvr==0){
+            throw ValueException("Division by zero not permitted");
+        }
+    }
+    catch (TypeException te){
+        print: "Input Numbers!";
+    }
+    catch (ValueException ve){
+        print: "Division by zero not possible";
+    }
+    catch (Exception e){
+        print: "Unknown error occurred:\n";
+        print: e;
+    }
 
-    MyFunc x = substring("abcdef");
-    var string sub = x(1,3);
 }

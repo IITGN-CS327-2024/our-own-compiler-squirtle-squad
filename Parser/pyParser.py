@@ -1,6 +1,6 @@
 from lark import Lark, Transformer, v_args, Tree
 from lark.lexer import Lexer, Token
-# from graphviz import Digraph
+from graphviz import Digraph
 import sys
 
 class CustomLexer(Lexer):
@@ -190,5 +190,5 @@ if __name__ == "__main__":
     parser = Lark(grammar, parser='lalr', lexer=CustomLexer, strict=True)
     tree = parser.parse(file_path)
     print(tree)
-    # graph = tree_to_graphviz(tree)
-    # graph.render('tree', format='png', view=True)
+    graph = tree_to_graphviz(tree)
+    graph.render('tree',format='png', view=True)
