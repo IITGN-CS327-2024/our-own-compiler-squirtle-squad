@@ -13,45 +13,50 @@ const (
 	EmptyChar   = "Char"
 
 	// Keywords
-	Function      = "Function"
-	ChildFunction = "CHILDFUNCTION"
-	Variable      = "Variable"
-	Constant      = "Constant"
-	Integer       = "Integer"
-	Boolean       = "Boolean"
-	Array         = "Array"
-	Tuple         = "Tuple"
-	Exception     = "Exception"
-	True          = "True"
-	False         = "False"
-	If            = "If"
-	ElseIf        = "ElseIf"
-	Else          = "Else"
-	Return        = "Return"
-	Void          = "Void"
-	Try           = "Try"
-	Throw         = "Throw"
-	Catch         = "Catch"
-	Print         = "Print"
-	For           = "For"
-	While         = "While"
-	Length        = "Length"
-	Slice         = "Slice"
-	Break         = "Break"
-	Continue      = "Continue"
-	Or            = "Or"
-	And           = "And"
-	Not           = "Not"
-	String_k      = "String_k"
-	Char_k        = "Char_k"
-	Cons          = "Cons"
-	Head          = "Head"
-	Tail          = "Tail"
-	Format        = "Format"
-	Substr        = "Substr"
-	Type          = "TYPE"
-	Main          = "Main"
-	Null          = "Null"
+	Function            = "Function"
+	ChildFunction       = "CHILDFUNCTION"
+	Variable            = "Variable"
+	Constant            = "Constant"
+	Integer             = "Integer"
+	Boolean             = "Boolean"
+	Array               = "Array"
+	Tuple               = "Tuple"
+	Exception           = "Exception"
+	True                = "True"
+	False               = "False"
+	If                  = "If"
+	ElseIf              = "ElseIf"
+	Else                = "Else"
+	Return              = "Return"
+	Void                = "Void"
+	Try                 = "Try"
+	Throw               = "Throw"
+	Catch               = "Catch"
+	Print               = "Print"
+	For                 = "For"
+	While               = "While"
+	Length              = "Length"
+	Slice               = "Slice"
+	Break               = "Break"
+	Continue            = "Continue"
+	Or                  = "Or"
+	And                 = "And"
+	Not                 = "Not"
+	String_k            = "String_k"
+	Char_k              = "Char_k"
+	Cons                = "Cons"
+	Head                = "Head"
+	Tail                = "Tail"
+	Format              = "Format"
+	Substr              = "Substr"
+	Type                = "TYPE"
+	Main                = "Main"
+	Null                = "Null"
+	ValueException      = "ValueException"
+	TypeException       = "TypeException"
+	ArithmeticException = "ArithmeticException"
+	NullException       = "NullException"
+	IndexException      = "IndexException"
 
 	// Operators
 	Equal           = "Equal"
@@ -113,45 +118,50 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"func":      Function,
-	"cfunc":     ChildFunction,
-	"var":       Variable,
-	"const":     Constant,
-	"int":       Integer,
-	"bool":      Boolean,
-	"char":      Char_k,
-	"arr":       Array,
-	"tuple":     Tuple,
-	"Exception": Exception,
-	"true":      True,
-	"false":     False,
-	"if":        If,
-	"elseif":    ElseIf,
-	"else":      Else,
-	"return":    Return,
-	"void":      Void,
-	"try":       Try,
-	"throw":     Throw,
-	"catch":     Catch,
-	"print":     Print,
-	"for":       For,
-	"while":     While,
-	"len":       Length,
-	"slice":     Slice,
-	"break":     Break,
-	"continue":  Continue,
-	"or":        Or,
-	"and":       And,
-	"not":       Not,
-	"string":    String_k,
-	"cons":      Cons,
-	"head":      Head,
-	"tail":      Tail,
-	"format":    Format,
-	"substr":    Substr,
-	"type":      Type,
-	"main":      Main,
-	"null":      Null,
+	"func":                Function,
+	"cfunc":               ChildFunction,
+	"var":                 Variable,
+	"const":               Constant,
+	"int":                 Integer,
+	"bool":                Boolean,
+	"char":                Char_k,
+	"arr":                 Array,
+	"tuple":               Tuple,
+	"Exception":           Exception,
+	"true":                True,
+	"false":               False,
+	"if":                  If,
+	"elseif":              ElseIf,
+	"else":                Else,
+	"return":              Return,
+	"void":                Void,
+	"try":                 Try,
+	"throw":               Throw,
+	"catch":               Catch,
+	"print":               Print,
+	"for":                 For,
+	"while":               While,
+	"len":                 Length,
+	"slice":               Slice,
+	"break":               Break,
+	"continue":            Continue,
+	"or":                  Or,
+	"and":                 And,
+	"not":                 Not,
+	"string":              String_k,
+	"cons":                Cons,
+	"head":                Head,
+	"tail":                Tail,
+	"format":              Format,
+	"substr":              Substr,
+	"type":                Type,
+	"main":                Main,
+	"null":                Null,
+	"ValueException":      ValueException,
+	"ArithmeticException": ArithmeticException,
+	"NullException":       NullException,
+	"TypeException":       TypeException,
+	"IndexException":      NullException,
 }
 
 // checks our keywords map for the scanned keyword.
