@@ -1,0 +1,19 @@
+func main() : int {
+    var int number = 7;
+    var bool T_F = true;
+    var char sport = 'C';
+    var string player = "Thala";
+
+    var int declare;
+    declare = 10;
+
+    const int fixed_1 = 6;
+
+    arr string array1 = ["Rachit" , "Sachin", "Shetty", "Yashraj"];
+    arr char array2 : 5;
+    arr int array3 : 7 [1] ;
+
+    tuple int tup = [1, 2, 3, 4];
+
+    print : "Hello, World!";
+}

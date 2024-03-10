@@ -10,14 +10,16 @@ import (
 )
 
 func main() {
-	// Define a command line flag named "input" with a default value of "input.txt"
+	// Define command line flags
 	inputFileName := flag.String("input", "input.txt", "Input file name")
+	outputFilePath := flag.String("output", "", "Output file path")
 	flag.Parse()
 
-	// Retrieve the value of the "input" flag
+	// Retrieve the values of the flags
 	fileName := *inputFileName
+	outputPath := *outputFilePath
 
-	// Check if the file exists
+	// Check if the input file exists
 	if _, err := os.Stat(fileName); os.IsNotExist(err) {
 		fmt.Printf("File %s does not exist\n", fileName)
 		return
@@ -39,8 +41,9 @@ func main() {
 	}
 	inputS := string(content)
 	l := lexer.New(inputS)
-	// Construct the output file name
-	outputFileName := "output_" + filepath.Base(fileName)
+
+	// Construct the output file path
+	outputFileName := filepath.Join(outputPath, "output_"+filepath.Base(fileName))
 
 	// Open the output file for writing
 	outputFile, err := os.Create(outputFileName)
@@ -49,10 +52,9 @@ func main() {
 		return
 	}
 	defer outputFile.Close()
+
 	for {
 		tok := l.NextToken()
-		// fmt.Printf("%+v\n", tok)
-		// _, err = fmt.Fprintf(outputFile, "%+v\n", tok)
 		formatted := fmt.Sprintf("%s,%s\n", tok.Type, tok.Literal)
 		_, err = fmt.Fprintf(outputFile, formatted)
 		if err != nil {
@@ -62,12 +64,6 @@ func main() {
 		if tok.Type == "EOF" {
 			break
 		}
-	}
-	// Write the contents to the output file
-	// _, err = outputFile.Write(content)
-	if err != nil {
-		fmt.Printf("Error writing to file: %v\n", err)
-		return
 	}
 
 	fmt.Printf("Contents of %s written to %s\n", fileName, outputFileName)

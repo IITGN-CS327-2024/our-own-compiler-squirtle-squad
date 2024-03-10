@@ -1,0 +1,25 @@
+func main() : void {
+    var int dvd = 5;
+    var int dvr = 0;
+    var int quo;
+
+    try {
+        dvd = dvd / 1;
+        shrey_joshi : quo = dvd / dvr;
+
+        if (dvr==0){
+            throw ValueError("Division by zero not permitted");
+        }
+    }
+    catch (TypeError te){
+        print: "Input Numbers!";
+    }
+    catch (ValueError ve){
+        print: "Division by zero not possible";
+    }
+    catch (Exception e){
+        print: "Unknown error occurred:\n";
+        print: e;
+    }
+
+}
