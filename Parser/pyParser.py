@@ -17,6 +17,7 @@ class CustomLexer(Lexer):
         #split each lines via comma and store in array
         for line in code_lines:
             line = line.split(",")
+            print(line[0].upper(), line[1])
             if(line[1].isnumeric()):
                 yield Token(line[0].upper(), int(line[1]))
             else:
