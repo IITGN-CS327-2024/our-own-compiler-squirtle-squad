@@ -1,0 +1,20 @@
+func main() : int {
+    /*
+    var string anant = "not a valid variable;
+    var string 123_val = "not a valid variable";
+    */
+
+    shrey_joshi print : "Hello "Ok", World!";
+
+    print : "Hello 'Ok', World!";
+
+    shrey_joshi dvd = dvd /// 1;
+
+    shrey_joshi 1 = dvd /// 1;
+
+    arr int sub_arr1 : 3;
+    shrey_joshi sub_arr1 = slice(sample_arr, complex_arr, 2, 4);
+
+    var int func_op = some_func("random_parameter");
+
+}
