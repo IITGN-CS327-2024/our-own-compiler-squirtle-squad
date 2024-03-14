@@ -276,6 +276,9 @@ func (l *Lexer) NextToken() token.Token {
 		} else if isDigit(l.ch) {
 			tok.Literal = l.readNumber()
 			tok.Type = token.Number
+			if isLetter(l.ch) {
+				log.Fatal("Invalid Decimal Literal")
+			}
 			return tok
 		} else {
 			tok = newToken(token.Illegal, l.ch)
