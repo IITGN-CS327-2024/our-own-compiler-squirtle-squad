@@ -2,6 +2,7 @@ Function,func
 Identifier,header
 LeftParen,(
 Array,arr
+Integer,int
 Identifier,sample_arr
 RightParen,)
 Colon,:
@@ -9,9 +10,11 @@ Integer,int
 LeftBrace,{
 If,if
 LeftParen,(
+LeftParen,(
 Length,len
 LeftParen,(
 Identifier,sample_arr
+RightParen,)
 RightParen,)
 Greater,>
 Number,0
@@ -35,6 +38,7 @@ Function,func
 Identifier,subarr
 LeftParen,(
 Array,arr
+Integer,int
 Identifier,sample_arr
 Comma,,
 Integer,int
@@ -45,6 +49,7 @@ Identifier,sub_arr_size
 RightParen,)
 Colon,:
 Array,arr
+Integer,int
 LeftBrace,{
 Array,arr
 Integer,int
@@ -124,7 +129,7 @@ Colon,:
 String_k,string
 LeftBrace,{
 Return,return
-Slice,slice
+Substr,substr
 LeftParen,(
 Identifier,s
 Comma,,
