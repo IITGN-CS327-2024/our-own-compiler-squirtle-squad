@@ -1,6 +1,6 @@
 from lark import Lark, Transformer, v_args, Tree
 from lark.lexer import Lexer, Token
-from graphviz import Digraph
+# from graphviz import Digraph
 import sys
 
 class CustomLexer(Lexer):
@@ -76,8 +76,6 @@ grammar = '''
 !variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition
                  | "Identifier" "LeftBracket" expression "RightBracket" "Assign" condition
                  | "Identifier" "LeftBracket" expression "RightBracket" opeq condition
-
-!function_call : "Identifier" "LeftParen" parameters_call "RightParen"
 
 !opeq : "PlusEqual"       
 	  | "SlashEqual"      
@@ -172,11 +170,13 @@ grammar = '''
 
 !value_conts : values "Comma" value_conts | values "RightBracket"
 
+!function_call : "Identifier" "LeftParen" parameters_call "RightParen"
+
 !parameters_call : | params_call
 
-!params_call : | "Identifier" "Comma" params_call | "Identifier" 
-               | string_nt "Comma" params_call | string_nt |
-               | number_nt "Comma" params_call | number_nt | 
+!params_call : "Identifier" "Comma" params_call | "Identifier" 
+               | string_nt "Comma" params_call | string_nt
+               | number_nt "Comma" params_call | number_nt 
                | bool_literals "Comma" params_call | bool_literals
                | "Char" "Comma" params_call | "Char"
 
@@ -200,5 +200,5 @@ if __name__ == "__main__":
     parser = Lark(grammar, parser='lalr', lexer=CustomLexer, strict=True)
     tree = parser.parse(file_path)
     print(tree)
-    graph = tree_to_graphviz(tree)
-    graph.render('tree',format='png', view=True)
+    # graph = tree_to_graphviz(tree)
+    # graph.render('tree',format='png', view=True)
