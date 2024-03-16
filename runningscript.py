@@ -10,13 +10,18 @@ testcase = sys.argv[1]
 command1 = f"go run {lexer_dir}/testingParser.go --input=testcases/{testcase} --output={output_dir}"
 
 # Run the first command
-result = subprocess.run(command1, shell=True)
+result_lexer = subprocess.run(command1, shell=True)
 
 # Check if the first command terminated abnormally
-if result.returncode != 0:
+if result_lexer.returncode != 0:
     print("Error detected in lexing stage.")
     sys.exit()
 
 # Execute the second command: python Parser/pyParser.py Parser/test/output_test_case_1.scp
 command2 = f"python Parser/pyParser.py {output_dir}/output_{testcase}"
-subprocess.run(command2, shell=True)
+result_parser = subprocess.run(command2, shell=True)
+
+# Check if the first command terminated abnormally
+if result_parser.returncode != 0:
+    print("Error detected in parsing stage.")
+    sys.exit()
