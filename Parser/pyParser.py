@@ -72,17 +72,12 @@ grammar = '''
                       | "Variable" datatype "Identifier" "Assign" condition 
                       | "Constant" datatype "Identifier" "Assign" condition 
                       | "Identifier" "Identifier" "Assign" condition
-                    #   | "Variable" datatype "Identifier" "Assign" function_call 
-                    #   | "Constant" datatype "Identifier" "Assign" function_call 
 
 !variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition
                  | "Identifier" "LeftBracket" expression "RightBracket" "Assign" condition
                  | "Identifier" "LeftBracket" expression "RightBracket" opeq condition
-                # | "Identifier" "Assign" cont_vals
-                #  | "Identifier" "Assign" function_call
 
-# !function_call : "Identifier" "LeftParen" parameters_call "RightParen"
-# !parameters_call :  | "Identifier" | "Identifier" "Comma" parameters_call  
+!function_call : "Identifier" "LeftParen" parameters_call "RightParen"
 
 !opeq : "PlusEqual"       
 	  | "SlashEqual"      
@@ -126,10 +121,8 @@ grammar = '''
          
 !function_declaration : "Function" "Identifier" "LeftParen" parameters_def "RightParen" "Colon" datatype_f "LeftBrace" statements "RightBrace" | "Function" "Main" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace"
 
-!parameters_def : 
-                | parameter_def
-                | parameter_def "Comma" parameters_def  
-
+!parameters_def : | params_def
+!params_def : parameter_def | parameter_def "Comma" parameters_def  
 !parameter_def : datatype "Identifier"
 
 !type_declaration : "TYPE" "Identifier" "Assign" "Function" "LeftParen" final_call "RightParen" "Colon" datatype "Semicolon" 
@@ -152,7 +145,7 @@ grammar = '''
 
 !exception_handling : "Try" "LeftBrace" statements "RightBrace" catch_blocks
 
-!catch_blocks :  "Catch" "LeftParen" exception_type "Identifier" "RightParen" "LeftBrace" statements "RightBrace" catch_blocks
+!catch_blocks : "Catch" "LeftParen" exception_type "Identifier" "RightParen" "LeftBrace" statements "RightBrace" catch_blocks
               | "Catch" "LeftParen" "Exception" "Identifier" "RightParen" "LeftBrace" statements "RightBrace"
 
 !exception_type : "ArithmeticException" | "NullException" | "IndexException" | "ValueException" | "TypeException"
@@ -170,21 +163,22 @@ grammar = '''
 !un_operators_pre  : "Bang" | "BitwiseNot"
 !un_operators_post : "Increment" | "Decrement"
 
-!comp_operators :  "Less"           
-                |"LessEqual"       
-                |"Greater"        
-                |"GreaterEqual"    
+!comp_operators : "Less"           
+                | "LessEqual"       
+                | "Greater"        
+                | "GreaterEqual"    
 
 !cont_vals : "Slice" "LeftParen" "Identifier" "Comma" expression "Comma" expression "RightParen" | "LeftBracket" value_conts 
 
 !value_conts : values "Comma" value_conts | values "RightBracket"
 
-!parameters_call : 
-                 | "Identifier" "Comma" parameters_call | "Identifier" 
-                 | string_nt "Comma" parameters_call | string_nt |
-                 | number_nt "Comma" parameters_call | number_nt | 
-                 | bool_literals "Comma" parameters_call | bool_literals
-                 | "Char" "Comma" parameters_call | "Char"
+!parameters_call : | params_call
+
+!params_call : | "Identifier" "Comma" params_call | "Identifier" 
+               | string_nt "Comma" params_call | string_nt |
+               | number_nt "Comma" params_call | number_nt | 
+               | bool_literals "Comma" params_call | bool_literals
+               | "Char" "Comma" params_call | "Char"
 
 !return_statement : "Return" expression "Semicolon" | "Return" function_declaration 
 
@@ -197,7 +191,7 @@ grammar = '''
 !power_expr : power_expr "Power" terminal_expr | terminal_expr
 !terminal_expr : values | "LeftParen" condition "RightParen"
 
-!values: number_nt | "Char" | string_nt | bool_literals | cont_vals | "Identifier" "LeftParen" parameters_call "RightParen" | "Identifier" | "Null" 
+!values: number_nt | "Char" | string_nt | bool_literals | cont_vals | function_call | "Identifier" | "Null" 
 '''
 
 if __name__ == "__main__": 
