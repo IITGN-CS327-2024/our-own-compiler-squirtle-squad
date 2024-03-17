@@ -95,7 +95,6 @@ class Condition1(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
   
-  
     
 class Condition2(ASTNode):
 
@@ -104,10 +103,6 @@ class Condition2(ASTNode):
         setattr(self, f'values{i}', value)
 
   
-   
-    
-    
-
 class Condition3(ASTNode):
 
   def __init__(self, values):
@@ -115,18 +110,12 @@ class Condition3(ASTNode):
         setattr(self, f'values{i}', value)
 
   
-  
-    
-    
-
 class Expression(ASTNode):
 
   def __init__(self, values):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
     
 class BitwiseExpr(ASTNode):
 
@@ -134,8 +123,6 @@ class BitwiseExpr(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
     
 class EqExpr(ASTNode):
 
@@ -143,8 +130,6 @@ class EqExpr(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
     
 class ShiftExpr(ASTNode):
 
@@ -152,17 +137,13 @@ class ShiftExpr(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
-    
+     
 class AddExpr(ASTNode):
 
   def __init__(self, values):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
     
 class MultExpr(ASTNode):
 
@@ -170,9 +151,7 @@ class MultExpr(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
-  
-  
-    
+     
 class PowerExpr(ASTNode):
 
   def __init__(self, values):
@@ -180,16 +159,11 @@ class PowerExpr(ASTNode):
         setattr(self, f'values{i}', value)
 
   
-  
-    
-    
 class ParametersCall(ASTNode):
    
    def __init__(self, values):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
-
-   
    
 
 class VariableChangeStatement(ASTNode):
@@ -288,8 +262,18 @@ class LoopStatement(ASTNode):
         for i, value in enumerate(values):
             setattr(self, f'values{i}', value)
 
+class TypeDeclaration(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)
 
+class ReturnStatement(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)
 
+class ExceptionHandling(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)
 
-
-  

@@ -217,7 +217,7 @@ class OurTransformer(lark.Transformer):
         children = flatten(children)
         return children
     
-    def expression_statment(self, children):
+    def expression_statement(self, children):
         children = flatten(children)
         return node_classes.ExpressionStatement(children)
     
@@ -237,7 +237,29 @@ class OurTransformer(lark.Transformer):
         children = flatten(children)
         return node_classes.FunctionDeclaration(children)
     
+    def parameters_def(self, children):
+        children = flatten(children)
+        if(len(children) == 0): return None
+        return children
+
+    def params_def(self, children):
+        children = flatten(children)
+        return children
+
     def parameter_def(self, children):
+        children = flatten(children)
+        return children
+    
+    def datatype_f(self, children):
+        children = flatten(children)
+        return children
+    
+    def final_call(self, children):
+        children = flatten(children)
+        if(len(children) == 0): return None
+        return children
+
+    def datatype_call(self, children):
         children = flatten(children)
         return children
     
@@ -247,10 +269,12 @@ class OurTransformer(lark.Transformer):
     
     def elseif_statements(self, children):
         children = flatten(children)
+        if(len(children) == 0): return None
         return node_classes.ElseIfStatements(children)
     
     def else_statement(self, children):
         children = flatten(children)
+        if(len(children) == 0): return None
         return node_classes.ElseStatement(children)
     
     def loop_statement(self, children):
@@ -266,36 +290,26 @@ class OurTransformer(lark.Transformer):
         if(len(children) == 0): return None 
         else: return children
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def type_declaration(self, children):
+        children = flatten(children)
+        return node_classes.TypeDeclaration(children)
     
+    def return_statement(self, children):
+        children = flatten(children)
+        return node_classes.ReturnStatement(children)
 
+    def exception_handling(self, children):
+        children = flatten(children)
+        return node_classes.ExceptionHandling(children)
     
-
-
-        
-
-
+    def catch_blocks(self, children):
+        children = flatten(children)
+        return children
     
-
- 
- 
+    def cont_vals(self, children):
+        children = flatten(children)
+        return children
+    
+    def value_conts(self, children):
+        children = flatten(children)
+        return children
