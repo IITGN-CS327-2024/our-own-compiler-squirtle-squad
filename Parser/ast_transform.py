@@ -6,8 +6,10 @@ def flatten(lst):
     for sublist in lst:
         if isinstance(sublist, list):
             flat_list.extend(flatten(sublist))
-        else:
+
+        elif(sublist is not None):
             flat_list.append(sublist)
+
     return flat_list
 
 class OurTransformer(lark.Transformer):
@@ -37,11 +39,12 @@ class OurTransformer(lark.Transformer):
     
     def statement(self, children):
         children = flatten(children)
-        return node_classes.Statement(children)
+        return children
     
     def statements(self, children):
         children = flatten(children)
-        return node_classes.Statements(children)
+        # return node_classes.Statements(children)
+        return children
     
     def variable_declaration_statement(self, children):
         children = flatten(children)
