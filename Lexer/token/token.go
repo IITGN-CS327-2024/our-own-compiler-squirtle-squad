@@ -95,12 +95,12 @@ const (
 	Comma        = "Comma"
 	Colon        = "Colon"
 	Semicolon    = "Semicolon"
-	LeftParen    = "LeftParen"
-	RightParen   = "RightParen"
-	LeftBrace    = "LeftBrace"
-	RightBrace   = "RightBrace"
-	LeftBracket  = "LeftBracket"
-	RightBracket = "RightBracket"
+	LeftParen    = "LPar"
+	RightParen   = "RPar"
+	LeftBrace    = "LBrace"
+	RightBrace   = "RBrace"
+	LeftBracket  = "LSQB"
+	RightBracket = "RSQB"
 
 	// Quotations
 	SingleQuote       = "'"

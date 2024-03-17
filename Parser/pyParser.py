@@ -32,6 +32,7 @@ def tree_to_graphviz(tree, graph=None):
         graph = Digraph()
 
     if isinstance(tree, node_classes.ASTNode):
+        graph.node(str(id(tree)), label=str(tree))
         children = vars(tree).items()
         for _,child in children:
             if isinstance(child, node_classes.ASTNode):
@@ -62,11 +63,11 @@ def tree_to_graphviz_lark(tree, graph=None):
 grammar = '''
 start: program "EOF"
 
-!program : statements 
+program : statements 
 
-!statements : statement+
+statements : statement+
 
-!statement : variable_declaration_statement
+statement : variable_declaration_statement
            | function_declaration
            | conditional_statement
            | loop_statement
@@ -81,137 +82,145 @@ start: program "EOF"
            | array_declaration
            | tuple_declaration
            | type_declaration
-           | "Semicolon"
+           | ";"
 
-!variable_declaration_statement : variable_declaration "Semicolon"
-!variable_change_statement : variable_change "Semicolon"
+variable_declaration_statement : variable_declaration ";"
+variable_change_statement : variable_change ";"
  
-!loop_control : "Break" "Semicolon" | "Continue" "Semicolon"
-!cons_op : "Cons" "LeftParen" "Identifier" "Comma" expression "RightParen" "Semicolon"
-!variable_declaration : "Variable" datatype "Identifier" 
-                      | "Variable" datatype "Identifier" "Assign" condition 
-                      | "Constant" datatype "Identifier" "Assign" condition 
-                      | "Identifier" "Identifier" "Assign" condition
+loop_control : BREAK ";" | CONTINUE ";"
+cons_op : CONS "(" IDENTIFIER "Comma" expression ")" ";"
+variable_declaration : VARIABLE datatype IDENTIFIER 
+                      | VARIABLE datatype IDENTIFIER ASSIGN condition 
+                      | CONSTANT datatype IDENTIFIER ASSIGN condition 
+                      | IDENTIFIER IDENTIFIER ASSIGN condition
 
-!variable_change : "Identifier" "Assign" condition | "Identifier" opeq condition
-                 | "Identifier" "LeftBracket" expression "RightBracket" "Assign" condition
-                 | "Identifier" "LeftBracket" expression "RightBracket" opeq condition
+variable_change : IDENTIFIER ASSIGN condition | IDENTIFIER opeq condition
+                 | IDENTIFIER "[" expression "]" ASSIGN condition
+                 | IDENTIFIER "[" expression "]" opeq condition
 
-!opeq : "PlusEqual"       
-	  | "SlashEqual"      
-	  | "StarEqual"       
-	  | "MinusEqual"      
-	  | "ModEqual"        
-      | "AndEqual"  
-      | "OrEqual"   
-      | "LeftShiftEqual"  
-      | "RightShiftEqual" 
+opeq : PLUSEQUAL       
+	  | SLASHEQUAL      
+	  | STAREQUAL       
+	  | MINUSEQUAL      
+	  | MODEQUAL        
+      | ANDEQUAL  
+      | OREQUAL   
+      | LEFTSHIFTEQUAL  
+      | RIGHTSHIFTEQUAL 
 
-!array_declaration: arr_datatype "Identifier" "Colon" "Number" end_arr "Semicolon" 
-                  | arr_datatype "Identifier" "Colon" "Identifier" end_arr "Semicolon" 
-                  | arr_datatype "Identifier" "Assign" cont_vals "Semicolon"
+array_declaration: arr_datatype IDENTIFIER ":" NUMBER end_arr ";" 
+                  | arr_datatype IDENTIFIER ":" IDENTIFIER end_arr ";" 
+                  | arr_datatype IDENTIFIER ASSIGN cont_vals ";"
 
-!tuple_declaration: tup_datatype "Identifier" "Assign" cont_vals "Semicolon"
+tuple_declaration: tup_datatype IDENTIFIER ASSIGN cont_vals ";"
 
-!end_arr :  | "LeftBracket" "Number" "RightBracket" | "LeftBracket" "Char" "RightBracket" | "LeftBracket" string_nt "RightBracket" | "LeftBracket" bool_literals "RightBracket"
+end_arr :  | "[" NUMBER "]" | "[" CHAR "]" | "[" string_nt "]" | "[" bool_literals "]"
 
-!string_nt : "String" | "String" "Dot" "Format" "LeftParen" string_items | "Identifier" "LeftBracket" expression "RightBracket" | "Substr" "LeftParen" "Identifier" "Comma" expression "Comma" expression "RightParen"
-!string_items : "Identifier" "Comma" string_items | "Identifier" "RightParen"
+string_nt :STRING | STRING "Dot" FORMAT "(" string_items | IDENTIFIER "[" expression "]" | "Substr" "(" IDENTIFIER "Comma" expression "Comma" expression ")"
+string_items : IDENTIFIER "Comma" string_items | IDENTIFIER ")"
 
-!number_nt : "Number" | "Length" "LeftParen" "Identifier" "RightParen" | "Head" "LeftParen" "Identifier" "RightParen" | "Tail" "LeftParen" "Identifier" "RightParen"
+number_nt : NUMBER | LENGTH "(" IDENTIFIER ")" | HEAD "(" IDENTIFIER ")" | TAIL "(" IDENTIFIER ")"
 
-!bool_literals: "True" | "False"
+bool_literals: TRUE | FALSE
 
-!datatype : "Integer" 
-          | "Boolean"
-          | "Char_k"
-          | "String_k"
-          | "Void"
-          | "Array" "Integer" | "Array" "Boolean" | "Array" "Char_k" | "Array" "String_k" 
-          | "Tuple" "Integer" | "Tuple" "Boolean" | "Tuple" "Char_k" | "Tuple" "String_k"
+datatype : INTEGER 
+          | BOOLEAN
+          | CHAR_K
+          | STRING_K
+          | VOID
+          | ARRAY INTEGER | ARRAY BOOLEAN | ARRAY CHAR_K | ARRAY STRING_K 
+          | TUPLE INTEGER | TUPLE BOOLEAN | TUPLE CHAR_K | TUPLE STRING_K
 
-!arr_datatype : "Array" "Integer" | "Array" "Boolean" | "Array" "Char_k" | "Array" "String_k" 
-!tup_datatype : "Tuple" "Integer" | "Tuple" "Boolean" | "Tuple" "Char_k" | "Tuple" "String_k"
+arr_datatype : ARRAY INTEGER | ARRAY BOOLEAN | ARRAY CHAR_K | ARRAY STRING_K 
+tup_datatype : TUPLE INTEGER | TUPLE BOOLEAN | TUPLE CHAR_K | TUPLE STRING_K
 
-!datatype_f : datatype | "Function" "LeftParen" final_call "RightParen" "Colon" datatype
-!final_call: | datatype_call
-!datatype_call : datatype | datatype "Comma" datatype_call
+datatype_f : datatype | FUNCTION "(" final_call ")" ":" datatype
+final_call: | datatype_call
+datatype_call : datatype | datatype "Comma" datatype_call
          
-!function_declaration : "Function" "Identifier" "LeftParen" parameters_def "RightParen" "Colon" datatype_f "LeftBrace" statements "RightBrace" | "Function" "Main" "LeftParen" parameters_def "RightParen" "Colon" datatype "LeftBrace" statements "RightBrace"
+function_declaration : FUNCTION IDENTIFIER "(" parameters_def ")" ":" datatype_f "{" statements "}" | FUNCTION MAIN "(" parameters_def ")" ":" datatype "{" statements "}"
 
-!parameters_def : | params_def
-!params_def : parameter_def | parameter_def "Comma" params_def  
-!parameter_def : datatype "Identifier"
+parameters_def : | params_def
+params_def : parameter_def | parameter_def "Comma" params_def  
+parameter_def : datatype IDENTIFIER
 
-!type_declaration : "TYPE" "Identifier" "Assign" "Function" "LeftParen" final_call "RightParen" "Colon" datatype "Semicolon" 
+type_declaration : TYPE IDENTIFIER ASSIGN FUNCTION "(" final_call ")" ":" datatype ";" 
 
-!conditional_statement : "If" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements else_statement
+conditional_statement : IF "(" condition ")" "{" statements "}" elseif_statements else_statement
 
-!elseif_statements : 
-                   | "ElseIf" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace" elseif_statements
+elseif_statements : 
+                   | ELSEIF "(" condition ")" "{" statements "}" elseif_statements
 
-!else_statement : 
-                | "Else" "LeftBrace" statements "RightBrace"
+else_statement : 
+                | ELSE "{" statements "}"
 
-!loop_statement : "While" "LeftParen" condition "RightParen" "LeftBrace" statements "RightBrace"
-                | "For" "LeftParen" var_init "Semicolon" condition "Semicolon" iterating "RightParen" "LeftBrace" statements "RightBrace"
+loop_statement : WHILE "(" condition ")" "{" statements "}"
+                | FOR "(" var_init ";" condition ";" iterating ")" "{" statements "}"
 
-!var_init : variable_declaration | variable_change | "Identifier"
-!iterating:  | variable_change
+var_init : variable_declaration | variable_change | IDENTIFIER
+iterating:  | variable_change
 
-!print_statement : "Print" "Colon" expression "Semicolon"
+print_statement : PRINT ":" expression ";"
 
-!exception_handling : "Try" "LeftBrace" statements "RightBrace" catch_blocks
+exception_handling : TRY "{" statements "}" catch_blocks
 
-!catch_blocks : "Catch" "LeftParen" exception_type "Identifier" "RightParen" "LeftBrace" statements "RightBrace" catch_blocks
-              | "Catch" "LeftParen" "Exception" "Identifier" "RightParen" "LeftBrace" statements "RightBrace"
+catch_blocks : CATCH "(" exception_type IDENTIFIER ")" "{" statements "}" catch_blocks
+              | CATCH "(" EXCEPTION IDENTIFIER ")" "{" statements "}"
 
-!exception_type : "ArithmeticException" | "NullException" | "IndexException" | "ValueException" | "TypeException"
+exception_type : ARITHMETICEXCEPTION | NULLEXCEPTION | INDEXEXCEPTION | VALUEEXCEPTION | TYPEEXCEPTION
 
-!throw_statement : "Throw" exception_type "LeftParen" string_nt "RightParen" "Semicolon"
+throw_statement : THROW exception_type "(" string_nt ")" ";"
 
-!expression_statement : condition "Semicolon"
+expression_statement : condition ";"
 
-!condition:  condition1
-!condition1:  condition1 "Or" condition2 | condition2 
-!condition2: condition2 "And" condition3 | condition3
-!condition3: "Not" cond_terminal | cond_terminal
-!cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
+condition:  condition1
+condition1:  condition1 OR condition2 | condition2 
+condition2: condition2 AND condition3 | condition3
+condition3: NOT cond_terminal | cond_terminal
+cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
 
-!un_operators_pre  : "Bang" | "BitwiseNot"
-!un_operators_post : "Increment" | "Decrement"
+un_operators_pre  : BANG | BITWSENOT
+un_operators_post : INCREMENT | DECREMENT
 
-!comp_operators : "Less"           
-                | "LessEqual"       
-                | "Greater"        
-                | "GreaterEqual"    
+comp_operators : LESS           
+                | LESSEQUAL       
+                | GREATER        
+                | GREATEREQUAL    
  
-!cont_vals : "Slice" "LeftParen" "Identifier" "Comma" expression "Comma" expression "RightParen" | "LeftBracket" value_conts 
+cont_vals : SLICE "(" IDENTIFIER "Comma" expression "Comma" expression ")" | "[" value_conts 
 
-!value_conts : values "Comma" value_conts | values "RightBracket"
+value_conts : values "Comma" value_conts | values "]"
 
-!function_call : "Identifier" "LeftParen" parameters_call "RightParen"
+function_call : IDENTIFIER "(" parameters_call ")"
 
-!parameters_call : | params_call
+parameters_call : | params_call
 
-!params_call : "Identifier" "Comma" params_call | "Identifier" 
+params_call : IDENTIFIER "Comma" params_call | IDENTIFIER 
                | string_nt "Comma" params_call | string_nt
                | number_nt "Comma" params_call | number_nt 
                | bool_literals "Comma" params_call | bool_literals
-               | "Char" "Comma" params_call | "Char"
+               | CHAR "Comma" params_call | CHAR
 
-!return_statement : "Return" expression "Semicolon" | "Return" function_declaration 
+return_statement : RETURN expression ";" | RETURN function_declaration 
 
-!expression : bitwise_expr
-!bitwise_expr: bitwise_expr "BitwiseOr" eq_expr| bitwise_expr "BitwiseAnd" eq_expr| eq_expr 
-!eq_expr : eq_expr "Equal" shift_expr | eq_expr "NotEqual" shift_expr | shift_expr
-!shift_expr : shift_expr "LeftShift" add_expr | shift_expr "RightShift" add_expr | add_expr
-!add_expr : add_expr "Plus" mult_expr | add_expr "Minus" mult_expr | mult_expr
-!mult_expr : mult_expr "Star" power_expr | mult_expr "Slash" power_expr | mult_expr "Mod" power_expr | power_expr
-!power_expr : power_expr "Power" terminal_expr | terminal_expr
-!terminal_expr : values | "LeftParen" condition "RightParen"
+expression : bitwise_expr
+bitwise_expr: bitwise_expr BITWISEOR eq_expr| bitwise_expr BITWISEAND eq_expr| eq_expr 
+eq_expr : eq_expr EQUAL shift_expr | eq_expr NOTEQUAL shift_expr | shift_expr
+shift_expr : shift_expr LEFTSHIFT add_expr | shift_expr RIGHTSHIFT add_expr | add_expr
+add_expr : add_expr PLUS mult_expr | add_expr MINUS mult_expr | mult_expr
+mult_expr : mult_expr STAR power_expr | mult_expr SLASH power_expr | mult_expr MOD power_expr | power_expr
+power_expr : power_expr POWER terminal_expr | terminal_expr
+terminal_expr : values | "(" condition ")"
 
-!values: number_nt | "Char" | string_nt | bool_literals | cont_vals | function_call | "Identifier" | "Null" 
+!values: number_nt | CHAR | string_nt | bool_literals | cont_vals | function_call | IDENTIFIER | NULL 
+%declare INTEGER BOOLEAN CHAR_K STRING VOID ARRAY TUPLE NUMBER CHAR NULL STRING_K
+%declare ASSIGN PLUSEQUAL MINUSEQUAL STAREQUAL SLASHEQUAL MODEQUAL ANDEQUAL OREQUAL LEFTSHIFTEQUAL RIGHTSHIFTEQUAL
+%declare BREAK CONTINUE CONS IDENTIFIER CONSTANT VARIABLE FUNCTION PRINT RETURN
+%declare TRUE FALSE LENGTH HEAD TAIL FORMAT MAIN TYPE SLICE
+%declare IF ELSEIF ELSE WHILE FOR TRY CATCH THROW 
+%declare EXCEPTION ARITHMETICEXCEPTION NULLEXCEPTION INDEXEXCEPTION VALUEEXCEPTION TYPEEXCEPTION
+%declare OR AND NOT BANG BITWSENOT INCREMENT DECREMENT LESS LESSEQUAL GREATER GREATEREQUAL
+%declare BITWISEOR BITWISEAND EQUAL NOTEQUAL LEFTSHIFT RIGHTSHIFT PLUS MINUS STAR SLASH MOD POWER
 '''
 
 def visualize(obj):
