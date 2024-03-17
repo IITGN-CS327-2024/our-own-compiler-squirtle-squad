@@ -25,8 +25,3 @@ result_parser = subprocess.run(command2, shell=True)
 if result_parser.returncode != 0:
     print("Error detected in parsing stage.")
     sys.exit()
-
-# Check if the first command terminated abnormally
-if result_parser.returncode != 0:
-    print("Error detected in parsing stage.")
-    sys.exit()
