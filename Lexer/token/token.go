@@ -118,8 +118,8 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"func":                Function,
-	"cfunc":               ChildFunction,
+	"func": Function,
+	// "cfunc":               ChildFunction,
 	"var":                 Variable,
 	"const":               Constant,
 	"int":                 Integer,
