@@ -32,16 +32,16 @@ def tree_to_graphviz(tree, graph=None):
         graph = Digraph()
 
     if isinstance(tree, node_classes.ASTNode):
-
         children = vars(tree).items()
         for _,child in children:
             if isinstance(child, node_classes.ASTNode):
-                graph.node(str(child))
-                graph.edge(str(tree), str(child))
+                graph.node(str(id(child)), label = str(child))
+                graph.edge(str(id(tree)), str(id(child)))
                 tree_to_graphviz(child, graph)
+
             else:
-                graph.node(str((child)))
-                graph.edge(str(tree), str(child))
+                graph.node(str(id(child)), label=str(child))
+                graph.edge(str(id(tree)), str(id(child)))
     return graph
 
 def tree_to_graphviz_lark(tree, graph=None):
@@ -60,7 +60,7 @@ def tree_to_graphviz_lark(tree, graph=None):
     return graph
 
 grammar = '''
-!start: program "EOF"
+start: program "EOF"
 
 !program : statements 
 
@@ -185,24 +185,11 @@ grammar = '''
                 | "LessEqual"       
                 | "Greater"        
                 | "GreaterEqual"    
-!comp_operators : "Less"           
-                | "LessEqual"       
-                | "Greater"        
-                | "GreaterEqual"    
-
+ 
 !cont_vals : "Slice" "LeftParen" "Identifier" "Comma" expression "Comma" expression "RightParen" | "LeftBracket" value_conts 
 
 !value_conts : values "Comma" value_conts | values "RightBracket"
 
-!function_call : "Identifier" "LeftParen" parameters_call "RightParen"
-
-!parameters_call : | params_call
-
-!params_call : "Identifier" "Comma" params_call | "Identifier" 
-               | string_nt "Comma" params_call | string_nt
-               | number_nt "Comma" params_call | number_nt 
-               | bool_literals "Comma" params_call | bool_literals
-               | "Char" "Comma" params_call | "Char"
 !function_call : "Identifier" "LeftParen" parameters_call "RightParen"
 
 !parameters_call : | params_call
@@ -225,7 +212,6 @@ grammar = '''
 !terminal_expr : values | "LeftParen" condition "RightParen"
 
 !values: number_nt | "Char" | string_nt | bool_literals | cont_vals | function_call | "Identifier" | "Null" 
-!values: number_nt | "Char" | string_nt | bool_literals | cont_vals | function_call | "Identifier" | "Null" 
 '''
 
 def visualize(obj):
@@ -246,7 +232,6 @@ if __name__ == "__main__":
     transformer = ast_transform.OurTransformer()
     concrete_tree = parser.parse(file_path)
     ast = transformer.transform(concrete_tree)
-    visualize(ast)
     rich.print(concrete_tree)
     graph = tree_to_graphviz(ast)
     graph.render('tree',format='png', view=True)
