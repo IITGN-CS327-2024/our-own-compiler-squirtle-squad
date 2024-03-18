@@ -1,6 +1,9 @@
 import node_classes
 import lark  
 
+def check_existence(small_list, large_list):
+    return any(element in large_list for element in small_list)
+
 def flatten(lst):
     flat_list = []
     for sublist in lst:
@@ -21,6 +24,8 @@ class OurTransformer(lark.Transformer):
     recursively. Terminal symbols (like NUMBER) are instead
     passed a lark.Token structure.
     """
+
+    # count = 0
 
     def Integer(self, n):
         return int(n)
@@ -68,7 +73,7 @@ class OurTransformer(lark.Transformer):
         if(len(children) == 1):
             return flatten(children)
         
-        return node_classes.Condition1(children)
+        return node_classes.OrCondition(children)
     
     def condition2(self, children):
 
@@ -76,7 +81,7 @@ class OurTransformer(lark.Transformer):
         if(len(children) == 1):
             return flatten(children)
         
-        return node_classes.Condition2(children)
+        return node_classes.AndCondition(children)
     
     def condition3(self, children):
 
@@ -84,7 +89,22 @@ class OurTransformer(lark.Transformer):
         if(len(children) == 1):
             return children
         
-        return node_classes.Condition3(children)
+        # self.count+=1
+        # print(self.count)
+        # for i in children:
+        #     print(i, type(i))
+
+        if children[0] == "not":
+            return node_classes.NotCondition(children)
+        
+        comparators = [">", "<", ">=", "<="]
+        if check_existence(comparators, children):
+            return node_classes.CompCondition(children)
+        
+        if children[-1]=="++" or children[-1]=="--" or children[0]=="~" or children[0]=="!":
+            return node_classes.UnaryOperation(children)
+        
+        print("Error in condition3")
     
     def un_operators_pre(self, children):
         children = flatten(children)
@@ -140,8 +160,16 @@ class OurTransformer(lark.Transformer):
     def power_expr(self, children):
 
         children = flatten(children)
+
+        # for i in children: print(i, type(i))
+
         if(len(children) == 1): return children
         return node_classes.PowerExpr(children)
+
+        # if (len(children)>2):
+        #     if children[1] == '**':
+        #         return node_classes.PowerExpr(children)
+        # return children
     
     def terminal_expr(self, children):
         children = flatten(children)
@@ -162,6 +190,8 @@ class OurTransformer(lark.Transformer):
 
     def values(self, children):
         children = flatten(children)
+        if len(children) > 1:
+            return node_classes.ComplexVal(children)
         return children
 
     def number_nt(self, children):
@@ -269,6 +299,10 @@ class OurTransformer(lark.Transformer):
     def conditional_statement(self, children):
         children = flatten(children)
         return node_classes.ConditionalStatement(children)
+    
+    def if_statement(self, children):
+        children = flatten(children)
+        return node_classes.IfStatement(children)
     
     def elseif_statements(self, children):
         children = flatten(children)

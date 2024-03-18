@@ -89,21 +89,21 @@ class Condition(ASTNode):
         setattr(self, f'values{i}', value)
 
   
-class Condition1(ASTNode):
+class OrCondition(ASTNode):
 
   def __init__(self, values):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
   
     
-class Condition2(ASTNode):
+class AndCondition(ASTNode):
 
   def __init__(self, values):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
   
-class Condition3(ASTNode):
+class NotCondition(ASTNode):
 
   def __init__(self, values):
     for i, value in enumerate(values):
@@ -246,6 +246,12 @@ class TypeDeclaration(ASTNode):
     for i, value in enumerate(values):
         setattr(self, f'values{i}', value)
 
+class IfStatement(ASTNode):
+    
+    def __init__(self, values):
+      for i, value in enumerate(values):
+          setattr(self, f'values{i}', value)
+
 class ElseIfStatements(ASTNode):
    
     def __init__(self, values):
@@ -277,3 +283,17 @@ class ExceptionHandling(ASTNode):
         for i, value in enumerate(values):
             setattr(self, f'values{i}', value)
 
+class ComplexVal(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)
+
+class CompCondition(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)
+
+class UnaryOperation(ASTNode):
+    def __init__(self, values):
+        for i, value in enumerate(values):
+            setattr(self, f'values{i}', value)

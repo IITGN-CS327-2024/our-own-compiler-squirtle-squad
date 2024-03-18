@@ -19,7 +19,7 @@ class CustomLexer(Lexer):
         code_lines=file_contents.splitlines()
         #split each lines via comma and store in array
         for line in code_lines:
-            line = line.split(",")
+            line = line.split(",", 1)
             print(line[0].upper(), line[1])
             if(line[1].isnumeric()):
                 yield Token(line[0].upper(), int(line[1]))
@@ -146,7 +146,9 @@ parameter_def : datatype IDENTIFIER
 
 type_declaration : TYPE IDENTIFIER ASSIGN FUNCTION "(" final_call ")" ":" datatype ";" 
 
-conditional_statement : IF "(" condition ")" "{" statements "}" elseif_statements else_statement
+conditional_statement : if_statement elseif_statements else_statement
+
+if_statement : IF "(" condition ")" "{" statements "}"
 
 elseif_statements : 
                    | ELSEIF "(" condition ")" "{" statements "}" elseif_statements
@@ -160,7 +162,7 @@ loop_statement : WHILE "(" condition ")" "{" statements "}"
 var_init : variable_declaration | variable_change | IDENTIFIER
 iterating:  | variable_change
 
-print_statement : PRINT ":" expression ";"
+print_statement : PRINT ":" condition ";"
 
 exception_handling : TRY "{" statements "}" catch_blocks
 
@@ -179,7 +181,7 @@ condition2: condition2 AND condition3 | condition3
 condition3: NOT cond_terminal | cond_terminal
 cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
 
-un_operators_pre  : BANG | BITWSENOT
+un_operators_pre  : BANG | BITWISENOT
 un_operators_post : INCREMENT | DECREMENT
 
 comp_operators : LESS           
@@ -212,14 +214,15 @@ mult_expr : mult_expr STAR power_expr | mult_expr SLASH power_expr | mult_expr M
 power_expr : power_expr POWER terminal_expr | terminal_expr
 terminal_expr : values | "(" condition ")"
 
-!values: number_nt | CHAR | string_nt | bool_literals | cont_vals | function_call | IDENTIFIER | NULL 
+values: number_nt | CHAR | string_nt | bool_literals | cont_vals | function_call | IDENTIFIER | NULL 
+
 %declare INTEGER BOOLEAN CHAR_K STRING VOID ARRAY TUPLE NUMBER CHAR NULL STRING_K
 %declare ASSIGN PLUSEQUAL MINUSEQUAL STAREQUAL SLASHEQUAL MODEQUAL ANDEQUAL OREQUAL LEFTSHIFTEQUAL RIGHTSHIFTEQUAL
 %declare BREAK CONTINUE CONS IDENTIFIER CONSTANT VARIABLE FUNCTION PRINT RETURN
 %declare TRUE FALSE LENGTH HEAD TAIL FORMAT MAIN TYPE SLICE
 %declare IF ELSEIF ELSE WHILE FOR TRY CATCH THROW 
 %declare EXCEPTION ARITHMETICEXCEPTION NULLEXCEPTION INDEXEXCEPTION VALUEEXCEPTION TYPEEXCEPTION
-%declare OR AND NOT BANG BITWSENOT INCREMENT DECREMENT LESS LESSEQUAL GREATER GREATEREQUAL
+%declare OR AND NOT BANG BITWISENOT INCREMENT DECREMENT LESS LESSEQUAL GREATER GREATEREQUAL
 %declare BITWISEOR BITWISEAND EQUAL NOTEQUAL LEFTSHIFT RIGHTSHIFT PLUS MINUS STAR SLASH MOD POWER
 '''
 
