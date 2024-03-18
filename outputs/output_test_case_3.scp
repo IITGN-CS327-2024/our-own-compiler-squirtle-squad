@@ -1,10 +1,10 @@
 Function,func
 Main,main
-LeftParen,(
-RightParen,)
+LPar,(
+RPar,)
 Colon,:
 Void,void
-LeftBrace,{
+LBrace,{
 Variable,var
 Integer,int
 Identifier,num1
@@ -223,5 +223,5 @@ Print,print
 Colon,:
 Identifier,sentence
 Semicolon,;
-RightBrace,}
+RBrace,}
 EOF,

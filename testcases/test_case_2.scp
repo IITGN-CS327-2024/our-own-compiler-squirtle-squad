@@ -24,6 +24,9 @@ func main() : int {
     elseif (output==true){
         print : "Function Works!";
     }
+    elseif (output==true) {
+        print : "same thing!";
+    }
     else{
         print : "Function Failed";
     }

@@ -1,10 +1,10 @@
 Function,func
 Main,main
-LeftParen,(
-RightParen,)
+LPar,(
+RPar,)
 Colon,:
 Integer,int
-LeftBrace,{
+LBrace,{
 Print,print
 Colon,:
 String,Hello 'Ok', World!
@@ -20,9 +20,9 @@ Integer,int
 Identifier,func_op
 Assign,=
 Identifier,some_func
-LeftParen,(
+LPar,(
 String,random_parameter
-RightParen,)
+RPar,)
 Semicolon,;
-RightBrace,}
+RBrace,}
 EOF,

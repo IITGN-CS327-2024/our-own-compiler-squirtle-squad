@@ -1,10 +1,10 @@
 Function,func
 Main,main
-LeftParen,(
-RightParen,)
+LPar,(
+RPar,)
 Colon,:
 Integer,int
-LeftBrace,{
+LBrace,{
 Variable,var
 Integer,int
 Identifier,number
@@ -47,7 +47,7 @@ Array,arr
 String_k,string
 Identifier,array1
 Assign,=
-LeftBracket,[
+LSQB,[
 String,Rachit
 Comma,,
 String,Sachin
@@ -55,7 +55,7 @@ Comma,,
 String,Shetty
 Comma,,
 String,Yashraj
-RightBracket,]
+RSQB,]
 Semicolon,;
 Array,arr
 Char_k,char
@@ -68,15 +68,15 @@ Integer,int
 Identifier,array3
 Colon,:
 Number,7
-LeftBracket,[
+LSQB,[
 Number,1
-RightBracket,]
+RSQB,]
 Semicolon,;
 Tuple,tuple
 Integer,int
 Identifier,tup
 Assign,=
-LeftBracket,[
+LSQB,[
 Number,1
 Comma,,
 Number,2
@@ -84,11 +84,11 @@ Comma,,
 Number,3
 Comma,,
 Number,4
-RightBracket,]
+RSQB,]
 Semicolon,;
 Print,print
 Colon,:
 String,Hello, World!
 Semicolon,;
-RightBrace,}
+RBrace,}
 EOF,

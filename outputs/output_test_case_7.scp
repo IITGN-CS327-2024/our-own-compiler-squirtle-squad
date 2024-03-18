@@ -3,8 +3,8 @@ Integer,int
 Identifier,a
 Assign,=
 Identifier,something
-LeftParen,(
-RightParen,)
+LPar,(
+RPar,)
 Semicolon,;
 Variable,var
 Integer,int
