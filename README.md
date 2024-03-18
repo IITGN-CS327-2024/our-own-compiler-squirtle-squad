@@ -11,9 +11,7 @@ Before testing the parser, please switch to the branch **Parser**.
 To run the parser:
 
 ```
-Step1: cd Parser/test
-Step2: go run testingParser.go -input="<input-file>"
-// The generated input file will be in test folder with the name output_<test_case>.scp
-Step3: cd ..
-Step4: python pyParser.py test/output_<test_case>.scp
+Step1: python runningscript.py test_case_7.scp
+Step2: To check the tree check the tree.png generated in the same folder.
 ```
+**Note**: We have 8 test cases for which we have already generated the trees for the same in the **trees** folder. 
