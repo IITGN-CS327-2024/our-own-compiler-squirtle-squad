@@ -77,30 +77,6 @@ Colon,:
 String,Loop Failed
 Semicolon,;
 RBrace,}
-ElseIf,elseif
-LPar,(
-Identifier,output
-Equal,==
-True,true
-RPar,)
-LBrace,{
-Print,print
-Colon,:
-String,Function Works!
-Semicolon,;
-RBrace,}
-ElseIf,elseif
-LPar,(
-Identifier,output
-Equal,==
-True,true
-RPar,)
-LBrace,{
-Print,print
-Colon,:
-String,same thing!
-Semicolon,;
-RBrace,}
 Else,else
 LBrace,{
 Print,print

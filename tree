@@ -1,76 +1,54 @@
 digraph {
-	Program
-	Start -> Program
-	Statements
-	Program -> Statements
-	Statement
-	Statements -> Statement
-	VariableDeclarationStatement
-	Statement -> VariableDeclarationStatement
-	var
-	VariableDeclarationStatement -> var
-	int
-	VariableDeclarationStatement -> int
-	a
-	VariableDeclarationStatement -> a
-	"="
-	VariableDeclarationStatement -> "="
-	FunctionCall
-	VariableDeclarationStatement -> FunctionCall
-	something
-	FunctionCall -> something
-	"("
-	FunctionCall -> "("
-	None
-	FunctionCall -> None
-	")"
-	FunctionCall -> ")"
-	";"
-	VariableDeclarationStatement -> ";"
-	Statement
-	Statements -> Statement
-	VariableDeclarationStatement
-	Statement -> VariableDeclarationStatement
-	var
-	VariableDeclarationStatement -> var
-	int
-	VariableDeclarationStatement -> int
-	b
-	VariableDeclarationStatement -> b
-	"="
-	VariableDeclarationStatement -> "="
-	3
-	VariableDeclarationStatement -> 3
-	";"
-	VariableDeclarationStatement -> ";"
-	Statement
-	Statements -> Statement
-	VariableDeclarationStatement
-	Statement -> VariableDeclarationStatement
-	var
-	VariableDeclarationStatement -> var
-	int
-	VariableDeclarationStatement -> int
-	c
-	VariableDeclarationStatement -> c
-	"="
-	VariableDeclarationStatement -> "="
-	AddExpr
-	VariableDeclarationStatement -> AddExpr
-	a
-	AddExpr -> a
-	"+"
-	AddExpr -> "+"
-	PowerExpr
-	AddExpr -> PowerExpr
-	b
-	PowerExpr -> b
-	"**"
-	PowerExpr -> "**"
-	3
-	PowerExpr -> 3
-	";"
-	VariableDeclarationStatement -> ";"
-	""
-	Start -> ""
+	139505440978208 [label=Start]
+	139505440977152 [label=Program]
+	139505440978208 -> 139505440977152
+	139505440977152 [label=Program]
+	139505442829504 [label=FunctionDeclaration]
+	139505440977152 -> 139505442829504
+	139505442829504 [label=FunctionDeclaration]
+	139505442602528 [label=func]
+	139505442829504 -> 139505442602528
+	139505442602208 [label=main]
+	139505442829504 -> 139505442602208
+	139505442601568 [label=int]
+	139505442829504 -> 139505442601568
+	139505442832240 [label=PrintStatement]
+	139505442829504 -> 139505442832240
+	139505442832240 [label=PrintStatement]
+	139505442600608 [label=print]
+	139505442832240 -> 139505442600608
+	139505442600928 [label="Hello 'Ok', World!"]
+	139505442832240 -> 139505442600928
+	139505442828112 [label=ArrayDeclaration]
+	139505442829504 -> 139505442828112
+	139505442828112 [label=ArrayDeclaration]
+	139505442600448 [label=arr]
+	139505442828112 -> 139505442600448
+	139505442601088 [label=int]
+	139505442828112 -> 139505442601088
+	139505442600768 [label=sub_arr1]
+	139505442828112 -> 139505442600768
+	139505442600128 [label=3]
+	139505442828112 -> 139505442600128
+	139505442832144 [label=VariableDeclarationStatement]
+	139505442829504 -> 139505442832144
+	139505442832144 [label=VariableDeclarationStatement]
+	139505442599808 [label=var]
+	139505442832144 -> 139505442599808
+	139505442600288 [label=int]
+	139505442832144 -> 139505442600288
+	139505442599328 [label=func_op]
+	139505442832144 -> 139505442599328
+	139505442599648 [label="="]
+	139505442832144 -> 139505442599648
+	139505442819952 [label=FunctionCall]
+	139505442832144 -> 139505442819952
+	139505442819952 [label=FunctionCall]
+	139505442599488 [label=some_func]
+	139505442819952 -> 139505442599488
+	139505442821392 [label=ParametersCall]
+	139505442819952 -> 139505442821392
+	139505442821392 [label=ParametersCall]
+	139505442599008 [label=random_parameter]
+	139505442821392 -> 139505442599008
 }

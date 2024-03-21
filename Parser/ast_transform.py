@@ -304,11 +304,6 @@ class OurTransformer(lark.Transformer):
         children = flatten(children)
         return node_classes.IfStatement(children)
     
-    def elseif_statements(self, children):
-        children = flatten(children)
-        if(len(children) == 0): return None
-        return node_classes.ElseIfStatements(children)
-    
     def else_statement(self, children):
         children = flatten(children)
         if(len(children) == 0): return None

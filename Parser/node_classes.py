@@ -252,12 +252,6 @@ class IfStatement(ASTNode):
       for i, value in enumerate(values):
           setattr(self, f'values{i}', value)
 
-class ElseIfStatements(ASTNode):
-   
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
-
 class ElseStatement(ASTNode):
     def __init__(self, values):
         for i, value in enumerate(values):

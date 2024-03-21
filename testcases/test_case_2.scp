@@ -21,12 +21,7 @@ func main() : int {
     if (output==false){
         print : "Loop Failed";
     }
-    elseif (output==true){
-        print : "Function Works!";
-    }
-    elseif (output==true) {
-        print : "same thing!";
-    }
+   
     else{
         print : "Function Failed";
     }

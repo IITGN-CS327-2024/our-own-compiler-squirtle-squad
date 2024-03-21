@@ -146,12 +146,9 @@ parameter_def : datatype IDENTIFIER
 
 type_declaration : TYPE IDENTIFIER ASSIGN FUNCTION "(" final_call ")" ":" datatype ";" 
 
-conditional_statement : if_statement elseif_statements else_statement
+conditional_statement : if_statement else_statement
 
 if_statement : IF "(" condition ")" "{" statements "}"
-
-elseif_statements : 
-                   | ELSEIF "(" condition ")" "{" statements "}" elseif_statements
 
 else_statement : 
                 | ELSE "{" statements "}"
