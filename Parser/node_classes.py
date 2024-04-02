@@ -33,261 +33,223 @@ class ASTNode(metaclass=ASTNodeMeta):
 #             raise NotImplementedError("ASTNode is an abstract class and should not be instantiated")
 #         else:
 #             raise NotImplementedError(f"{this_class} is missing a constructor method")
-        
-class Start(ASTNode):
+
+class sabka_baap(ASTNode):
+   
+   def __init__(self, values):
+
+    self.children = []
+    for i, value in enumerate(values):
+        self.children.append(value)
+      
+class Start(sabka_baap):
+   
+   def __init__(self, values):
+      super().__init__(values)
   
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-
+class Program(sabka_baap):
    
-class Program(ASTNode):
-   
-  def __init__(self, values):
-    # print(values)
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
+class Statement(sabka_baap):
+   
+   def __init__(self,values):
+      super().__init__(values)
+
+class Statements(sabka_baap):
+   
+   def __init__(self,values):
+      super().__init__(values)
+   
+class VariableDeclarationStatement(sabka_baap):
+
+   def __init__(self,values):
+      super().__init__(values)
     
-class Statement(ASTNode):
-   
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
 
-class Statements(ASTNode):
-   
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-   
-class VariableDeclarationStatement(ASTNode):
-
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-    
-
-class Values(ASTNode):
+class Values(sabka_baap):
   
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-
+   def __init__(self,values):
+      super().__init__(values)
   
-class FunctionCall(ASTNode):
+class FunctionCall(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-
+   def __init__(self,values):
+      super().__init__(values)
  
-class Condition(ASTNode):
+class Condition(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-
-  
-class OrCondition(ASTNode):
-
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
-  
-    
-class AndCondition(ASTNode):
-
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
   
-class NotCondition(ASTNode):
+class OrCondition(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
+  
+    
+class AndCondition(sabka_baap):
+
+   def __init__(self,values):
+      super().__init__(values)
 
   
-class Expression(ASTNode):
+class NotCondition(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
-    
-class BitwiseExpr(ASTNode):
+  
+class Expression(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
     
-class EqExpr(ASTNode):
+class BitwiseExpr(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
+
+class EqExpr(sabka_baap):
+
+   def __init__(self,values):
+      super().__init__(values)
 
     
-class ShiftExpr(ASTNode):
+class ShiftExpr(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values) 
 
      
-class AddExpr(ASTNode):
+class AddExpr(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
     
-class MultExpr(ASTNode):
+class MultExpr(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
      
-class PowerExpr(ASTNode):
+class PowerExpr(sabka_baap):
 
-  def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+   def __init__(self,values):
+      super().__init__(values)
 
   
-class ParametersCall(ASTNode):
+class ParametersCall(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
    
 
-class VariableChangeStatement(ASTNode):
+class VariableChangeStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
    
-class FunctionDeclaration(ASTNode):
+class FunctionDeclaration(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ConditionalStatement(ASTNode):
+class ConditionalStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class LoopControl(ASTNode):
+class LoopControl(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class PrintStatement(ASTNode):
+class PrintStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ExceptionHandling(ASTNode):
+class ExceptionHandling(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ExpressionStatement(ASTNode):
+class ExpressionStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
 
-class ReturnStatement(ASTNode):
+class ReturnStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ConsOp(ASTNode):
+class ConsOp(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ThrowStatement(ASTNode):
+class ThrowStatement(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ArrayDeclaration(ASTNode):
+class ArrayDeclaration(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class TupleDeclaration(ASTNode):
+class TupleDeclaration(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class TypeDeclaration(ASTNode):
+class TypeDeclaration(sabka_baap):
    
-   def __init__(self, values):
-    for i, value in enumerate(values):
-        setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class IfStatement(ASTNode):
+class IfStatement(sabka_baap):
     
-    def __init__(self, values):
-      for i, value in enumerate(values):
-          setattr(self, f'values{i}', value)
+    def __init__(self,values):
+      super().__init__(values)
 
-class ElseStatement(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class ElseStatement(sabka_baap):
+    
+    def __init__(self,values):
+      super().__init__(values)
 
-class LoopStatement(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class LoopStatement(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class TypeDeclaration(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class TypeDeclaration(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class ReturnStatement(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class ReturnStatement(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class ExceptionHandling(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class ExceptionHandling(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class ComplexVal(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class ComplexVal(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class CompCondition(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class CompCondition(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
 
-class UnaryOperation(ASTNode):
-    def __init__(self, values):
-        for i, value in enumerate(values):
-            setattr(self, f'values{i}', value)
+class UnaryOperation(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)

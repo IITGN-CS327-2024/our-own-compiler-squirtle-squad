@@ -48,9 +48,8 @@ class OurTransformer(lark.Transformer):
     
     def statements(self, children):
         children = flatten(children)
-        # return node_classes.Statements(children)
-        return children
-    
+        return node_classes.Statements(children)
+   
     def variable_declaration_statement(self, children):
         children = flatten(children)
         return node_classes.VariableDeclarationStatement(children)
