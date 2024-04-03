@@ -27,12 +27,21 @@ class OurTransformer(lark.Transformer):
 
     # count = 0
 
-    def Integer(self, n):
-        return int(n)
+    def NUMBER(self, n):
+        return node_classes.NumberNode(n)
     
-    def Boolean(self, b):
-        if(b): return 1 
-        else: return 0
+    def BOOLEAN(self, b):
+        if(b): return node_classes.NumberNode(True) 
+        else: return node_classes.NumberNode(False)
+
+    def CHAR(self, c):
+        return node_classes.CharNode(c)
+    
+    def STRING(self, s):
+        return node_classes.StringNode(s)
+    
+    def IDENTIFIER(self, i):
+        return node_classes.VarNode(i)
        
     def start(self, children):
         children = flatten(children)

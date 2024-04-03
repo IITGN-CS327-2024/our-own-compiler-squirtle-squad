@@ -24,5 +24,11 @@ LPar,(
 String,random_parameter
 RPar,)
 Semicolon,;
+Variable,var
+Integer,int
+Identifier,a
+Assign,=
+Identifier,c
+Semicolon,;
 RBrace,}
 EOF,

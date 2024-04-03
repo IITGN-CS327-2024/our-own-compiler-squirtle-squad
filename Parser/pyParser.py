@@ -32,17 +32,21 @@ def tree_to_graphviz(tree, graph=None):
         graph = Digraph()
 
     if isinstance(tree, node_classes.ASTNode):
-        
         graph.node(str(id(tree)), label=str(tree))
-        for child in tree.children:
-            if isinstance(child, node_classes.ASTNode):
-                graph.node(str(id(child)), label = str(child))
-                graph.edge(str(id(tree)), str(id(child)))
-                tree_to_graphviz(child, graph)
 
-            else:
-                graph.node(str(id(child)), label=str(child))
-                graph.edge(str(id(tree)), str(id(child)))
+        try:
+            for child in tree.children:
+                if isinstance(child, node_classes.ASTNode):
+                    graph.node(str(id(child)), label = str(child))
+                    graph.edge(str(id(tree)), str(id(child)))
+                    tree_to_graphviz(child, graph)
+
+                else:
+                    graph.node(str(id(child)), label=str(child))
+                    graph.edge(str(id(tree)), str(id(child)))
+
+        except: pass 
+        
     return graph
 
 def tree_to_graphviz_lark(tree, graph=None):

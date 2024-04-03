@@ -252,3 +252,23 @@ class CompCondition(sabka_baap):
 class UnaryOperation(sabka_baap):
     def __init__(self,values):
       super().__init__(values)
+
+class NumberNode(sabka_baap):
+   def __init__(self, val):
+      self.val = val 
+
+class StringNode(sabka_baap):
+   def __init__(self, val):
+      self.val = val 
+
+class CharNode(sabka_baap):
+   def __init__(self, val):
+      self.val = val 
+
+class BoolNode(sabka_baap):
+   def __init__(self, val):
+      self.val = val 
+
+class VarNode(sabka_baap):
+   def __init__(self, val):
+      self.val = val 

@@ -16,5 +16,5 @@ func main() : int {
     shrey_joshi sub_arr1 = slice(sample_arr, complex_arr, 2, 4);
 
     var int func_op = some_func("random_parameter");
-
+    var int a = c;
 }
