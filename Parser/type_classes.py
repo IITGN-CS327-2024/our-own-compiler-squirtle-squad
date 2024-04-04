@@ -63,5 +63,9 @@ class Exception(base_object_class):
     def __init__(self, val:str):
         self.literal = val
 
+class Void(base_object_class):
+    def __init__(self):
+        pass
+
 
         

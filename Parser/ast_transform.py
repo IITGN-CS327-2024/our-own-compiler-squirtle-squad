@@ -37,6 +37,9 @@ class OurTransformer(lark.Transformer):
     def CHAR(self, c):
         return node_classes.CharNode(c)
     
+    def VOID(self, v):
+        return node_classes.VoidNode(v)
+    
     def STRING(self, s):
         return node_classes.StringNode(s)
     
@@ -371,3 +374,15 @@ class OurTransformer(lark.Transformer):
     def value_conts(self, children):
         children = flatten(children)
         return children
+    
+    def indexing(self, children):
+        children = flatten(children)
+        return node_classes.Indexing(children)
+    
+    def arr_datatype(self, children):
+        children = flatten(children)
+        return node_classes.ArrayNode(children)
+    
+    def tup_datatype(self, children):
+        children = flatten(children)
+        return node_classes.TupNode(children)

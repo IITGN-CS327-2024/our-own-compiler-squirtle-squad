@@ -253,6 +253,10 @@ class UnaryOperation(sabka_baap):
     def __init__(self,values):
       super().__init__(values)
 
+class Indexing(sabka_baap):
+    def __init__(self,values):
+      super().__init__(values)
+
 class NumberNode(sabka_baap):
    def __init__(self, val):
       self.val = val 
@@ -275,3 +279,14 @@ class VarNode(sabka_baap):
 class Main(sabka_baap):
     def __init__(self,val):
          self.val = val
+class VoidNode(sabka_baap):
+    def __init__(self,val):
+         self.val = val
+
+class ArrayNode(sabka_baap):
+      def __init__(self,values):
+            super().__init__(values)
+
+class TupNode(sabka_baap):
+      def __init__(self,values):
+            super().__init__(values)

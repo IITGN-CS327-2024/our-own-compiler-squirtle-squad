@@ -100,8 +100,8 @@ variable_declaration : VARIABLE datatype IDENTIFIER
                       | IDENTIFIER IDENTIFIER ASSIGN condition
 
 variable_change : IDENTIFIER ASSIGN condition | IDENTIFIER opeq condition
-                 | IDENTIFIER "[" expression "]" ASSIGN condition
-                 | IDENTIFIER "[" expression "]" opeq condition
+                 | indexing ASSIGN condition
+                 | indexing opeq condition
 
 opeq : PLUSEQUAL       
 	  | SLASHEQUAL      
@@ -121,7 +121,7 @@ tuple_declaration: tup_datatype IDENTIFIER ASSIGN cont_vals ";"
 
 end_arr :  | "[" NUMBER "]" | "[" CHAR "]" | "[" string_nt "]" | "[" bool_literals "]"
 
-string_nt :STRING | STRING "Dot" FORMAT "(" string_items | IDENTIFIER "[" expression "]" | "Substr" "(" IDENTIFIER "Comma" expression "Comma" expression ")"
+string_nt :STRING | STRING "Dot" FORMAT "(" string_items | "Substr" "(" IDENTIFIER "Comma" expression "Comma" expression ")"
 string_items : IDENTIFIER "Comma" string_items | IDENTIFIER ")"
 
 number_nt : NUMBER | LENGTH "(" IDENTIFIER ")" | HEAD "(" IDENTIFIER ")" | TAIL "(" IDENTIFIER ")"
@@ -205,7 +205,7 @@ params_call : IDENTIFIER "Comma" params_call | IDENTIFIER
                | bool_literals "Comma" params_call | bool_literals
                | CHAR "Comma" params_call | CHAR
 
-return_statement : RETURN expression ";" | RETURN function_declaration
+return_statement : RETURN expression ";" | RETURN function_declaration | RETURN ";"
 
 expression : bitwise_expr
 bitwise_expr: bitwise_expr BITWISEOR eq_expr| bitwise_expr BITWISEAND eq_expr| eq_expr 
@@ -216,7 +216,8 @@ mult_expr : mult_expr STAR power_expr | mult_expr SLASH power_expr | mult_expr M
 power_expr : power_expr POWER terminal_expr | terminal_expr
 terminal_expr : values | "(" condition ")"
 
-values: number_nt | CHAR | string_nt | bool_literals | cont_vals | function_call | IDENTIFIER | NULL 
+values: number_nt | CHAR | string_nt | bool_literals | indexing | cont_vals | function_call | IDENTIFIER | NULL
+indexing: IDENTIFIER "[" expression "]" 
 
 %declare INTEGER BOOLEAN CHAR_K STRING VOID ARRAY TUPLE NUMBER CHAR NULL STRING_K
 %declare ASSIGN PLUSEQUAL MINUSEQUAL STAREQUAL SLASHEQUAL MODEQUAL ANDEQUAL OREQUAL LEFTSHIFTEQUAL RIGHTSHIFTEQUAL
