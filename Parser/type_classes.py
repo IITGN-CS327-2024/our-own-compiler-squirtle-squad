@@ -51,8 +51,6 @@ class Function_object(base_object_class):
         #     if(isinstance(parameter, Datatype)): self.parameters.append(parameter)
         #     else: print("Choose an appropriate datatype")
 
-        self.return_type = return_type
-
 class Array(base_object_class):
     def __init__(self, val:Datatype):
         self.datatype = val

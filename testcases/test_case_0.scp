@@ -18,9 +18,10 @@ func main() : int {
     var int func_op = some_func("random_parameter");
     cons(a, 1+2);
 
-    func pehla(int a, int b, int c) : int {
+    func pehla(int a, int b, int c, arr int d) : int {
         return a + b + c;
     }
 
-    var string something = some_func(a, b, c);
+    var int a = 3;
+    a = 4;
 }
