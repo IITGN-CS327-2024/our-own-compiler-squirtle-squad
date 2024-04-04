@@ -87,7 +87,7 @@ class semanticCheck(NodeVisitor):
     # Implement the case for arrays and tuples also
     for node_ in node.children[2:-2]:
       if(isinstance(node_, nc.VarNode)): pass
-      record['params'].append(self.get_datatype(node.value))
+      record['params'].append(self.get_datatype(node))
 
     self.symtab.insert(record)
     self.symtab.inc_scope()
@@ -151,6 +151,7 @@ class semanticCheck(NodeVisitor):
       'type': 'tuple_variable',
       'object': tc.Tuple(self.get_datatype(node.children[1])),
     }
+
     self.symtab.insert(record)
     for child in node.children[4:]:  #! need a way to get the datatype from a token
       child_type = self.visit(child)
@@ -223,16 +224,29 @@ class semanticCheck(NodeVisitor):
     
   def visit_LoopStatement(self, node):
 
-    self.symtab.inc_scope()
-    record = {
-      'lexeme': node.children[1].value,
-      'type': 'variable',
-      'datatype': self.get_datatype_(node.children[1]),  #! need a way to get the datatype from a token -> also consider the case of variables
-    }
+    if(node.children[0].value == 'For'):
+      self.symtab.inc_scope()
+      record = {
+        'lexeme': node.children[1].value,
+        'type': 'variable',
+        'datatype': self.get_datatype_(node.children[1]),  #! need a way to get the datatype from a token -> also consider the case of variables
+      }
 
-    self.symtab.insert(record)
-    self.visit(node.children[-1])
-    self.symtab.dec_scope()
+      cond = self.visit(node.children[4])
+      if(not isinstance(cond, tc.Bool)):
+        raise Exception("Inner operand does not evaluate to a boolean")
+
+      self.symtab.insert(record)
+      self.visit(node.children[-1])
+      self.symtab.dec_scope()
+
+    else:
+
+      cond = self.visit(node.children[1])
+      if(not isinstance(cond, tc.Bool)):
+        raise Exception("Inner operand does not evaluate to a boolean")
+
+      self.visit(node.children[2])
 
     return None
 
@@ -264,7 +278,7 @@ class semanticCheck(NodeVisitor):
   def visit_BitwiseExpr(self, node):
     left = self.visit(node.children[0])
     right = self.visit(node.children[2])
-    # TODO need to see what types are allorwed
+    # TODO need to see what types are allorwed -> This todo not done yet
     cond1 = (left != tc.Datatype or right != tc.Datatype)
     cond2 = (left == tc.String or right == tc.String)
     if cond1 or cond2:  #! need to update based on the return type
