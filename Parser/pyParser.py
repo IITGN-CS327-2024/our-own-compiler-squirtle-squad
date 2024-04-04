@@ -205,7 +205,7 @@ params_call : IDENTIFIER "Comma" params_call | IDENTIFIER
                | bool_literals "Comma" params_call | bool_literals
                | CHAR "Comma" params_call | CHAR
 
-return_statement : RETURN expression ";" | RETURN function_declaration 
+return_statement : RETURN expression ";" | RETURN function_declaration
 
 expression : bitwise_expr
 bitwise_expr: bitwise_expr BITWISEOR eq_expr| bitwise_expr BITWISEAND eq_expr| eq_expr 
