@@ -1,0 +1,7 @@
+void class
+array declaration
+array indexing and changing
+operators slice cons
+tuple
+array as a parameter in a Function
+try catch exception Type

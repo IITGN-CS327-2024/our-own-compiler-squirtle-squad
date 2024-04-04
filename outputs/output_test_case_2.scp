@@ -76,6 +76,10 @@ Print,print
 Colon,:
 String,Loop Failed
 Semicolon,;
+Print,print
+Colon,:
+String,Loop Failed
+Semicolon,;
 RBrace,}
 Else,else
 LBrace,{

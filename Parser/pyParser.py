@@ -5,7 +5,7 @@ import ast_transform
 import sys
 import rich 
 import node_classes
-
+from typechecking import semanticCheck
 class CustomLexer(Lexer):
     def __init__(self,lexer_conf):
         pass
@@ -246,7 +246,8 @@ if __name__ == "__main__":
     transformer = ast_transform.OurTransformer()
     concrete_tree = parser.parse(file_path)
     ast = transformer.transform(concrete_tree)
-    rich.print(concrete_tree)
+    semantic_checker = semanticCheck()
     graph = tree_to_graphviz(ast)
     graph.render('tree',format='png', view=True)
+    semantic_checker.visit_Start(ast)
     

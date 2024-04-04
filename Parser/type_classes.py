@@ -44,7 +44,7 @@ class String(base_object_class):
 Datatype = Number | Bool | Char | String
 
 class Function_object(base_object_class):
-    def __init__(self, val:str, return_type):
+    def __init__(self, val:str):
         self.name = val
         # self.parameters = []
         # for parameter in parameters:

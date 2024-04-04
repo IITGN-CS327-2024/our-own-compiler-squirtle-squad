@@ -272,3 +272,6 @@ class BoolNode(sabka_baap):
 class VarNode(sabka_baap):
    def __init__(self, val):
       self.val = val 
+class Main(sabka_baap):
+    def __init__(self,val):
+         self.val = val

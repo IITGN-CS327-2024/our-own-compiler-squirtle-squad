@@ -31,8 +31,8 @@ class OurTransformer(lark.Transformer):
         return node_classes.NumberNode(n)
     
     def BOOLEAN(self, b):
-        if(b): return node_classes.NumberNode(True) 
-        else: return node_classes.NumberNode(False)
+        if(b): return node_classes.BoolNode(True) 
+        else: return node_classes.BoolNode(False)
 
     def CHAR(self, c):
         return node_classes.CharNode(c)
@@ -42,6 +42,24 @@ class OurTransformer(lark.Transformer):
     
     def IDENTIFIER(self, i):
         return node_classes.VarNode(i)
+    
+    def TRUE(self, t):
+        return node_classes.BoolNode(True)
+    
+    def FALSE(self, t):
+        return node_classes.BoolNode(False)
+    
+    def CHAR_K(self, c):
+        return node_classes.CharNode(c)
+    
+    def STRING_K(self, c):
+        return node_classes.StringNode(c)
+    
+    def INTEGER(self, i):
+        return node_classes.NumberNode(i)
+    
+    def MAIN(self, m):
+        return node_classes.Main(m)
        
     def start(self, children):
         children = flatten(children)

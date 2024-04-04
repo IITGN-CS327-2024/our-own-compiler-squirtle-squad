@@ -20,6 +20,7 @@ func main() : int {
 
     if (output==false){
         print : "Loop Failed";
+        print : "Loop Failed";
     }
    
     else{

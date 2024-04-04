@@ -73,37 +73,57 @@ class semanticCheck(NodeVisitor):
   def visit_Statements(self, node):
     for child in node.children:
       self.visit(child)
-
+  def visit_NumberNode(self, node):
+    return tc.Number()
   def visit_FunctionDeclaration(self, node):
     #! we need to add the parameters types in to the next scope
     record = {
-      'lexeme': node.children[1].value,
+      'lexeme': node.children[1].val,
       'type': 'function',
-      'object': tc.Function_object(node.children[1].value),
-      'return_type': self.get_datatype(node.children[-2]),
+      'object': tc.Function_object(node.children[1].val),
+      'return_type': self.get_datatype_(node.children[-2]),
       'params': []
     }
-
+    temp_list=[]
     # Implement the case for arrays and tuples also
     for node_ in node.children[2:-2]:
-      if(isinstance(node_, nc.VarNode)): pass
-      record['params'].append(self.get_datatype(node))
+      if(isinstance(node_, nc.VarNode)):
+        record2={
+          'lexeme': node_.val,
+          'type': 'variable',
+          'datatype': record['params'][-1]
+        }
+        temp_list.append(record2)
+        continue
+      record['params'].append(self.get_datatype_(node_))
+
+    if(record['lexeme'] == 'main'):
+      temp_record = self.symtab.lookup(record['lexeme'])
+      if(temp_record is not None):
+        raise Exception("Main function already declared")
+      
+    else:
+      temp_record = self.symtab.lookup_cur_scope(record['lexeme'])
+      if(temp_record is not None):
+        raise Exception("Function already declared")
 
     self.symtab.insert(record)
     self.symtab.inc_scope()
+    for record in temp_list:
+      self.symtab.insert(record)
     self.visit(node.children[-1])
     self.symtab.dec_scope()
-    return tc.Function_object(record['lexeme'], record['return_type'])
+    return tc.Function_object(record['lexeme'])
   
   def visit_VariableDeclarationStatement(self, node):
 
-    record = self.symtab.lookup_cur_scope(node.children[2].value)
+    record = self.symtab.lookup_cur_scope(node.children[2].val)
     if record is not None:
       raise Exception("Variable already declared")
     record = {
-      'lexeme': node.children[2].value,
+      'lexeme': node.children[2].val,
       'type': 'variable',
-      'datatype': self.get_datatype(node.children[1]),  #! need a way to get the datatype from a token -> also consider the case of variables
+      'datatype': self.get_datatype_(node.children[1]),  #! need a way to get the datatype from a token -> also consider the case of variables
     }
 
     self.symtab.insert(record)
@@ -114,7 +134,7 @@ class semanticCheck(NodeVisitor):
     return None 
   
   def visit_VariableChangeStatement(self, node):
-    record = self.symtab.lookup(node.children[0].value)
+    record = self.symtab.lookup(node.children[0].val)
     if record is None:
       raise Exception("Variable ", record['lexeme']," not declared before assignment")
     right = self.visit(node.children[2])   # !This is the expression, the problem is when we encounter variables
@@ -125,13 +145,13 @@ class semanticCheck(NodeVisitor):
 
   def visit_ArrayDeclaration(self, node):
     #! Not included, the initialization of the array size and elements
-    record = self.symtab.lookup_cur_scope(node.children[2].value)
+    record = self.symtab.lookup_cur_scope(node.children[2].val)
     if record is not None:
       raise Exception("Array already declared")
     record = {
-      'lexeme': node.children[2].value,
+      'lexeme': node.children[2].val,
       'type': 'array_variable',
-      'object': tc.Array(self.get_datatype(node.children[1])),
+      'object': tc.Array(self.get_datatype_(node.children[1])),
     }
     self.symtab.insert(record)
     for child in node.children[4:]:
@@ -140,16 +160,17 @@ class semanticCheck(NodeVisitor):
         raise Exception("Type mismatch in array declaration of ", record['lexeme'])
       
     return None 
-
+  def visit_StringNode(self, node):
+    return tc.String()
   def visit_TupleDeclaration(self, node):
     #! Not included, the initialization of the array size and elements
-    record = self.symtab.lookup_cur_scope(node.children[2].value)
+    record = self.symtab.lookup_cur_scope(node.children[2].val)
     if record is not None:
       raise Exception("Tuple already declared")
     record = {
-      'lexeme': node.children[2].value,
+      'lexeme': node.children[2].val,
       'type': 'tuple_variable',
-      'object': tc.Tuple(self.get_datatype(node.children[1])),
+      'object': tc.Tuple(self.get_datatype_(node.children[1])),
     }
 
     self.symtab.insert(record)
@@ -162,7 +183,7 @@ class semanticCheck(NodeVisitor):
 
   def visit_FunctionCall(self, node):
 
-    record = self.symtab.lookup(node.children[0].value)
+    record = self.symtab.lookup(node.children[0].val)
 
     if record is None:
       raise Exception("Function ", record['lexeme']," not declared before call")
@@ -204,7 +225,14 @@ class semanticCheck(NodeVisitor):
     self.symtab.dec_scope()
 
     return None
-
+  
+  def visit_VarNode(self, node):
+    record = self.symtab.lookup(node.val)
+    if record is None:
+      raise Exception(f"Variable {node.val} referenced before assignment")
+    
+    return record['datatype']()
+  
   def get_datatype_(self, node):
 
     if(isinstance(node, nc.NumberNode)):
@@ -223,7 +251,6 @@ class semanticCheck(NodeVisitor):
     return record['datatype']
     
   def visit_LoopStatement(self, node):
-
     if(node.children[0].value == 'For'):
       self.symtab.inc_scope()
       record = {
@@ -274,7 +301,7 @@ class semanticCheck(NodeVisitor):
       raise Exception("Type mismatch in NOT condition")
     
     return tc.Bool()
-    
+    # what to return in this
   def visit_BitwiseExpr(self, node):
     left = self.visit(node.children[0])
     right = self.visit(node.children[2])
@@ -283,6 +310,7 @@ class semanticCheck(NodeVisitor):
     cond2 = (left == tc.String or right == tc.String)
     if cond1 or cond2:  #! need to update based on the return type
       raise Exception("Type mismatch in Bitwise expression")
+    return tc.Number()
     
   def visit_EqExpr(self, node):
     left = self.visit(node.children[0])
@@ -291,12 +319,15 @@ class semanticCheck(NodeVisitor):
     # TODO need to see what operations are allowed between bool and number -> 
     # could allow all of them and return tc.Number(). To make things simple,
     # can just prohibit bool from most operations, which is not an unreasonable assumption
-    cond = (type(left) == type(right)) and (isinstance(left, tc.Number) or isinstance(left, tc.String) or isinstance(left, tc.Char))
+    cond = (type(left) == type(right)) and (isinstance(left, tc.Datatype))
     if not cond:  #! need to update based on the return type
       raise Exception("Type mismatch in Equality expression")
     
-    return tc.Number()  # Since going to be used in an expression context; going to take the values 0 and 1
-      
+    return tc.Bool()  # Since going to be used in an expression context; going to take the values 0 and 1
+  
+  def visit_CharNode(self, node):
+    return tc.Char()
+  
   def visit_ShiftExpr(self, node):
     left = self.visit(node.children[0])
     right = self.visit(node.children[2])
@@ -340,7 +371,7 @@ class semanticCheck(NodeVisitor):
       raise Exception("Type mismatch in Power expression")
     
     return tc.Number()
-  
+  # what is this function
   def visit_ParametersCall(self, node):
     # TODO 
       result = []
@@ -391,12 +422,13 @@ class semanticCheck(NodeVisitor):
     # TODO modify the logic how to get the return type, through the record or through the object
     right = self.visit(node.children[1])
     if(not isinstance(right, record['return_type'])):
+      print(right, record['return_type'])
       raise Exception("Type mismatch between return statement datatype and function return datatype")
 
     return None
 
   def visit_ConsOp(self, node):
-    lexeme = node.children[1].value
+    lexeme = node.children[1].val
     record = self.symtab.lookup(lexeme)
     if record is None:
       raise Exception("Variable ", lexeme," not declared before cons operation")
@@ -432,15 +464,16 @@ class semanticCheck(NodeVisitor):
     left = self.visit(node.children[0])
     right = self.visit(node.children[2])
     # TODO are we comaprint arrays and tuples - No
-    if left != right or (left != tc.Datatype or right != tc.Datatype):
+    if type(left)!=type(right) or (not isinstance(left,tc.Datatype) or not isinstance(right,tc.Datatype)):
       raise Exception("Type mismatch in comparison condition")
     
     return tc.Bool()
-     
+  def visit_BoolNode(self, node):
+    return tc.Bool()
   def visit_UnaryOperation(self, node):
     #! need to check based on post and pre
     
-    if(node.children[0] == '~' or node.chidren[0] == '!'): # pre
+    if(node.children[0] == '~' or node.children[0] == '!'): # pre
       data_type = self.visit(node.children[1])
       if(not isinstance(data_type, tc.Number)): 
         raise Exception("Operation not supported for {}".format(data_type))
