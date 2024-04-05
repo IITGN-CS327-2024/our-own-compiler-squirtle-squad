@@ -43,7 +43,6 @@ func main() : void {
         shrey_joshi : Orrr...
     */
     
-    type MyFunc = func(int, int) : string;
 
     MyFunc x = substring("abcdef");
     var string sub = x(1,3);

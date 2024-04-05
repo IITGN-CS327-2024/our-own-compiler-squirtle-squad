@@ -14,10 +14,12 @@ func main() : void {
     print: sample_arr[0];
 
     arr int sub_arr1 : 3;
+    arr char sub_arr2 : 3 ['a'];
     sub_arr1 = slice(sample_arr, 2, 4);
 
-    arr int sub_arr2 = slice(sample_arr, 3, tail(sample_arr));
-    arr int sub_arr3 = slice(sample_arr, head(sample_arr), 3);
+    sub_arr2 = slice(sub_arr2, 3, tail(sample_arr));
+    arr int sub_arr3 : 3 [1] ;
+    sub_arr3 = slice(sample_arr, head(sample_arr), 3);
 
     cons(sample_arr, 0);
 

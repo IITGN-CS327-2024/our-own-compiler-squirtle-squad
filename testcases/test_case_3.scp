@@ -63,7 +63,7 @@ func main() : void {
 
     s += "World";
 
-    var char c = "!";
+    c = '!';
     s = s + c;
 
     var string name = "Sahil";

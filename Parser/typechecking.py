@@ -124,8 +124,9 @@ class semanticCheck(NodeVisitor):
         return tc.Function_object(record["lexeme"])
 
     def visit_VariableDeclarationStatement(self, node):
-
+        # print("HII")
         record = self.symtab.lookup_cur_scope(node.children[2].val)
+        # print(node.children[2].val)
         if record is not None:
             raise Exception("Variable already declared")
         record = {
@@ -135,13 +136,15 @@ class semanticCheck(NodeVisitor):
                 node.children[1]
             ),  #! need a way to get the datatype from a token -> also consider the case of variables
         }
-
+        # print(record,len(node.children))
         self.symtab.insert(record)
-        right = self.visit(node.children[4])
-        if not isinstance(right, record["datatype"]):
-            raise Exception(
-                "Type mismatch in variable declaration of ", record["lexeme"]
-            )
+        if len(node.children) == 5:
+          right = self.visit(node.children[4])
+          # print(right, record["datatype"])
+          if not isinstance(right, record["datatype"]):
+              raise Exception(
+                  "Type mismatch in variable declaration of ", record["lexeme"]
+              )
 
         return None
 
@@ -157,6 +160,7 @@ class semanticCheck(NodeVisitor):
         
         if isinstance(left,tc.Array) and isinstance(right,tc.Array):
             print(left.datatype,right.datatype)
+            
             if left.datatype != right.datatype:
                 raise Exception("Type mismatch in variable change statement")
         elif isinstance(left,tc.Tuple) and isinstance(right,tc.Tuple):
@@ -239,11 +243,11 @@ class semanticCheck(NodeVisitor):
         return None
 
     def visit_FunctionCall(self, node):
-
+        
         record = self.symtab.lookup(node.children[0].val)
-
+        print(record is None)
         if record is None:
-            raise Exception("Function ", record["lexeme"], " not declared before call")
+            raise Exception("Function ", node.children[0].val, " not declared before call")
         if record["type"] != "function":
             raise Exception(
                 record["lexeme"], " is not declared as a function before call"
@@ -386,9 +390,9 @@ class semanticCheck(NodeVisitor):
         left = self.visit(node.children[0])
         right = self.visit(node.children[2])
         # TODO need to see what types are allorwed -> This todo not done yet
-        cond1 = left != tc.Datatype or right != tc.Datatype
-        cond2 = left == tc.String or right == tc.String
-        if cond1 or cond2:  #! need to update based on the return type
+        if (not isinstance(left, tc.Number)) or (
+            not isinstance(right, tc.Number)
+        ):  #! need to update based on the return type
             raise Exception("Type mismatch in Bitwise expression")
         return tc.Number()
 
@@ -425,7 +429,7 @@ class semanticCheck(NodeVisitor):
         left = self.visit(node.children[0])
         right = self.visit(node.children[2])
         # TODO need to see what types are allowed - numbers, string, char
-        cond = (type(left) == type(right)) and (
+        cond = (type(left) == type(right) or (isinstance(left,tc.String)and isinstance(right,tc.Char) )or(isinstance(left,tc.Char)and isinstance(right,tc.String))) and (
             isinstance(left, tc.Number)
             or isinstance(left, tc.String)
             or isinstance(left, tc.Char)
