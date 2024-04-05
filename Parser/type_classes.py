@@ -59,7 +59,7 @@ class Tuple(base_object_class):
     def __init__(self, val:Datatype):
         self.datatype = val
 
-class Exception(base_object_class):
+class Exception_(base_object_class):
     def __init__(self, val:str):
         self.literal = val
 

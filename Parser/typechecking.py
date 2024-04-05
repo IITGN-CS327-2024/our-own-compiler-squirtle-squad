@@ -146,12 +146,10 @@ class semanticCheck(NodeVisitor):
         return None
 
     def visit_ArrayNode(self, node):
-        record = self.symtab.lookup(node.children[0].val)
-        if record is None:
-            raise Exception("Variable ", record["lexeme"], " not declared before indexing")
-        if self.get_datatype_(node.children[1]) != tc.Number:
-            raise Exception("Index should be an integer")
-        return record["datatype"]()
+        return tc.Array(self.get_datatype_(node.children[1]))
+    
+    def visit_TupNode(self, node):
+        return tc.Tuple(self.get_datatype_(node.children[1]))
     
     def visit_VariableChangeStatement(self, node):
         left = self.visit(node.children[0])
@@ -174,22 +172,22 @@ class semanticCheck(NodeVisitor):
 
     def visit_ArrayDeclaration(self, node):
         #! Not included, the initialization of the array size and elements
-        record = self.symtab.lookup_cur_scope(node.children[2].val)
+        record = self.symtab.lookup_cur_scope(node.children[1].val)
         if record is not None:
-            raise Exception("Variable Name already declared", node.children[2].val)
+            raise Exception("Variable Name already declared", node.children[1].val)
         record = {
-            "lexeme": node.children[2].val,
+            "lexeme": node.children[1].val,
             "type": "array_variable",
-            "object": tc.Array(self.get_datatype_(node.children[1])),
-            "datatype": self.get_datatype_(node.children[1]),
+            "object": self.visit(node.children[0]),
+            "datatype": self.visit(node.children[0]).datatype,
         }
         self.symtab.insert(record)
-        if len(node.children) == 4:
-            if self.get_datatype_(node.children[3]) != tc.Number:
+        if len(node.children) == 3:
+            if self.get_datatype_(node.children[2]) != tc.Number:
                 raise Exception("Array size should be an integer")
-        elif len(node.children) == 5:
-            if node.children[3].__class__.__name__ == "Token":
-                for child in node.children[4:]:
+        elif len(node.children) == 4:
+            if node.children[2].__class__.__name__ == "Token":
+                for child in node.children[3:]:
                     child_type = self.visit(
                         child
                     )  #! need a way to get the datatype from a token
@@ -199,9 +197,9 @@ class semanticCheck(NodeVisitor):
                             "Type mismatch in array declaration of ", record["lexeme"]
                         )
             else:
-                if self.get_datatype_(node.children[3]) != tc.Number:
+                if self.get_datatype_(node.children[2]) != tc.Number:
                     raise Exception("Array size should be an integer")
-                if self.get_datatype_(node.children[4]) != record["object"].datatype:
+                if self.get_datatype_(node.children[3]) != record["object"].datatype:
                     raise Exception(
                         "Type mismatch in array declaration of ", record["lexeme"]
                     )
@@ -212,17 +210,18 @@ class semanticCheck(NodeVisitor):
 
     def visit_TupleDeclaration(self, node):
         #! Not included, the initialization of the array size and elements
-        record = self.symtab.lookup_cur_scope(node.children[2].val)
+        record = self.symtab.lookup_cur_scope(node.children[1].val)
         if record is not None:
             raise Exception("Tuple already declared")
         record = {
-            "lexeme": node.children[2].val,
+            "lexeme": node.children[1].val,
             "type": "tuple_variable",
-            "object": tc.Tuple(self.get_datatype_(node.children[1])),
+            "object": self.visit(node.children[0]),
+            "datatype": self.visit(node.children[0]).datatype,
         }
 
         self.symtab.insert(record)
-        for child in node.children[4:]:  #! need a way to get the datatype from a token
+        for child in node.children[3:]:  #! need a way to get the datatype from a token
             child_type = self.visit(child)
             if not isinstance(child_type, record["object"].datatype):
                 raise Exception(
