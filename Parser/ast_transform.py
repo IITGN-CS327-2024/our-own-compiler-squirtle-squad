@@ -386,3 +386,23 @@ class OurTransformer(lark.Transformer):
     def tup_datatype(self, children):
         children = flatten(children)
         return node_classes.TupNode(children)
+    
+    def head_(self, children):
+        children = flatten(children)
+        return node_classes.HeadNode(children)
+    
+    def tail_(self, children):
+        children = flatten(children)
+        return node_classes.TailNode(children)
+    
+    def slice_(self, children):
+        children = flatten(children)
+        return node_classes.SliceNode(children)
+    
+    def substr_(self, children):
+        children = flatten(children)
+        return node_classes.SubstrNode(children)
+    
+    
+    
+

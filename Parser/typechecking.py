@@ -361,7 +361,7 @@ class semanticCheck(NodeVisitor):
 
     def visit_NotCondition(self, node):
         child = self.visit(node.children[1])
-        if (not isinstance(child, tc.Number)) and (
+        if (
             not isinstance(child, tc.Bool)
         ):  #! need to update based on the return type
             raise Exception("Type mismatch in NOT condition")
@@ -390,9 +390,8 @@ class semanticCheck(NodeVisitor):
         if not cond:  #! need to update based on the return type
             raise Exception("Type mismatch in Equality expression")
 
-        return (
-            tc.Bool()
-        )  # Since going to be used in an expression context; going to take the values 0 and 1
+        return tc.Bool()
+         # Since going to be used in an expression context; going to take the values 0 and 1
 
     def visit_CharNode(self, node):
         return tc.Char()
@@ -522,7 +521,7 @@ class semanticCheck(NodeVisitor):
 
         child = self.visit(node.children[2])
         # TODO make sure its compliant with the changes
-        if child != record["object"].datatype:
+        if not isinstance(child, record["object"].datatype):
             raise Exception("Type mismatch in cons operation of ", record["lexeme"])
 
         return None
@@ -540,8 +539,14 @@ class semanticCheck(NodeVisitor):
         pass
 
     def visit_ComplexVal(self, node):
-        # TODO
-        pass
+        
+        child = self.visit(node.children[0])
+        if not isinstance(child, tc.String):
+            raise Exception("The first operand must evaluate to a string")
+        for i in range(2, len(node.children)):
+            self.visit(node.children[i])
+
+        return tc.String()
 
     def visit_CompCondition(self, node):
 
@@ -557,6 +562,42 @@ class semanticCheck(NodeVisitor):
 
     def visit_BoolNode(self, node):
         return tc.Bool()
+    
+    def visit_HeadNode(self, node):
+        
+        self.visit(node.children[1])        
+        return tc.Number()
+        
+    def visit_TailNode(self, node):
+        
+        self.visit(node.children[1]) 
+        return tc.Number()
+    
+    def visit_SliceNode(self, node):
+        
+        child0 = self.visit(node.children[1])
+        child1 = self.visit(node.children[2])
+        child2 = self.visit(node.children[3])
+
+        if not isinstance(child1, tc.Number) or not isinstance(child2, tc.Number):
+            raise Exception("Inner indices must be numbers")
+        
+        return child0
+        
+    def visit_SubstrNode(self, node):
+        
+        child0 = self.visit(node.children[1])
+
+        if not isinstance(child0, tc.String):
+            raise Exception("Referenced object must be a string")
+        
+        child1 = self.visit(node.children[2])
+        child2 = self.visit(node.children[3])
+
+        if not isinstance(child1, tc.Number) or not isinstance(child2, tc.Number):
+            raise Exception("Inner indices must be numbers")
+        
+        return child0
 
     def visit_UnaryOperation(self, node):
         #! need to check based on post and pre

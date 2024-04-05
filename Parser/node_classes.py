@@ -290,3 +290,23 @@ class ArrayNode(sabka_baap):
 class TupNode(sabka_baap):
       def __init__(self,values):
             super().__init__(values)
+
+class HeadNode(sabka_baap):
+      def __init__(self,values):
+            super().__init__(values)
+    
+class TailNode(sabka_baap):
+   
+      def __init__(self,values):
+            super().__init__(values)
+   
+class SliceNode(sabka_baap):
+
+      def __init__(self,values):
+            super().__init__(values)
+   
+class SubstrNode(sabka_baap):
+   
+      def __init__(self,values):
+            super().__init__(values)
+   

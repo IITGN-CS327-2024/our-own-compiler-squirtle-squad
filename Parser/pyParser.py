@@ -44,7 +44,7 @@ def tree_to_graphviz(tree, graph=None):
                 else:
                     graph.node(str(id(child)), label=str(child))
                     graph.edge(str(id(tree)), str(id(child)))
-
+               
         except: pass 
         
     return graph
@@ -121,10 +121,15 @@ tuple_declaration: tup_datatype IDENTIFIER ASSIGN cont_vals ";"
 
 end_arr :  | "[" NUMBER "]" | "[" CHAR "]" | "[" string_nt "]" | "[" bool_literals "]"
 
-string_nt :STRING | STRING "Dot" FORMAT "(" string_items | "Substr" "(" IDENTIFIER "Comma" expression "Comma" expression ")"
+string_nt : STRING | STRING "Dot" FORMAT "(" string_items | substr_
 string_items : IDENTIFIER "Comma" string_items | IDENTIFIER ")"
 
-number_nt : NUMBER | LENGTH "(" IDENTIFIER ")" | HEAD "(" IDENTIFIER ")" | TAIL "(" IDENTIFIER ")"
+head_: HEAD "(" IDENTIFIER ")" 
+tail_: TAIL "(" IDENTIFIER ")"
+slice_: SLICE "(" IDENTIFIER "Comma" expression "Comma" expression ")"
+substr_: SUBSTR "(" IDENTIFIER "Comma" expression "Comma" expression ")"
+
+number_nt : NUMBER | LENGTH "(" IDENTIFIER ")" | head_ | tail_
 
 bool_literals: TRUE | FALSE
 
@@ -191,7 +196,7 @@ comp_operators : LESS
                 | GREATER        
                 | GREATEREQUAL    
  
-cont_vals : SLICE "(" IDENTIFIER "Comma" expression "Comma" expression ")" | "[" value_conts 
+cont_vals : slice_ | "[" value_conts 
 
 value_conts : values "Comma" value_conts | values "]"
 
@@ -222,7 +227,7 @@ indexing: IDENTIFIER "[" expression "]"
 %declare INTEGER BOOLEAN CHAR_K STRING VOID ARRAY TUPLE NUMBER CHAR NULL STRING_K
 %declare ASSIGN PLUSEQUAL MINUSEQUAL STAREQUAL SLASHEQUAL MODEQUAL ANDEQUAL OREQUAL LEFTSHIFTEQUAL RIGHTSHIFTEQUAL
 %declare BREAK CONTINUE CONS IDENTIFIER CONSTANT VARIABLE FUNCTION PRINT RETURN
-%declare TRUE FALSE LENGTH HEAD TAIL FORMAT MAIN TYPE SLICE
+%declare TRUE FALSE LENGTH HEAD TAIL FORMAT MAIN TYPE SLICE SUBSTR
 %declare IF ELSEIF ELSE WHILE FOR TRY CATCH THROW 
 %declare EXCEPTION ARITHMETICEXCEPTION NULLEXCEPTION INDEXEXCEPTION VALUEEXCEPTION TYPEEXCEPTION
 %declare OR AND NOT BANG BITWISENOT INCREMENT DECREMENT LESS LESSEQUAL GREATER GREATEREQUAL
