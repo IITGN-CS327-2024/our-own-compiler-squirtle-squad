@@ -1,22 +1,25 @@
 shrey_joshi : This is our 2nd test case.
 
-func looper(int n_iteration, string message) : bool {
+func looper(int n_iteration, string message) : arr int {
     
-    var int iter = 1;
-
+    var int iter = 2;
+    arr int tempo = [1,2,3];
     while (iter < n_iteration) {
         print : message;
         iter++;
     }
-
-    return true;
+    return tempo;
 }
-
 func main() : int {
     const string text = "Calling all Autobots";
     const int no_iteration = 6;
-
-    var bool output = looper(no_iteration, text);
+    var bool output =true;
+    var int a = 5;
+    arr char sample_arr : a ['a'];
+    tuple char sample_tuple = ['a','b'];
+    sample_arr[1]='b';
+    arr int ans : 5;
+    ans = looper(no_iteration, text);
 
     if (output==false){
         print : "Loop Failed";

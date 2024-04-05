@@ -138,8 +138,8 @@ datatype : INTEGER
           | CHAR_K
           | STRING_K
           | VOID
-          | ARRAY INTEGER | ARRAY BOOLEAN | ARRAY CHAR_K | ARRAY STRING_K 
-          | TUPLE INTEGER | TUPLE BOOLEAN | TUPLE CHAR_K | TUPLE STRING_K
+          | arr_datatype 
+          | tup_datatype
 
 arr_datatype : ARRAY INTEGER | ARRAY BOOLEAN | ARRAY CHAR_K | ARRAY STRING_K 
 tup_datatype : TUPLE INTEGER | TUPLE BOOLEAN | TUPLE CHAR_K | TUPLE STRING_K

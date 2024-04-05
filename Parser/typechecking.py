@@ -154,7 +154,15 @@ class semanticCheck(NodeVisitor):
     def visit_VariableChangeStatement(self, node):
         left = self.visit(node.children[0])
         right = self.visit(node.children[-1])
-        if type(left) != type(right) or (
+        
+        if isinstance(left,tc.Array) and isinstance(right,tc.Array):
+            print(left.datatype,right.datatype)
+            if left.datatype != right.datatype:
+                raise Exception("Type mismatch in variable change statement")
+        elif isinstance(left,tc.Tuple) and isinstance(right,tc.Tuple):
+            if left.datatype != right.datatype:
+                raise Exception("Type mismatch in variable change statement")
+        elif type(left) != type(right) or (
             not isinstance(left, tc.Datatype) or not isinstance(right, tc.Datatype)
         ):
             raise Exception("Type mismatch in variable change statement")
@@ -252,7 +260,8 @@ class semanticCheck(NodeVisitor):
         for i in range(len(param_types)):
             if param_types[i] != param_types_f[i]:
                 raise Exception("Type mismatch in parameter {}".format(i + 1))
-
+        if isinstance(record["return_type"],tc.Array) or isinstance(record["return_type"],tc.Tuple):
+            return record["return_type"]
         return record["return_type"]()
 
     def visit_ConditionalStatement(self, node):
@@ -283,8 +292,10 @@ class semanticCheck(NodeVisitor):
         record = self.symtab.lookup(node.val)
         if record is None:
             raise Exception(f"Variable {node.val} referenced before assignment")
-
-        return record["datatype"]()
+        if "object" in record:
+            return record["object"]
+        else:
+            return record["datatype"]()
 
     def get_datatype_(self, node):
 
@@ -302,6 +313,8 @@ class semanticCheck(NodeVisitor):
 
         elif isinstance(node, nc.VoidNode):
             return tc.Void
+        elif isinstance(node, nc.ArrayNode):
+            return tc.Array(self.get_datatype_(node.children[1]))
 
         record = self.symtab.lookup(node.val)
         if record is None:
@@ -473,6 +486,8 @@ class semanticCheck(NodeVisitor):
 
             elif isinstance(child, nc.CharNode):
                 result.append(tc.Char)
+            elif isinstance(child, nc.ArrayNode):
+                result.append(tc.Array(self.get_datatype_(child.children[1])))
 
         return result
 
@@ -499,15 +514,16 @@ class semanticCheck(NodeVisitor):
         if record is None:
             raise Exception("Return statement outside function")
         # TODO modify the logic how to get the return type, through the record or through the object
-        if record["return_type"] == tc.Void:
-            raise Exception("Return statement in a void function")
+        if record["return_type"] == tc.Void and len(node.children) > 1:
+            raise Exception("Return statement with value in a void function")
         right = self.visit(node.children[1])
-        if not isinstance(right, record["return_type"]):
-            print(right, record["return_type"])
-            raise Exception(
-                "Type mismatch between return statement datatype and function return datatype"
-            )
-
+        print(right, record["return_type"].datatype)
+        if isinstance(right, tc.Array) and isinstance(record["return_type"], type):
+            raise Exception("Type mismatch in return statement")
+        
+        elif not isinstance(right,tc.Array):
+            if not isinstance(right, record["return_type"]):
+                raise Exception("Type mismatch in return statement")
         return None
 
     def visit_ConsOp(self, node):
