@@ -57,6 +57,7 @@ class NodeVisitor:
 
     def visit(self, node):
         method = "visit_" + node.__class__.__name__
+        print(method)
         visitor = getattr(self, method, self.generic_visit)
         return visitor(node)
 
@@ -101,6 +102,10 @@ class semanticCheck(NodeVisitor):
                     "type": "variable",
                     "datatype": record["params"][-1],
                 }
+                if isinstance(record["params"][-1], tc.Array) or isinstance(record["params"][-1], tc.Tuple):
+                    record2["object"] = record["params"][-1]
+                    record2["datatype"] = record["params"][-1].datatype
+
                 temp_list.append(record2)
                 continue
             record["params"].append(self.get_datatype_(node_))
@@ -296,6 +301,7 @@ class semanticCheck(NodeVisitor):
         record = self.symtab.lookup(node.val)
         if record is None:
             raise Exception(f"Variable {node.val} referenced before assignment")
+        print(record)
         if "object" in record:
             return record["object"]
         else:
@@ -521,7 +527,6 @@ class semanticCheck(NodeVisitor):
         if record["return_type"] == tc.Void and len(node.children) > 1:
             raise Exception("Return statement with value in a void function")
         right = self.visit(node.children[1])
-        print(right, record["return_type"].datatype)
         if isinstance(right, tc.Array) and isinstance(record["return_type"], type):
             raise Exception("Type mismatch in return statement")
         
@@ -632,6 +637,13 @@ class semanticCheck(NodeVisitor):
             if not isinstance(data_type, tc.Number):
                 raise Exception("Operation not supported for {}".format(data_type))
 
+        return tc.Number()
+    
+    def visit_lenNode(self, node):
+        child = self.visit(node.children[1])
+        cond = isinstance(child, tc.String) or isinstance(child, tc.Array) or isinstance(child, tc.Tuple)
+        if not cond:
+            raise Exception("Referenced length function must be a string, array or tuple")
         return tc.Number()
 
     def get_datatype(self, node):

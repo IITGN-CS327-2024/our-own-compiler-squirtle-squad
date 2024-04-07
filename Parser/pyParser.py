@@ -129,7 +129,9 @@ tail_: TAIL "(" IDENTIFIER ")"
 slice_: SLICE "(" IDENTIFIER "Comma" expression "Comma" expression ")"
 substr_: SUBSTR "(" IDENTIFIER "Comma" expression "Comma" expression ")"
 
-number_nt : NUMBER | LENGTH "(" IDENTIFIER ")" | head_ | tail_
+number_nt : NUMBER | len_func | head_ | tail_
+
+len_func : LENGTH "(" IDENTIFIER ")"
 
 bool_literals: TRUE | FALSE
 

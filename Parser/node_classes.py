@@ -304,7 +304,12 @@ class SliceNode(sabka_baap):
 
       def __init__(self,values):
             super().__init__(values)
-   
+
+class lenNode(sabka_baap):
+
+      def __init__(self,values):
+            super().__init__(values)
+
 class SubstrNode(sabka_baap):
    
       def __init__(self,values):
