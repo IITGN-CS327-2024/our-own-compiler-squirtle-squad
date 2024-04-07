@@ -1,0 +1,18 @@
+var int thala = 7;
+shrey_joshi : var string thala = "far";
+
+if (true){
+    var string thala = "far";
+}   
+if (true){
+    var string thala = "far";
+    func header(arr int sample_arr) : int {
+    
+        if ( len(sample_arr) > 0){
+            return sample_arr[0];
+        }
+        else {
+          return 0;
+        }
+    }
+}
