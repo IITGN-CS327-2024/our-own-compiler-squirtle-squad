@@ -3,9 +3,10 @@ from lark.lexer import Lexer, Token
 from graphviz import Digraph
 import ast_transform
 import sys
-import rich 
+# import rich 
 import node_classes
 from typechecking import semanticCheck
+
 class CustomLexer(Lexer):
     def __init__(self,lexer_conf):
         pass
@@ -15,7 +16,9 @@ class CustomLexer(Lexer):
             with open(data,'r',encoding="utf8") as file:
                 file_contents=file.read()
         except FileNotFoundError:
-            print(f"File Not present")
+            # print(f"File Not present")
+            raise Exception("File Not present")
+
         code_lines=file_contents.splitlines()
         #split each lines via comma and store in array
         for line in code_lines:
