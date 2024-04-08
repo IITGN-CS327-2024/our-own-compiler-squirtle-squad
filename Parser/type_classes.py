@@ -66,7 +66,3 @@ class Exception_(base_object_class):
 class Void(base_object_class):
     def __init__(self):
         pass
-
-
-
-        

@@ -406,7 +406,3 @@ class OurTransformer(lark.Transformer):
     def len_func(self, children):
         children = flatten(children)
         return node_classes.lenNode(children)
-    
-    
-    
-
