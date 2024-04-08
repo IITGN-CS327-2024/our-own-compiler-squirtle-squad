@@ -1,5 +1,5 @@
 import type_classes as tc
-import ast_transform
+# import ast_transform
 import node_classes as nc
 
 
@@ -134,6 +134,7 @@ class semanticCheck(NodeVisitor):
         # print(node.children[2].val)
         if record is not None:
             raise Exception("Variable already declared")
+
         record = {
             "lexeme": node.children[2].val,
             "type": "variable",
@@ -252,11 +253,10 @@ class semanticCheck(NodeVisitor):
         record = self.symtab.lookup(node.children[0].val)
         print(record is None)
         if record is None:
-            raise Exception("Function ", node.children[0].val, " not declared before call")
+            # raise Exception("Function ", node.children[0].val, " not declared before call")
+            raise Exception(f"Function {node.children[0].val.value} not declared before call")
         if record["type"] != "function":
-            raise Exception(
-                record["lexeme"], " is not declared as a function before call"
-            )
+            raise Exception(record["lexeme"], " is not declared as a function before call")
 
         param_types = self.visit(node.children[1])
         param_types_f = record["params"]
@@ -332,18 +332,27 @@ class semanticCheck(NodeVisitor):
         return record["datatype"]
 
     def visit_LoopStatement(self, node):
-        if node.children[0].value == "For":
+        # print("atleast here ", node.children[0].value)
+        if node.children[0].value == "for":
+            # print("here")
+            # for i in range(len(node.children)):
+            #     print(node.children[i])
+            #     # print(node.children[i].value)
+            # print("till here")
+            
             self.symtab.inc_scope()
             record = {
-                "lexeme": node.children[1].value,
+                "lexeme": node.children[3].val,
                 "type": "variable",
                 "datatype": self.get_datatype_(
-                    node.children[1]
+                    node.children[2]
                 ),  #! need a way to get the datatype from a token -> also consider the case of variables
             }
 
-            cond = self.visit(node.children[4])
+            cond = self.visit(node.children[6])
             if not isinstance(cond, tc.Bool):
+                print(cond)
+                print(node.children[7])
                 raise Exception("Inner operand does not evaluate to a boolean")
 
             self.symtab.insert(record)

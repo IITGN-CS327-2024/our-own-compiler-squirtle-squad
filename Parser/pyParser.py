@@ -1,6 +1,6 @@
 from lark import Lark, Transformer, v_args, Tree
 from lark.lexer import Lexer, Token
-from graphviz import Digraph
+# from graphviz import Digraph
 import ast_transform
 import sys
 # import rich 
@@ -172,7 +172,7 @@ loop_statement : WHILE "(" condition ")" "{" statements "}"
                 | FOR "(" var_init ";" condition ";" iterating ")" "{" statements "}"
 
 var_init : variable_declaration | variable_change | IDENTIFIER
-iterating:  | variable_change
+iterating:  | variable_change | expression un_operators_post
 
 print_statement : PRINT ":" condition ";"
 
@@ -258,7 +258,7 @@ if __name__ == "__main__":
     concrete_tree = parser.parse(file_path)
     ast = transformer.transform(concrete_tree)
     semantic_checker = semanticCheck()
-    graph = tree_to_graphviz(ast)
-    graph.render('tree',format='png', view=True)
+    # graph = tree_to_graphviz(ast)
+    # graph.render('tree',format='png', view=True)
     semantic_checker.visit_Start(ast)
     
