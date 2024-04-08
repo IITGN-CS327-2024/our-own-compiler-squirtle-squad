@@ -533,8 +533,11 @@ class semanticCheck(NodeVisitor):
         if record is None:
             raise Exception("Return statement outside function")
         # TODO modify the logic how to get the return type, through the record or through the object
-        if record["return_type"] == tc.Void and len(node.children) > 1:
-            raise Exception("Return statement with value in a void function")
+        if record["return_type"] == tc.Void:
+            if len(node.children) > 1:
+                raise Exception("Return statement with value in a void function")
+            else:
+                return None
         right = self.visit(node.children[1])
         if isinstance(right, tc.Array) and isinstance(record["return_type"], type):
             raise Exception("Type mismatch in return statement")

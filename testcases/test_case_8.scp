@@ -25,3 +25,7 @@ shrey_joshi : for (thala; len(aadi)>0; aadi=aadi+'c'){print : aadi;}
 for (var int thala = 7; thala>0; thala--){
     print : aadi;
 }
+
+func main() : void {
+    return;
+}
