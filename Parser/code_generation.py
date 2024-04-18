@@ -396,6 +396,10 @@ class codeGenerator(NodeVisitor):
         self.symtab.dec_scope()
         print('\n')
     
+    def visit_lenNode(self, node):
+        record = self.symtab.lookup(node.children[1].val)
+        print(f"i32.const {record['length']}")
+    
     def visit_Iteration(self, node):
 
         # print(self.symtab)
@@ -417,14 +421,16 @@ class codeGenerator(NodeVisitor):
         record = {
             "lexeme": node.children[1].val,
             "type": "array",
-            "address": self.present_mem_ptr
+            "address": self.present_mem_ptr,
+            "length" : 0
         }
         self.symtab.insert(record)
         if len(node.children) == 3:
             # value = node.children[2].val
             if isinstance(node.children[2], nc.NumberNode):
                 value = node.children[2].val
-                print(value)
+                record["length"] = value
+                # print(value)
             else:
                 raise Exception("Array size should be a fixed number")
             for i in range(int(value)):
@@ -436,6 +442,7 @@ class codeGenerator(NodeVisitor):
 
             if isinstance(node.children[2],nc.NumberNode):
                 value = node.children[2].val
+                record["length"] = value
                 for i in range(int(value)):
                     self.visit(node.children[3])
                     print(f"i32.const {self.present_mem_ptr}")
@@ -445,12 +452,14 @@ class codeGenerator(NodeVisitor):
             elif isinstance(node.children[2],nc.VarNode):
                 raise Exception("Array size should be a fixed number")
             else:
+                record["length"] = len(node.children) - 3
                 for i in range(3,len(node.children)):
                     self.visit(node.children[i])
                     print(f"i32.const {self.present_mem_ptr}")
                     print("(call $store_value_at_address)")
                     self.present_mem_ptr += 4
         else:
+            record["length"] = len(node.children) - 3
             for i in range(3,len(node.children)):
                 self.visit(node.children[i])
                 print(f"i32.const {self.present_mem_ptr}")
