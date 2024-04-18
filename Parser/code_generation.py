@@ -86,6 +86,16 @@ class codeGenerator(NodeVisitor):
                         )
                     )
               
+                    (func $arrindexing (param $index i32) (param $address i32) (result i32)
+                        (local.get $index)   ;; Load the index parameter onto the stack
+                        (i32.const 4)        ;; Load the constant value 4 onto the stack
+                        (i32.mul)            ;; Multiply index by 4
+        
+                        ;; Add the address
+                        (local.get $address) ;; Load the address parameter onto the stack
+                        (i32.add)   
+                    )
+              
                     (func $logical_or (param $a i32) (param $b i32) (result i32)
                         ;; Perform bitwise OR
                         get_local $a
@@ -155,7 +165,7 @@ class codeGenerator(NodeVisitor):
 
     def visit_CharNode(self, node):
 
-        alph = node.val - 26
+        alph = node.val - 97
         print(f"i32.const {alph}")
 
 
@@ -196,7 +206,7 @@ class codeGenerator(NodeVisitor):
         record = {
             "lexeme": node.children[2].val,
             "type": "variable",
-            "address": self.present_mem_ptr
+            "address": self.present_mem_ptr,
         }
         
         self.symtab.insert(record)
@@ -218,11 +228,15 @@ class codeGenerator(NodeVisitor):
         self.visit(node.children[0])
 
     def visit_VariableChange(self, node):
-
-        record = self.symtab.lookup(node.children[0].val)
-        address = record['address']
+        
         self.visit(node.children[-1])
-        print(f"i32.const {address}")
+        if isinstance(node.children[0],nc.VarNode):
+            record = self.symtab.lookup(node.children[0].val)
+            address = record['address']
+            print(f"i32.const {address}")
+        elif isinstance(node.children[0],nc.Indexing):
+            self.visit_IndexingAddress(node.children[0])
+
         print("(call $store_value_at_address)")
 
     def visit_FunctionCall(self, node):
@@ -336,7 +350,62 @@ class codeGenerator(NodeVisitor):
         print(f"i32.const {address}")
         print("(call $store_value_at_address)")
 
+    def visit_ArrayDeclaration(self,node):
+
+        record = {
+            "lexeme": node.children[1].val,
+            "type": "array",
+            "address": self.present_mem_ptr
+        }
+        self.symtab.insert(record)
+        if len(node.children) == 3:
+            # value = node.children[2].val
+            if isinstance(node.children[2], nc.NumberNode):
+                value = node.children[2].val
+            else:
+                raise Exception("Array size should be a fixed number")
+            for i in range(0,len(value)):
+                print(f"i32.const {0}")
+                print(f"i32.const {self.present_mem_ptr}")
+                print("(call $store_value_at_address)")
+                self.present_mem_ptr += 4
+        elif len(node.children) == 4:
+
+            if isinstance(node.children[2],nc.NumberNode):
+                value = node.children[2].val
+                for i in range(value):
+                    self.visit(node.children[3])
+                    print(f"i32.const {self.present_mem_ptr}")
+                    print("(call $store_value_at_address)")
+                    self.present_mem_ptr += 4
+                
+            elif isinstance(node.children[2],nc.VarNode):
+                raise Exception("Array size should be a fixed number")
+            else:
+                for i in range(3,len(node.children)):
+                    self.visit(node.children[i])
+                    print(f"i32.const {self.present_mem_ptr}")
+                    print("(call $store_value_at_address)")
+                    self.present_mem_ptr += 4
+        else:
+            for i in range(3,len(node.children)):
+                self.visit(node.children[i])
+                print(f"i32.const {self.present_mem_ptr}")
+                print("(call $store_value_at_address)")
+                self.present_mem_ptr += 4
     
+    def visit_IndexingAddress(self, node):
+
+        record = self.symtab.lookup(node.children[0].val)
+        address = record['address']
+        print(f"i32.const {address}")
+        self.visit(node.children[1])
+        print("(call $arrindexing)")
+    
+    def visit_Indexing(self, node):
+    
+        self.visit_IndexingAddress(node)
+        print("(call $loadValueFromMemory)")
 
 
 
