@@ -313,8 +313,8 @@ class codeGenerator(NodeVisitor):
             
             print("(loop $apnaloop")
             self.visit(node.children[1])
-            self.print("i32.eqz")
-            self.print("br_if $break")
+            print("i32.eqz")
+            print("br_if $break")
             self.visit(node.children[2])
             print(")")
             print("(block $break)")

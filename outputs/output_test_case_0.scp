@@ -47,7 +47,7 @@ While,while
 LPar,(
 Identifier,a
 Less,<
-Number,5
+Number,7
 RPar,)
 LBrace,{
 Identifier,a

@@ -11,8 +11,9 @@ else {
     a = 7;
 }
 
-while(a < 5) {
+while(a < 7){
     a++;
 }
+
 
 

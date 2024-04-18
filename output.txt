@@ -44,14 +44,28 @@ ASSIGN =
 NUMBER 7
 SEMICOLON ;
 RBRACE }
+WHILE while
+LPAR (
+IDENTIFIER a
+LESS <
+NUMBER 7
+RPAR )
+LBRACE {
+IDENTIFIER a
+INCREMENT ++
+SEMICOLON ;
+RBRACE }
 EOF 
 visit_Program
 visit_Statements
 visit_VariableDeclarationStatement
+visit_VariableDeclaration
 visit_NumberNode
 visit_VariableDeclarationStatement
+visit_VariableDeclaration
 visit_NumberNode
 visit_VariableChangeStatement
+visit_VariableChange
 visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_NumberNode
@@ -76,15 +90,27 @@ visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_Statements
 visit_VariableChangeStatement
+visit_VariableChange
 visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_NumberNode
 visit_ElseStatement
 visit_Statements
 visit_VariableChangeStatement
+visit_VariableChange
 visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_NumberNode
+visit_LoopStatement
+visit_CompCondition
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_NumberNode
+visit_Statements
+visit_ExpressionStatement
+visit_Iteration
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
  (module
                     ;; Memory with 1 page (64KB)
                     (memory (export "memory") 1)
@@ -133,14 +159,14 @@ visit_NumberNode
                         select
                     )
         
-i32.const 0
 i32.const 5
+i32.const 0
 (call $store_value_at_address)
-i32.const 4
 i32.const 7
-(call $store_value_at_address)
 i32.const 4
+(call $store_value_at_address)
 i32.const 8
+i32.const 4
 (call $store_value_at_address)
 i32.const 1
 i32.const 2
@@ -161,13 +187,28 @@ i32.lt_s
 i32.const 1
 i32.eq
 if(
-i32.const 0
 i32.const 6
+i32.const 0
 (call $store_value_at_address)
 )
 else(
-i32.const 0
 i32.const 7
+i32.const 0
 (call $store_value_at_address)
 )
+(loop $apnaloop
+i32.const 0
+(call $loadValueFromMemory)
+i32.const 7
+i32.lt_s
+i32.eqz
+br_if $break
+i32.const 0
+(call loadValueFromMemory)
+i32.const 1
+i32.add
+i32.const 0
+(call $store_value_at_address)
+)
+(block $break)
 )

@@ -132,7 +132,7 @@ class semanticCheck(NodeVisitor):
         self.visit(node.children[0])
 
     def visit_VariableDeclaration(self, node):
-        # print("HII")
+        # print("HII")  
         record = self.symtab.lookup_cur_scope(node.children[2].val)
         # print(node.children[2].val)
         if record is not None:
@@ -165,6 +165,11 @@ class semanticCheck(NodeVisitor):
     
     def visit_VariableChangeStatement(self, node):
         self.visit(node.children[0])
+
+    def visit_Iteration(self, node):
+        left = self.visit(node.children[0])
+        if not isinstance(left, tc.Number):
+            return ("Not a number") 
     
     def visit_VariableChange(self, node):
         left = self.visit(node.children[0])
@@ -347,21 +352,23 @@ class semanticCheck(NodeVisitor):
             # print("till here")
             
             self.symtab.inc_scope()
-            record = {
-                "lexeme": node.children[3].val,
-                "type": "variable",
-                "datatype": self.get_datatype_(
-                    node.children[2]
-                ),  #! need a way to get the datatype from a token -> also consider the case of variables
-            }
+            # record = {
+            #     "lexeme": node.children[3].children[0].val,
+            #     "type": "variable",
+            #     "datatype": self.get_datatype_(
+            #         node.children[1].children[1]
+            #     ),  #! need a way to get the datatype from a token -> also consider the case of variables
+            # }
 
-            cond = self.visit(node.children[6])
+            self.visit(node.children[1])
+            cond = self.visit(node.children[2])
             if not isinstance(cond, tc.Bool):
                 print(cond)
                 print(node.children[7])
                 raise Exception("Inner operand does not evaluate to a boolean")
 
-            self.symtab.insert(record)
+            # self.symtab.insert(record)
+            self.visit(node.children[-2])
             self.visit(node.children[-1])
             self.symtab.dec_scope()
 
