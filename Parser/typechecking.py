@@ -45,6 +45,7 @@ class symbolTable:
         try:
             req_scope = self.symbol_table[self.scope_stack[-level] - 1]
             record = req_scope[-1]  # if we are return a value then we are in a function
+            print(req_scope)
             if record["type"] == "function":
                 return record
             else:  # in the case let's say we are in a if block or loop block

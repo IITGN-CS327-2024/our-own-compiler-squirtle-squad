@@ -43,12 +43,17 @@ class symbolTable:
         # reference : https://github.com/Hyper5phere/simple-c-compiler/blob/master/modules/scanner.py
         # TODO check the logic, major diff
         try:
-            req_scope = self.symbol_table[self.scope_stack[-level] - 1]
+            # for i in range(self.get_scope(), -1, -1):
+            #     for record in self.symbol_table[i]:
+            #         print(record)
+            req_scope = self.symbol_table[self.scope_stack[-level] - 2]
             record = req_scope[-1]  # if we are return a value then we are in a function
             if record["type"] == "function":
                 return record
+            
             else:  # in the case let's say we are in a if block or loop block
                 return self.get_enclosing_fun(level + 1)
+            
         except IndexError:
             return None
 
@@ -144,6 +149,7 @@ class codeGenerator(NodeVisitor):
 
         number = node.val 
         print(f"i32.const {number}")
+        print('\n')
 
     def visit_BitwiseExpr(self, node):
 
@@ -154,6 +160,8 @@ class codeGenerator(NodeVisitor):
         if(op == '|'): print(f"i32.or")
         else: print(f"i32.and")
 
+        print('\n')
+
     def visit_EqExpr(self, node):
 
         left = self.visit(node.children[0])
@@ -163,10 +171,14 @@ class codeGenerator(NodeVisitor):
         if(op == '=='): print(f"i32.eq")
         else: print(f"i32.ne")
 
+        print('\n')
+
     def visit_CharNode(self, node):
 
         alph = node.val - 97
         print(f"i32.const {alph}")
+
+        print('\n')
 
 
     def visit_AddExpr(self, node):
@@ -178,6 +190,8 @@ class codeGenerator(NodeVisitor):
         if(op == '+'): print(f"i32.add")
         else: print(f"i32.sub")
 
+        print('\n')
+
     def visit_MultExpr(self, node):
         
         left = self.visit(node.children[0])
@@ -186,6 +200,8 @@ class codeGenerator(NodeVisitor):
 
         if(op == '*'): print(f"i32.mul")
         else: print(f"i32.div")
+
+        print('\n')
 
     # def visit_PowerExpr(self, node):
 
@@ -203,41 +219,70 @@ class codeGenerator(NodeVisitor):
 
     def visit_VariableDeclaration(self, node):
 
-        record = {
-            "lexeme": node.children[2].val,
-            "type": "variable",
-            "address": self.present_mem_ptr,
-        }
-        
-        self.symtab.insert(record)
-        if len(node.children) == 5:
-          right = self.visit(node.children[4])
-        print(f"i32.const {self.present_mem_ptr}")
-        print("(call $store_value_at_address)")
-        self.present_mem_ptr += 4 
+        present_func = self.symtab.get_enclosing_fun()
+
+        if present_func is None:
+            record = {
+                "lexeme": node.children[2].val,
+                "type": "variable",
+                "address": self.present_mem_ptr
+            }
+            
+            self.symtab.insert(record)
+            if len(node.children) == 5:
+                self.visit(node.children[4])
+            print(f"i32.const {self.present_mem_ptr}")
+            print("(call $store_value_at_address)")
+            self.present_mem_ptr += 4 
+
+        else: 
+
+            print(f"local ${node.children[2].val}")
+            self.visit(node.children[4])
+            print(f"set_local ${node.children[2].val} ")
+
+        print('\n')
 
     def visit_VarNode(self, node):
 
-        record = self.symtab.lookup(node.val)
-        address = record["address"]
+        present_func = self.symtab.get_enclosing_fun()
 
-        print(f"i32.const {address}")
-        print("(call $loadValueFromMemory)")
+        if present_func is None:
+            record = self.symtab.lookup(node.val)
+            address = record["address"]
+
+            print(f"i32.const {address}")
+            print("(call $loadValueFromMemory)")
+        
+        else:
+            print(f"get_local ${node.val}") 
+
+        print('\n')
 
     def visit_VariableChangeStatement(self, node):
         self.visit(node.children[0])
 
     def visit_VariableChange(self, node):
-        
-        self.visit(node.children[-1])
-        if isinstance(node.children[0],nc.VarNode):
-            record = self.symtab.lookup(node.children[0].val)
-            address = record['address']
-            print(f"i32.const {address}")
-        elif isinstance(node.children[0],nc.Indexing):
-            self.visit_IndexingAddress(node.children[0])
 
-        print("(call $store_value_at_address)")
+        present_func = self.symtab.get_enclosing_fun()
+        record_andar = self.symtab.lookup_cur_scope(node.children[0].val) 
+        
+        if(present_func is not None and record_andar is not None):
+            self.visit(node.children[-1])
+            print(f"set_local {node.children[0].val}")
+
+        else:
+         
+            self.visit(node.children[-1])
+            if isinstance(node.children[0],nc.VarNode):
+                record = self.symtab.lookup(node.children[0].val)
+                address = record['address']
+                print(f"i32.const {address}")
+            elif isinstance(node.children[0],nc.Indexing):
+                self.visit_IndexingAddress(node.children[0])
+
+            print("(call $store_value_at_address)")
+            print('\n')
 
     def visit_FunctionCall(self, node):
         
@@ -260,6 +305,7 @@ class codeGenerator(NodeVisitor):
         self.visit(node.children[1]) # else
         print(")")
         print(")")
+        print('\n')
 
     def visit_IfStatement(self, node):
 
@@ -279,16 +325,19 @@ class codeGenerator(NodeVisitor):
         self.visit(node.children[2])
         
         print("(call $logical_or)")
+        print('\n')
 
     def visit_AndCondition(self, node):
         self.visit(node.children[0])
         self.visit(node.children[2])
         
         print("(call $logical_and)")
+        print('\n')
 
     def visit_NotCondition(self, node):
         self.visit(node.children[1])
         print("(call $logical_not)")
+        print('\n')
 
     def visit_CompCondition(self, node):
 
@@ -299,6 +348,8 @@ class codeGenerator(NodeVisitor):
         elif(node.children[1].value == '<='): print("i32.le_s")
         elif(node.children[1].value == '>='): print("i32.ge_s")
         else: print("i32.gt_s")
+
+        print('\n')
 
     def visit_LoopStatement(self, node):
         
@@ -317,26 +368,33 @@ class codeGenerator(NodeVisitor):
             print("(loop $apnaloop")
 
             self.visit(node.children[2]) # condition
-            print("i32.eqz")
-            print("br_if $break")
+            print("i32.const 1")
+            print("i32.eq")
+            print("(if")
+            print("(then")
             self.visit(node.children[-1]) # statements
             self.visit(node.children[-2]) # iteration
+            print("br $apnaloop")
             print(")")
-            print("(block $break)")
-            self.symtab.dec_scope()
-
-        else:
+            print(")")
+            print(")")
             
+        else:
             print("(loop $apnaloop")
-            self.visit(node.children[1])
-            print("i32.eqz")
-            print("br_if $break")
-            self.visit(node.children[2])
-            print(")")
-            print("(block $break)")
-            self.symtab.dec_scope()
+            self.visit(node.children[1]) # condition
+            print("i32.const 1")
+            print("i32.eq")
 
-        return None
+            print("(if")
+            print("(then")
+            self.visit(node.children[2])
+            print("br $apnaloop")
+            print(")")
+            print(")")
+            print(")")
+            
+        self.symtab.dec_scope()
+        print('\n')
     
     def visit_Iteration(self, node):
 
@@ -345,7 +403,7 @@ class codeGenerator(NodeVisitor):
         record = self.symtab.lookup(node.children[0].val)
         address = record['address']
         print(f"i32.const {address}")
-        print("(call loadValueFromMemory)")
+        print("(call $loadValueFromMemory)")
 
         print("i32.const 1")
         if(node.children[1] == '--'): print("i32.sub")
@@ -353,7 +411,7 @@ class codeGenerator(NodeVisitor):
 
         print(f"i32.const {address}")
         print("(call $store_value_at_address)")
-
+        print('\n')
     def visit_ArrayDeclaration(self,node):
 
         record = {
@@ -462,11 +520,11 @@ class codeGenerator(NodeVisitor):
         record = {
             "lexeme": node.children[1].val,
             "type": "function",
-            "object": tc.Function_object(node.children[1].val),
-            "return_type": self.get_datatype_(node.children[-2]),
-            "params": [],
         }
+
         temp_list = []
+        final_str  = f"(func ${node.children[1].val}"
+
         # print("datatype",record['lexeme'], record['return_type'])
         # Implement the case for arrays and tuples also
         for node_ in node.children[2:-2]:
@@ -474,33 +532,55 @@ class codeGenerator(NodeVisitor):
                 record2 = {
                     "lexeme": node_.val,
                     "type": "variable",
-                    "datatype": record["params"][-1],
+                    "address": self.present_mem_ptr
                 }
-                if isinstance(record["params"][-1], tc.Array) or isinstance(record["params"][-1], tc.Tuple):
-                    record2["object"] = record["params"][-1]
-                    record2["datatype"] = record["params"][-1].datatype
 
+                final_str += f"(param ${node_.val} i32)"
+
+                # if isinstance(record["params"][-1], tc.Array) or isinstance(record["params"][-1], tc.Tuple):
+                #     record2["object"] = record["params"][-1]
+                #     record2["datatype"] = record["params"][-1].datatype
+
+                # self.present_mem_ptr += 4
                 temp_list.append(record2)
                 continue
-            record["params"].append(self.get_datatype_(node_))
-
-        if record["lexeme"] == "main":
-            temp_record = self.symtab.lookup(record["lexeme"])
-            if temp_record is not None:
-                raise Exception("Main function already declared")
-
-        else:
-            temp_record = self.symtab.lookup_cur_scope(record["lexeme"])
-            if temp_record is not None:
-                raise Exception("Function already declared")
-
+        
+        record["params"] = temp_list 
         self.symtab.insert(record)
         self.symtab.inc_scope()
         for record in temp_list:
             self.symtab.insert(record)
+                    
+        print(final_str)
         self.visit(node.children[-1])
         self.symtab.dec_scope()
-        return tc.Function_object(record["lexeme"])
+        print(")")
+        print('\n')
+
+    def visit_FunctionCall(self, node):
+        
+        record = self.symtab.lookup(node.children[0].val)
+        self.visit(node.children[1])
+        
+        print(f"(call ${record['lexeme']})")
+        print('\n')
+
+    def visit_ParametersCall(self, node):
+        for child in node.children:
+            self.visit(child)
+
+    def visit_ReturnStatement(self, node):
+
+        # this where levels will be imp -> check the return type
+        # TODO we need to also handle closures
+        self.visit(node.children[1])
+        print('\n')
+
+    
+
+
+
+
 
     
 
@@ -516,7 +596,6 @@ class codeGenerator(NodeVisitor):
 
        
 
-        return None
         
 
     

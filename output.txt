@@ -55,26 +55,31 @@ IDENTIFIER a
 INCREMENT ++
 SEMICOLON ;
 RBRACE }
-FOR for
+FUNCTION func
+IDENTIFIER something
 LPAR (
-VARIABLE var
 INTEGER int
-IDENTIFIER i
-ASSIGN =
-NUMBER 0
-SEMICOLON ;
-IDENTIFIER i
-LESS <
-NUMBER 5
-SEMICOLON ;
-IDENTIFIER i
-INCREMENT ++
-RPAR )
-LBRACE {
+IDENTIFIER a
+COMMA ,
+INTEGER int
 IDENTIFIER b
-INCREMENT ++
+RPAR )
+COLON :
+INTEGER int
+LBRACE {
+RETURN return
+IDENTIFIER a
+PLUS +
+IDENTIFIER b
 SEMICOLON ;
 RBRACE }
+IDENTIFIER something
+LPAR (
+IDENTIFIER a
+COMMA ,
+IDENTIFIER b
+RPAR )
+SEMICOLON ;
 EOF 
 visit_Program
 visit_Statements
@@ -131,21 +136,19 @@ visit_ExpressionStatement
 visit_Iteration
 visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_LoopStatement
-visit_VariableDeclaration
-visit_NumberNode
-visit_CompCondition
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'i'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_NumberNode
-visit_Iteration
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'i'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_FunctionDeclaration
 visit_Statements
-visit_ExpressionStatement
-visit_Iteration
+visit_ReturnStatement
+[{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}, {'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}, {'lexeme': Token('IDENTIFIER', 'something'), 'type': 'function', 'object': Function_object, 'return_type': <class 'type_classes.Number'>, 'params': [<class 'type_classes.Number'>, <class 'type_classes.Number'>]}]
+visit_AddExpr
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_VarNode
 {'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_ExpressionStatement
+visit_FunctionCall
+False
+visit_ParametersCall
  (module
                     ;; Memory with 1 page (64KB)
                     (memory (export "memory") 1)
@@ -159,6 +162,16 @@ visit_VarNode
                         (i32.load
                         (local.get $address)  ;; Load value from specified address
                         )
+                    )
+              
+                    (func $arrindexing (param $index i32) (param $address i32) (result i32)
+                        (local.get $index)   ;; Load the index parameter onto the stack
+                        (i32.const 4)        ;; Load the constant value 4 onto the stack
+                        (i32.mul)            ;; Multiply index by 4
+        
+                        ;; Add the address
+                        (local.get $address) ;; Load the address parameter onto the stack
+                        (i32.add)   
                     )
               
                     (func $logical_or (param $a i32) (param $b i32) (result i32)
@@ -195,81 +208,143 @@ visit_VarNode
                     )
         
 i32.const 5
+
+
 i32.const 0
 (call $store_value_at_address)
+
+
 i32.const 7
+
+
 i32.const 4
 (call $store_value_at_address)
+
+
 i32.const 8
+
+
 i32.const 4
 (call $store_value_at_address)
+
+
 i32.const 1
+
+
 i32.const 2
+
+
 i32.const 0
 (call $loadValueFromMemory)
+
+
 i32.mul
+
+
 i32.const 4
 (call $loadValueFromMemory)
+
+
 i32.div
+
+
 i32.add
+
+
 i32.const 0
 (call $loadValueFromMemory)
+
+
 i32.const 3
+
+
 i32.add
+
+
 i32.const 4
 (call $loadValueFromMemory)
+
+
 i32.lt_s
+
+
 i32.const 1
 i32.eq
 if(
 then(
 i32.const 6
+
+
 i32.const 0
 (call $store_value_at_address)
+
+
 )
 (else
 i32.const 7
+
+
 i32.const 0
 (call $store_value_at_address)
+
+
 )
 )
+
+
 (loop $apnaloop
 i32.const 0
 (call $loadValueFromMemory)
+
+
 i32.const 7
+
+
 i32.lt_s
-i32.eqz
-br_if $break
-i32.const 0
-(call loadValueFromMemory)
+
+
 i32.const 1
-i32.add
+i32.eq
+(if
+(then
 i32.const 0
-(call $store_value_at_address)
-)
-(block $break)
-i32.const 0
-i32.const 8
-(call $store_value_at_address)
-(loop $apnaloop
-i32.const 8
 (call $loadValueFromMemory)
-i32.const 5
-i32.lt_s
-i32.eqz
-br_if $break
-i32.const 4
-(call loadValueFromMemory)
 i32.const 1
 i32.add
-i32.const 4
+i32.const 0
 (call $store_value_at_address)
-i32.const 8
-(call loadValueFromMemory)
-i32.const 1
-i32.add
-i32.const 8
-(call $store_value_at_address)
+
+
+br $apnaloop
 )
-(block $break)
+)
+)
+
+
+(func $something(param $a i32)(param $b i32)
+get_local $a
+
+
+get_local $b
+
+
+i32.add
+
+
+
+
+)
+
+
+i32.const 0
+(call $loadValueFromMemory)
+
+
+i32.const 4
+(call $loadValueFromMemory)
+
+
+(call $something)
+
+
 )
