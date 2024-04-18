@@ -366,9 +366,10 @@ class codeGenerator(NodeVisitor):
             # value = node.children[2].val
             if isinstance(node.children[2], nc.NumberNode):
                 value = node.children[2].val
+                print(value)
             else:
                 raise Exception("Array size should be a fixed number")
-            for i in range(0,len(value)):
+            for i in range(int(value)):
                 print(f"i32.const {0}")
                 print(f"i32.const {self.present_mem_ptr}")
                 print("(call $store_value_at_address)")
@@ -377,7 +378,7 @@ class codeGenerator(NodeVisitor):
 
             if isinstance(node.children[2],nc.NumberNode):
                 value = node.children[2].val
-                for i in range(value):
+                for i in range(int(value)):
                     self.visit(node.children[3])
                     print(f"i32.const {self.present_mem_ptr}")
                     print("(call $store_value_at_address)")
