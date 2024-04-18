@@ -54,9 +54,17 @@ func main() {
 	defer outputFile.Close()
 
 	for {
+		
 		tok := l.NextToken()
-		formatted := fmt.Sprintf("%s,%s\n", tok.Type, tok.Literal)
-		_, err = fmt.Fprintf(outputFile, formatted)
+
+		if tok.Type == "Mod" {
+			temp := "Mod,%%\n"
+			_, err = fmt.Fprintf(outputFile, temp)
+		} else {
+			formatted := fmt.Sprintf("%s,%s\n", tok.Type, tok.Literal)
+
+			_, err = fmt.Fprintf(outputFile, formatted)
+		}
 		if err != nil {
 			fmt.Println("Error writing to file:", err)
 			return
@@ -64,6 +72,8 @@ func main() {
 		if tok.Type == "EOF" {
 			break
 		}
+		
+		
 	}
 
 	fmt.Printf("Contents of %s written to %s\n", fileName, outputFileName)

@@ -4,6 +4,8 @@ INTEGER int
 IDENTIFIER a
 ASSIGN =
 NUMBER 5
+MOD %
+NUMBER 2
 SEMICOLON ;
 VARIABLE var
 INTEGER int
@@ -85,6 +87,8 @@ visit_Program
 visit_Statements
 visit_VariableDeclarationStatement
 visit_VariableDeclaration
+visit_MultExpr
+visit_NumberNode
 visit_NumberNode
 visit_VariableDeclarationStatement
 visit_VariableDeclaration
@@ -210,6 +214,12 @@ visit_ParametersCall
 i32.const 5
 
 
+i32.const 2
+
+
+i32.rem_s
+
+
 i32.const 0
 (call $store_value_at_address)
 
@@ -245,7 +255,7 @@ i32.const 4
 (call $loadValueFromMemory)
 
 
-i32.div
+i32.div_s
 
 
 i32.add

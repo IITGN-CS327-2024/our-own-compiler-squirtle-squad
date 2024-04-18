@@ -3,6 +3,8 @@ Integer,int
 Identifier,a
 Assign,=
 Number,5
+Mod,%
+Number,2
 Semicolon,;
 Variable,var
 Integer,int
