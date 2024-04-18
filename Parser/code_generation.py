@@ -199,9 +199,12 @@ class codeGenerator(NodeVisitor):
         op = node.children[1].value 
 
         if(op == '*'): print(f"i32.mul")
-        else: print(f"i32.div")
+        elif(op == '%'): print(f"i32.rem_s")
+        else: print(f"i32.div_s")
 
         print('\n')
+
+  
 
     # def visit_PowerExpr(self, node):
 
