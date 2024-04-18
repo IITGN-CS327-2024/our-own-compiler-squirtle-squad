@@ -174,7 +174,6 @@ class codeGenerator(NodeVisitor):
 
         print('\n')
 
-
     def visit_AddExpr(self, node):
 
         left = self.visit(node.children[0])
@@ -236,7 +235,14 @@ class codeGenerator(NodeVisitor):
 
             print(f"local ${node.children[2].val}")
             self.visit(node.children[4])
-            print(f"local.set ${node.children[2].val} ")
+            print(f"local.set ${node.children[2].val}")
+
+            record = {
+                "lexeme": node.children[2].val,
+                "type": "variable",
+            }
+
+            self.symtab.insert(record)
 
         print('\n')
 
@@ -407,6 +413,7 @@ class codeGenerator(NodeVisitor):
             print(")")
             
         else:
+
             print("(loop $apnaloop")
             self.visit(node.children[1]) # condition
             print("i32.const 1")
@@ -431,17 +438,30 @@ class codeGenerator(NodeVisitor):
 
         # print(self.symtab)
         # print(node.children[0].val)
-        record = self.symtab.lookup(node.children[0].val)
-        address = record['address']
-        print(f"i32.const {address}")
-        print("(call $loadValueFromMemory)")
 
-        print("i32.const 1")
-        if(node.children[1] == '--'): print("i32.sub")
-        else: print("i32.add")
+        present_func = self.symtab.get_enclosing_fun()
 
-        print(f"i32.const {address}")
-        print("(call $store_value_at_address)")
+        if present_func is None:
+            record = self.symtab.lookup(node.children[0].val)
+            address = record['address']
+            print(f"i32.const {address}")
+            print("(call $loadValueFromMemory)")
+
+            print("i32.const 1")
+            if(node.children[1] == '--'): print("i32.sub")
+            else: print("i32.add")
+
+            print(f"i32.const {address}")
+            print("(call $store_value_at_address)")
+
+        else:
+
+            print("i32.const 1")
+            print(f"local.get ${node.children[0].val}")
+            if(node.children[1] == '--'): print("i32.sub")
+            else: print("i32.add")
+            print(f"local.set ${node.children[0].val}")
+
         print('\n')
 
     def visit_ArrayDeclaration(self,node):
