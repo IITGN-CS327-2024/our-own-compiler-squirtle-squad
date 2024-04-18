@@ -239,10 +239,12 @@ class codeGenerator(NodeVisitor):
         print("i32.eq")
 
         print("if(")
+        print("then(")
         self.visit(node.children[0]) # if
         print(")")
-        print("else(")
+        print("(else")
         self.visit(node.children[1]) # else
+        print(")")
         print(")")
 
     def visit_IfStatement(self, node):
@@ -285,17 +287,17 @@ class codeGenerator(NodeVisitor):
         else: print("i32.gt_s")
 
     def visit_LoopStatement(self, node):
-
+        
+        self.symtab.inc_scope()
         if node.children[0].value == "for":
         
-            self.symtab.inc_scope()
-            record = {
-                "lexeme": node.children[3].val,
-                "type": "variable",
-                "address": self.present_mem_ptr
-            }
+            # record = {
+            #     "lexeme": node.children[1].children[2].val,
+            #     "type": "variable",
+            #     "address": self.present_mem_ptr
+            # }
 
-            self.symtab.insert(record)
+            # self.symtab.insert(record)
             self.visit(node.children[1])
 
             print("(loop $apnaloop")
@@ -324,6 +326,8 @@ class codeGenerator(NodeVisitor):
     
     def visit_Iteration(self, node):
 
+        # print(self.symtab)
+        # print(node.children[0].val)
         record = self.symtab.lookup(node.children[0].val)
         address = record['address']
         print(f"i32.const {address}")
@@ -336,53 +340,7 @@ class codeGenerator(NodeVisitor):
         print(f"i32.const {address}")
         print("(call $store_value_at_address)")
 
-    
 
-
-
-
-
-
-
-
-
-    
-
-
-
-        
-        
-
-    
-
-    
-       
-
-    
-
-
-
-
-
-
-
-
-
-        
-
-
-
-     
-
-
-
-
-
-        
-        
-       
-
-    
     def visit_FunctionDeclaration(self, node):
         #! we need to add the parameters types in to the next scope
         record = {

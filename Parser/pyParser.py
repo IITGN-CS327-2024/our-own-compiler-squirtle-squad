@@ -262,7 +262,7 @@ if __name__ == "__main__":
     semantic_checker = semanticCheck()
     code_generator = codeGenerator()
     graph = tree_to_graphviz(ast)
-    graph.render('tree',format='png', view=True)
+    # graph.render('tree',format='png', view=True)
     semantic_checker.visit_Start(ast)
     code_generator.visit_Start(ast)
 
