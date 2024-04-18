@@ -262,11 +262,46 @@ class codeGenerator(NodeVisitor):
     def visit_VariableChange(self, node):
 
         present_func = self.symtab.get_enclosing_fun()
-        record_andar = self.symtab.lookup_cur_scope(node.children[0].val) 
+
+        if isinstance(node.children[0], nc.VarNode):
+            record_andar = self.symtab.lookup_cur_scope(node.children[0].val)
+
+        else: 
+            record_andar = self.symtab.lookup_cur_scope(node.children[0].children[0].val)
         
         if(present_func is not None and record_andar is not None):
-            self.visit(node.children[-1])
-            print(f"local.set {node.children[0].val}")
+            
+
+            if isinstance(node.children[-1], nc.Indexing):
+
+                print("(local $temp i32)")
+                print(f"local.get ${node.children[0].children[0].val}")
+                print(f"i32.const {node.children[0].children[1].val}")
+                print("i32.const 4")
+                print("i32.mul")
+                print("i32.add")
+                print("local.set $temp")
+                print("local.get $temp")
+                print("(call $loadValueFromMemory)")
+
+            else:
+                self.visit(node.children[-1])
+
+            if isinstance(node.children[0], nc.VarNode):
+                
+                print(f"local.set ${node.children[0].val}")
+
+            else:
+
+                print("(local $temp i32)")
+                print(f"local.get ${node.children[0].children[0].val}")
+                print(f"i32.const {node.children[0].children[1].val}")
+                print("i32.const 4")
+                print("i32.mul")
+                print("i32.add")
+                print("local.set $temp")
+                print("local.get $temp")
+                print("(call $store_value_at_address)")
 
         else:
          
@@ -275,6 +310,7 @@ class codeGenerator(NodeVisitor):
                 record = self.symtab.lookup(node.children[0].val)
                 address = record['address']
                 print(f"i32.const {address}")
+
             elif isinstance(node.children[0],nc.Indexing):
                 self.visit_IndexingAddress(node.children[0])
 
@@ -485,6 +521,7 @@ class codeGenerator(NodeVisitor):
         # print("datatype",record['lexeme'], record['return_type'])
         # Implement the case for arrays and tuples also
         for node_ in node.children[2:-2]:
+
             if isinstance(node_, nc.VarNode):
                 record2 = {
                     "lexeme": node_.val,
@@ -501,7 +538,7 @@ class codeGenerator(NodeVisitor):
                 # self.present_mem_ptr += 4
                 temp_list.append(record2)
                 continue
-        
+
         record["params"] = temp_list 
         self.symtab.insert(record)
         self.symtab.inc_scope()
@@ -531,7 +568,7 @@ class codeGenerator(NodeVisitor):
 
         # this where levels will be imp -> check the return type
         # TODO we need to also handle closures
-        self.visit(node.children[1])
+        if(len(node.children) == 2): self.visit(node.children[1])
         print('\n')
 
     
