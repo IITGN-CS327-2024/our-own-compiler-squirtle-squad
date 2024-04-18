@@ -15,9 +15,13 @@ while(a < 7){
     a++;
 }
 
-for(var int i = 0; i < 5; i++) {
-    b++;
+func something(int a, int b): int{
+    return a + b;
 }
+
+something(a,b);
+
+
 
 
 
