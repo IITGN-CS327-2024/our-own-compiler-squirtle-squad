@@ -403,8 +403,8 @@ class codeGenerator(NodeVisitor):
 
         record = self.symtab.lookup(node.children[0].val)
         address = record['address']
-        print(f"i32.const {address}")
         self.visit(node.children[1])
+        print(f"i32.const {address}")
         print("(call $arrindexing)")
     
     def visit_Indexing(self, node):
