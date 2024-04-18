@@ -6,6 +6,7 @@ import sys
 # import rich 
 import node_classes
 from typechecking import semanticCheck
+from code_generation import codeGenerator
 
 class CustomLexer(Lexer):
     def __init__(self,lexer_conf):
@@ -172,7 +173,8 @@ loop_statement : WHILE "(" condition ")" "{" statements "}"
                 | FOR "(" var_init ";" condition ";" iterating ")" "{" statements "}"
 
 var_init : variable_declaration | variable_change | IDENTIFIER
-iterating:  | variable_change | expression un_operators_post
+iterating:  | variable_change | iteration
+iteration : expression un_operators_post
 
 print_statement : PRINT ":" condition ";"
 
@@ -191,7 +193,7 @@ condition:  condition1
 condition1:  condition1 OR condition2 | condition2 
 condition2: condition2 AND condition3 | condition3
 condition3: NOT cond_terminal | cond_terminal
-cond_terminal: expression | un_operators_pre expression | expression un_operators_post | expression comp_operators expression
+cond_terminal: expression | un_operators_pre expression | iteration | expression comp_operators expression
 
 un_operators_pre  : BANG | BITWISENOT
 un_operators_post : INCREMENT | DECREMENT
@@ -258,7 +260,10 @@ if __name__ == "__main__":
     concrete_tree = parser.parse(file_path)
     ast = transformer.transform(concrete_tree)
     semantic_checker = semanticCheck()
+    code_generator = codeGenerator()
     graph = tree_to_graphviz(ast)
     graph.render('tree',format='png', view=True)
     semantic_checker.visit_Start(ast)
+    code_generator.visit_Start(ast)
+
     

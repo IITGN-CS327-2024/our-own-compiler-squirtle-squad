@@ -127,8 +127,11 @@ class semanticCheck(NodeVisitor):
         self.visit(node.children[-1])
         self.symtab.dec_scope()
         return tc.Function_object(record["lexeme"])
-
+    
     def visit_VariableDeclarationStatement(self, node):
+        self.visit(node.children[0])
+
+    def visit_VariableDeclaration(self, node):
         # print("HII")
         record = self.symtab.lookup_cur_scope(node.children[2].val)
         # print(node.children[2].val)
@@ -161,6 +164,9 @@ class semanticCheck(NodeVisitor):
         return tc.Tuple(self.get_datatype_(node.children[1]))
     
     def visit_VariableChangeStatement(self, node):
+        self.visit(node.children[0])
+    
+    def visit_VariableChange(self, node):
         left = self.visit(node.children[0])
         right = self.visit(node.children[-1])
         
@@ -400,6 +406,7 @@ class semanticCheck(NodeVisitor):
 
         return tc.Bool()
         # what to return in this
+    
 
     def visit_BitwiseExpr(self, node):
         left = self.visit(node.children[0])
@@ -410,6 +417,7 @@ class semanticCheck(NodeVisitor):
         ):  #! need to update based on the return type
             raise Exception("Type mismatch in Bitwise expression")
         return tc.Number()
+    
 
     def visit_EqExpr(self, node):
         left = self.visit(node.children[0])
@@ -481,6 +489,13 @@ class semanticCheck(NodeVisitor):
             raise Exception("Type mismatch in Power expression")
 
         return tc.Number()
+    
+    def visit_VarInit(self, node):
+
+        for child in node.children:
+            self.visit(child)
+
+        return None 
 
     # what is this function
     def visit_ParametersCall(self, node):

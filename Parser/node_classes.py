@@ -316,4 +316,22 @@ class SubstrNode(sabka_baap):
    
       def __init__(self,values):
             super().__init__(values)
+
+class VarInit(sabka_baap):
+      def __init__(self,values):
+            super().__init__(values)
+
+class VariableChange(sabka_baap):
    
+      def __init__(self,values):
+            super().__init__(values)
+   
+class VariableDeclaration(sabka_baap):
+   
+      def __init__(self,values):
+            super().__init__(values)
+
+class Iteration(sabka_baap):
+   
+      def __init__(self,values):
+            super().__init__(values)

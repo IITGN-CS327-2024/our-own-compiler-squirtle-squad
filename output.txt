@@ -1,0 +1,173 @@
+Contents of testcases/test_case_0.scp written to outputs/output_test_case_0.scp
+VARIABLE var
+INTEGER int
+IDENTIFIER a
+ASSIGN =
+NUMBER 5
+SEMICOLON ;
+VARIABLE var
+INTEGER int
+IDENTIFIER b
+ASSIGN =
+NUMBER 7
+SEMICOLON ;
+IDENTIFIER b
+ASSIGN =
+NUMBER 8
+SEMICOLON ;
+NUMBER 1
+PLUS +
+NUMBER 2
+STAR *
+IDENTIFIER a
+SLASH /
+IDENTIFIER b
+SEMICOLON ;
+IF if
+LPAR (
+IDENTIFIER a
+PLUS +
+NUMBER 3
+LESS <
+IDENTIFIER b
+RPAR )
+LBRACE {
+IDENTIFIER a
+ASSIGN =
+NUMBER 6
+SEMICOLON ;
+RBRACE }
+ELSE else
+LBRACE {
+IDENTIFIER a
+ASSIGN =
+NUMBER 7
+SEMICOLON ;
+RBRACE }
+EOF 
+visit_Program
+visit_Statements
+visit_VariableDeclarationStatement
+visit_NumberNode
+visit_VariableDeclarationStatement
+visit_NumberNode
+visit_VariableChangeStatement
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_NumberNode
+visit_ExpressionStatement
+visit_AddExpr
+visit_NumberNode
+visit_MultExpr
+visit_MultExpr
+visit_NumberNode
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_ConditionalStatement
+visit_IfStatement
+visit_CompCondition
+visit_AddExpr
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_NumberNode
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_Statements
+visit_VariableChangeStatement
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_NumberNode
+visit_ElseStatement
+visit_Statements
+visit_VariableChangeStatement
+visit_VarNode
+{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_NumberNode
+ (module
+                    ;; Memory with 1 page (64KB)
+                    (memory (export "memory") 1)
+
+                    (func (export "store_value_at_address") (param $value i32) (param $address i32)
+                        ;; Store the value at the specified address in memory
+                        (i32.store (local.get $address) (local.get $value))
+                    )
+              
+                    (func $loadValueFromMemory (param $address i32) (result i32)
+                        (i32.load
+                        (local.get $address)  ;; Load value from specified address
+                        )
+                    )
+              
+                    (func $logical_or (param $a i32) (param $b i32) (result i32)
+                        ;; Perform bitwise OR
+                        get_local $a
+                        get_local $b
+                        i32.or
+                        ;; Convert result to 1 if non-zero (truthy), 0 otherwise (falsy)
+                        i32.const 0
+                        i32.ne
+                        i32.const 1
+                        select
+                    )
+              
+                    (func $logical_not (param $a i32) (result i32)
+                        ;; Convert $a to 0 or 1 (0 if $a is zero, 1 otherwise)
+                        get_local $a
+                        i32.const 0
+                        i32.eq
+                        i32.const 1
+                        select
+                    )
+              
+                    (func $logical_and (param $a i32) (param $b i32) (result i32)
+                        ;; Perform bitwise AND
+                        get_local $a
+                        get_local $b
+                        i32.and
+                        ;; Convert result to 0 or 1 (0 if result is zero, 1 otherwise)
+                        i32.const 0
+                        i32.eq
+                        i32.const 1
+                        select
+                    )
+        
+i32.const 0
+i32.const 5
+(call $store_value_at_address)
+i32.const 4
+i32.const 7
+(call $store_value_at_address)
+i32.const 4
+i32.const 8
+(call $store_value_at_address)
+i32.const 1
+i32.const 2
+i32.const 0
+(call $loadValueFromMemory)
+i32.mul
+i32.const 4
+(call $loadValueFromMemory)
+i32.div
+i32.add
+i32.const 0
+(call $loadValueFromMemory)
+i32.const 3
+i32.add
+i32.const 4
+(call $loadValueFromMemory)
+i32.lt_s
+i32.const 1
+i32.eq
+if(
+i32.const 0
+i32.const 6
+(call $store_value_at_address)
+)
+else(
+i32.const 0
+i32.const 7
+(call $store_value_at_address)
+)
+)

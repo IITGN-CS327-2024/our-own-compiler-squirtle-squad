@@ -86,7 +86,7 @@ class OurTransformer(lark.Transformer):
     
     def variable_declaration(self, children):
         children = flatten(children)
-        return children
+        return node_classes.VariableDeclaration(children)
     
     def datatype(self, children):
         children = flatten(children)
@@ -233,7 +233,7 @@ class OurTransformer(lark.Transformer):
 
     def variable_change(self, children):
         children = flatten(children)
-        return children
+        return node_classes.VariableChange(children)
 
     def opeq(self, children):
         children = flatten(children)
@@ -350,6 +350,10 @@ class OurTransformer(lark.Transformer):
         children = flatten(children)
         if(len(children) == 0): return None 
         else: return children
+
+    def iteration(self, children):
+        children = flatten(children)
+        return node_classes.Iteration(children)
 
     def type_declaration(self, children):
         children = flatten(children)
