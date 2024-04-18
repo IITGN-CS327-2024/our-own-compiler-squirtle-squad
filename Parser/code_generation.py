@@ -109,8 +109,6 @@ class codeGenerator(NodeVisitor):
                         ;; Convert result to 1 if non-zero (truthy), 0 otherwise (falsy)
                         i32.const 0
                         i32.ne
-                        i32.const 1
-                        select
                     )
               
                     (func $logical_not (param $a i32) (result i32)
@@ -118,8 +116,6 @@ class codeGenerator(NodeVisitor):
                         local.get $a
                         i32.const 0
                         i32.eq
-                        i32.const 1
-                        select
                     )
               
                     (func $logical_and (param $a i32) (param $b i32) (result i32)
@@ -128,10 +124,8 @@ class codeGenerator(NodeVisitor):
                         local.get $b
                         i32.and
                         ;; Convert result to 0 or 1 (0 if result is zero, 1 otherwise)
-                        i32.const 0
-                        i32.eq
                         i32.const 1
-                        select
+                        i32.eq
                     )
         ''')
 
