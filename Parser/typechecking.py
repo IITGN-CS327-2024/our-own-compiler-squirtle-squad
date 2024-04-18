@@ -195,7 +195,7 @@ class semanticCheck(NodeVisitor):
             raise Exception(
                 "Variable ", record["lexeme"], " not declared before indexing"
             )
-        if self.get_datatype_(node.children[1]) != tc.Number:
+        if not isinstance(self.visit(node.children[1]),tc.Number):
             raise Exception("Index should be an integer")
         return record["datatype"]()
 
