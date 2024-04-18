@@ -103,8 +103,8 @@ class codeGenerator(NodeVisitor):
               
                     (func $logical_or (param $a i32) (param $b i32) (result i32)
                         ;; Perform bitwise OR
-                        get_local $a
-                        get_local $b
+                        local.get $a
+                        local.get $b
                         i32.or
                         ;; Convert result to 1 if non-zero (truthy), 0 otherwise (falsy)
                         i32.const 0
@@ -115,7 +115,7 @@ class codeGenerator(NodeVisitor):
               
                     (func $logical_not (param $a i32) (result i32)
                         ;; Convert $a to 0 or 1 (0 if $a is zero, 1 otherwise)
-                        get_local $a
+                        local.get $a
                         i32.const 0
                         i32.eq
                         i32.const 1
@@ -124,8 +124,8 @@ class codeGenerator(NodeVisitor):
               
                     (func $logical_and (param $a i32) (param $b i32) (result i32)
                         ;; Perform bitwise AND
-                        get_local $a
-                        get_local $b
+                        local.get $a
+                        local.get $b
                         i32.and
                         ;; Convert result to 0 or 1 (0 if result is zero, 1 otherwise)
                         i32.const 0
@@ -242,7 +242,7 @@ class codeGenerator(NodeVisitor):
 
             print(f"local ${node.children[2].val}")
             self.visit(node.children[4])
-            print(f"set_local ${node.children[2].val} ")
+            print(f"local.set ${node.children[2].val} ")
 
         print('\n')
 
@@ -258,7 +258,7 @@ class codeGenerator(NodeVisitor):
             print("(call $loadValueFromMemory)")
         
         else:
-            print(f"get_local ${node.val}") 
+            print(f"local.get ${node.val}") 
 
         print('\n')
 
@@ -272,7 +272,7 @@ class codeGenerator(NodeVisitor):
         
         if(present_func is not None and record_andar is not None):
             self.visit(node.children[-1])
-            print(f"set_local {node.children[0].val}")
+            print(f"local.set {node.children[0].val}")
 
         else:
          
@@ -287,25 +287,19 @@ class codeGenerator(NodeVisitor):
             print("(call $store_value_at_address)")
             print('\n')
 
-    def visit_FunctionCall(self, node):
-        
-        record = self.symtab.lookup(node.children[0].val)
-        function_name = record['lexeme']
-        self.visit(node.children[1])
-        print(f"(call ${function_name})")
-
     def visit_ConditionalStatement(self, node):
 
         self.visit(node.children[0].children[1]) # condition
         print("i32.const 1")
         print("i32.eq")
 
-        print("if(")
+        print("(if(")
         print("then(")
         self.visit(node.children[0]) # if
         print(")")
         print("(else")
         self.visit(node.children[1]) # else
+        print(")")
         print(")")
         print(")")
         print('\n')
@@ -419,6 +413,7 @@ class codeGenerator(NodeVisitor):
         print(f"i32.const {address}")
         print("(call $store_value_at_address)")
         print('\n')
+
     def visit_ArrayDeclaration(self,node):
 
         record = {
@@ -482,50 +477,6 @@ class codeGenerator(NodeVisitor):
         self.visit_IndexingAddress(node)
         print("(call $loadValueFromMemory)")
 
-
-
-
-
-
-
-
-
-    
-
-
-
-        
-        
-
-    
-
-    
-       
-
-    
-
-
-
-
-
-
-
-
-
-        
-
-
-
-     
-
-
-
-
-
-        
-        
-       
-
     
     def visit_FunctionDeclaration(self, node):
         #! we need to add the parameters types in to the next scope
@@ -562,18 +513,19 @@ class codeGenerator(NodeVisitor):
         self.symtab.inc_scope()
         for record in temp_list:
             self.symtab.insert(record)
-                    
+        
+        final_str += "(result i32)"
         print(final_str)
         self.visit(node.children[-1])
         self.symtab.dec_scope()
         print(")")
+        print(f'''(export "{node.children[1].val}" (func ${node.children[1].val}))''')
         print('\n')
 
     def visit_FunctionCall(self, node):
         
         record = self.symtab.lookup(node.children[0].val)
         self.visit(node.children[1])
-        
         print(f"(call ${record['lexeme']})")
         print('\n')
 
