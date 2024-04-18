@@ -80,7 +80,7 @@ class codeGenerator(NodeVisitor):
                     ;; Memory with 1 page (64KB)
                     (memory (export "memory") 1)
 
-                    (func (export "store_value_at_address") (param $value i32) (param $address i32)
+                    (func $store_value_at_address (param $value i32) (param $address i32)
                         ;; Store the value at the specified address in memory
                         (i32.store (local.get $address) (local.get $value))
                     )
@@ -233,7 +233,7 @@ class codeGenerator(NodeVisitor):
 
         else: 
 
-            print(f"local ${node.children[2].val}")
+            print(f"(local ${node.children[2].val} i32)")
             self.visit(node.children[4])
             print(f"local.set ${node.children[2].val}")
 
@@ -565,7 +565,9 @@ class codeGenerator(NodeVisitor):
         for record in temp_list:
             self.symtab.insert(record)
         
-        final_str += "(result i32)"
+        if not isinstance(node.children[-1], nc.VoidNode):
+            final_str += "(result i32)"
+        
         print(final_str)
         self.visit(node.children[-1])
         self.symtab.dec_scope()
@@ -589,6 +591,7 @@ class codeGenerator(NodeVisitor):
         # this where levels will be imp -> check the return type
         # TODO we need to also handle closures
         if(len(node.children) == 2): self.visit(node.children[1])
+        
         print('\n')
 
     
