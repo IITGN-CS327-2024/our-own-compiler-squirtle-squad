@@ -1,163 +1,166 @@
 Contents of testcases/test_case_0.scp written to outputs/output_test_case_0.scp
-VARIABLE var
-INTEGER int
-IDENTIFIER a
-ASSIGN =
-NUMBER 5
-MOD %
-NUMBER 2
-SEMICOLON ;
-VARIABLE var
-INTEGER int
-IDENTIFIER b
-ASSIGN =
-NUMBER 7
-SEMICOLON ;
-IDENTIFIER b
-ASSIGN =
-NUMBER 8
-SEMICOLON ;
-NUMBER 1
-PLUS +
-NUMBER 2
-STAR *
-IDENTIFIER a
-SLASH /
-IDENTIFIER b
-SEMICOLON ;
-IF if
+FUNCTION func
+IDENTIFIER sort
 LPAR (
-IDENTIFIER a
-PLUS +
-NUMBER 3
-LESS <
-IDENTIFIER b
+ARRAY arr
+INTEGER int
+IDENTIFIER yashraj
+COMMA ,
+INTEGER int
+IDENTIFIER length
 RPAR )
+COLON :
+VOID void
 LBRACE {
-IDENTIFIER a
-ASSIGN =
-NUMBER 6
+VARIABLE var
+INTEGER int
+IDENTIFIER temp
 SEMICOLON ;
-RBRACE }
-ELSE else
-LBRACE {
-IDENTIFIER a
-ASSIGN =
-NUMBER 7
+VARIABLE var
+INTEGER int
+IDENTIFIER j
 SEMICOLON ;
-RBRACE }
+VARIABLE var
+INTEGER int
+IDENTIFIER i
+SEMICOLON ;
 WHILE while
 LPAR (
-IDENTIFIER a
+IDENTIFIER i
 LESS <
-NUMBER 7
+IDENTIFIER length
 RPAR )
 LBRACE {
-IDENTIFIER a
+WHILE while
+LPAR (
+IDENTIFIER j
+LESS <
+IDENTIFIER length
+MINUS -
+IDENTIFIER i
+MINUS -
+NUMBER 1
+RPAR )
+LBRACE {
+IF if
+LPAR (
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+GREATER >
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+RPAR )
+LBRACE {
+IDENTIFIER temp
+ASSIGN =
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+SEMICOLON ;
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+ASSIGN =
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+SEMICOLON ;
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+ASSIGN =
+IDENTIFIER temp
+SEMICOLON ;
+RBRACE }
+IDENTIFIER j
 INCREMENT ++
 SEMICOLON ;
 RBRACE }
-FUNCTION func
-IDENTIFIER something
-LPAR (
-INTEGER int
-IDENTIFIER a
-COMMA ,
-INTEGER int
-IDENTIFIER b
-RPAR )
-COLON :
-INTEGER int
-LBRACE {
-RETURN return
-IDENTIFIER a
-PLUS +
-IDENTIFIER b
+IDENTIFIER i
+INCREMENT ++
 SEMICOLON ;
 RBRACE }
-IDENTIFIER something
-LPAR (
-IDENTIFIER a
-COMMA ,
-IDENTIFIER b
-RPAR )
-SEMICOLON ;
+RBRACE }
 EOF 
 visit_Program
 visit_Statements
+visit_FunctionDeclaration
+visit_Statements
 visit_VariableDeclarationStatement
 visit_VariableDeclaration
-visit_MultExpr
-visit_NumberNode
-visit_NumberNode
 visit_VariableDeclarationStatement
 visit_VariableDeclaration
-visit_NumberNode
-visit_VariableChangeStatement
-visit_VariableChange
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_NumberNode
-visit_ExpressionStatement
-visit_AddExpr
-visit_NumberNode
-visit_MultExpr
-visit_MultExpr
-visit_NumberNode
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_ConditionalStatement
-visit_IfStatement
-visit_CompCondition
-visit_AddExpr
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_NumberNode
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_Statements
-visit_VariableChangeStatement
-visit_VariableChange
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_NumberNode
-visit_ElseStatement
-visit_Statements
-visit_VariableChangeStatement
-visit_VariableChange
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_NumberNode
+visit_VariableDeclarationStatement
+visit_VariableDeclaration
 visit_LoopStatement
 visit_CompCondition
 visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
+visit_VarNode
+visit_Statements
+visit_LoopStatement
+visit_CompCondition
+visit_VarNode
+visit_AddExpr
+visit_AddExpr
+visit_VarNode
+visit_VarNode
 visit_NumberNode
 visit_Statements
+visit_ConditionalStatement
+visit_IfStatement
+visit_CompCondition
+visit_Indexing
+visit_VarNode
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_Statements
+visit_VariableChangeStatement
+visit_VariableChange
+visit_VarNode
+visit_Indexing
+visit_VarNode
+visit_VariableChangeStatement
+visit_VariableChange
+visit_Indexing
+visit_VarNode
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_VariableChangeStatement
+visit_VariableChange
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_VarNode
 visit_ExpressionStatement
 visit_Iteration
 visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_FunctionDeclaration
-visit_Statements
-visit_ReturnStatement
-[{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}, {'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}, {'lexeme': Token('IDENTIFIER', 'something'), 'type': 'function', 'object': Function_object, 'return_type': <class 'type_classes.Number'>, 'params': [<class 'type_classes.Number'>, <class 'type_classes.Number'>]}]
-visit_AddExpr
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'a'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
-visit_VarNode
-{'lexeme': Token('IDENTIFIER', 'b'), 'type': 'variable', 'datatype': <class 'type_classes.Number'>}
 visit_ExpressionStatement
-visit_FunctionCall
-False
-visit_ParametersCall
+visit_Iteration
+visit_VarNode
  (module
                     ;; Memory with 1 page (64KB)
                     (memory (export "memory") 1)
 
-                    (func (export "store_value_at_address") (param $value i32) (param $address i32)
+                    (func $store_value_at_address (param $value i32) (param $address i32)
                         ;; Store the value at the specified address in memory
                         (i32.store (local.get $address) (local.get $value))
                     )
@@ -180,134 +183,52 @@ visit_ParametersCall
               
                     (func $logical_or (param $a i32) (param $b i32) (result i32)
                         ;; Perform bitwise OR
-                        get_local $a
-                        get_local $b
+                        local.get $a
+                        local.get $b
                         i32.or
                         ;; Convert result to 1 if non-zero (truthy), 0 otherwise (falsy)
                         i32.const 0
                         i32.ne
-                        i32.const 1
-                        select
                     )
               
                     (func $logical_not (param $a i32) (result i32)
                         ;; Convert $a to 0 or 1 (0 if $a is zero, 1 otherwise)
-                        get_local $a
+                        local.get $a
                         i32.const 0
                         i32.eq
-                        i32.const 1
-                        select
                     )
               
                     (func $logical_and (param $a i32) (param $b i32) (result i32)
                         ;; Perform bitwise AND
-                        get_local $a
-                        get_local $b
+                        local.get $a
+                        local.get $b
                         i32.and
                         ;; Convert result to 0 or 1 (0 if result is zero, 1 otherwise)
-                        i32.const 0
-                        i32.eq
                         i32.const 1
-                        select
+                        i32.eq
                     )
         
-i32.const 5
-
-
-i32.const 2
-
-
-i32.rem_s
-
-
+(func $sort(param $yashraj i32)(param $length i32)
+(local $temp i32)
 i32.const 0
-(call $store_value_at_address)
+local.set $temp
 
 
-i32.const 7
-
-
-i32.const 4
-(call $store_value_at_address)
-
-
-i32.const 8
-
-
-i32.const 4
-(call $store_value_at_address)
-
-
-i32.const 1
-
-
-i32.const 2
-
-
+(local $j i32)
 i32.const 0
-(call $loadValueFromMemory)
+local.set $j
 
 
-i32.mul
-
-
-i32.const 4
-(call $loadValueFromMemory)
-
-
-i32.div_s
-
-
-i32.add
-
-
+(local $i i32)
 i32.const 0
-(call $loadValueFromMemory)
-
-
-i32.const 3
-
-
-i32.add
-
-
-i32.const 4
-(call $loadValueFromMemory)
-
-
-i32.lt_s
-
-
-i32.const 1
-i32.eq
-if(
-then(
-i32.const 6
-
-
-i32.const 0
-(call $store_value_at_address)
-
-
-)
-(else
-i32.const 7
-
-
-i32.const 0
-(call $store_value_at_address)
-
-
-)
-)
+local.set $i
 
 
 (loop $apnaloop
-i32.const 0
-(call $loadValueFromMemory)
+local.get $i
 
 
-i32.const 7
+local.get $length
 
 
 i32.lt_s
@@ -317,44 +238,55 @@ i32.const 1
 i32.eq
 (if
 (then
-i32.const 0
-(call $loadValueFromMemory)
+(loop $apnaloop
+local.get $j
+
+
+local.get $length
+
+
+local.get $i
+
+
+i32.sub
+
+
 i32.const 1
-i32.add
-i32.const 0
-(call $store_value_at_address)
 
 
-br $apnaloop
-)
-)
-)
+i32.sub
 
 
-(func $something(param $a i32)(param $b i32)
-get_local $a
+i32.lt_s
 
 
-get_local $b
-
-
-i32.add
-
-
-
-
-)
+i32.const 1
+i32.eq
+(if
+(then
+local.get $j
 
 
 i32.const 0
+(call $arrindexing)
 (call $loadValueFromMemory)
+local.get $j
 
 
-i32.const 4
+i32.const 1
+
+
+i32.add
+
+
+i32.const 0
+(call $arrindexing)
 (call $loadValueFromMemory)
+i32.gt_s
 
 
-(call $something)
-
-
-)
+i32.const 1
+i32.eq
+(if(
+then(
+Error detected in parsing stage.

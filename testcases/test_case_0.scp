@@ -1,27 +1,16 @@
-var int a = 5%2;
-var int b = 7;
-b = 8;
-1 + 2 * a / b;
-
-if(a+3 < b) {
-    a = 6;
+func sort(arr int yashraj, int length) : void {
+  var int temp;
+  var int j;
+  var int i;
+  while(i < length ) {
+    while(j < length - i - 1) {
+      if(yashraj[j] > yashraj[j + 1]) {
+        temp = yashraj[j];
+        yashraj[j] = yashraj[j + 1];
+        yashraj[j + 1] = temp;
+      }
+      j++;
+    }
+    i++;
+  }
 }
-
-else {
-    a = 7;
-}
-
-while(a < 7){
-    a++;
-}
-
-func something(int a, int b): int{
-    return a + b;
-}
-
-something(a,b);
-
-
-
-
-

@@ -227,6 +227,8 @@ class codeGenerator(NodeVisitor):
             self.symtab.insert(record)
             if len(node.children) == 5:
                 self.visit(node.children[4])
+            else:
+                print("i32.const 0")
             print(f"i32.const {self.present_mem_ptr}")
             print("(call $store_value_at_address)")
             self.present_mem_ptr += 4 
@@ -234,7 +236,10 @@ class codeGenerator(NodeVisitor):
         else: 
 
             print(f"(local ${node.children[2].val} i32)")
-            self.visit(node.children[4])
+            if len(node.children) == 5:
+                self.visit(node.children[4])
+            else:
+                print("i32.const 0")
             print(f"local.set ${node.children[2].val}")
 
             record = {
@@ -274,15 +279,16 @@ class codeGenerator(NodeVisitor):
 
         else: 
             record_andar = self.symtab.lookup_cur_scope(node.children[0].children[0].val)
+
         
         if(present_func is not None and record_andar is not None):
             
-
             if isinstance(node.children[-1], nc.Indexing):
 
                 print("(local $temp i32)")
-                print(f"local.get ${node.children[0].children[0].val}")
-                print(f"i32.const {node.children[0].children[1].val}")
+                print(f"local.get ${node.children[-1].children[0].val}")
+                # print(f"i32.const {node.children[-1].children[1].val}")
+                self.visit(node.children[-1].children[1])
                 print("i32.const 4")
                 print("i32.mul")
                 print("i32.add")
@@ -309,6 +315,42 @@ class codeGenerator(NodeVisitor):
                 print("local.get $temp")
                 print("(call $store_value_at_address)")
 
+        elif present_func is not None:
+            
+            if isinstance(node.children[-1], nc.Indexing):
+                print("(local $temp i32)")
+                print(f"local.get ${node.children[-1].children[0].val}")
+                self.visit(node.children[-1].children[1])
+                # print(f"i32.const {node.children[-1].children[1].val}")
+                print("i32.const 4")
+                print("i32.mul")
+                print("i32.add")
+                print("local.set $temp")
+                print("local.get $temp")
+                print("(call $loadValueFromMemory)")
+
+            else:
+                self.visit(node.children[-1])
+            
+            
+            # print(type(node.children[0]))
+            if isinstance(node.children[0], nc.VarNode):
+                
+                print(f"local.set ${node.children[0].val}")
+
+            else:
+
+                print("(local $temp i32)")
+                print(f"local.get ${node.children[0].children[0].val}")
+                # print(f"i32.const {node.children[0].children[1].val}")
+                self.visit(node.children[0].children[1])
+                print("i32.const 4")
+                print("i32.mul")
+                print("i32.add")
+                print("local.set $temp")
+                print("local.get $temp")
+                print("(call $store_value_at_address)")
+            
         else:
          
             self.visit(node.children[-1])
@@ -333,9 +375,12 @@ class codeGenerator(NodeVisitor):
         print("then(")
         self.visit(node.children[0]) # if
         print(")")
-        print("(else")
-        self.visit(node.children[1]) # else
-        print(")")
+        
+        if(len(node.children) == 2):
+            print("(else")
+            self.visit(node.children[1]) # else
+            print(")")
+
         print(")")
         print(")")
         print('\n')
@@ -403,7 +448,7 @@ class codeGenerator(NodeVisitor):
             self.visit(node.children[2]) # condition
             print("i32.const 1")
             print("i32.eq")
-            print("(if")
+            print("(if(")
             print("(then")
             self.visit(node.children[-1]) # statements
             self.visit(node.children[-2]) # iteration
@@ -419,7 +464,7 @@ class codeGenerator(NodeVisitor):
             print("i32.const 1")
             print("i32.eq")
 
-            print("(if")
+            print("(if(")
             print("(then")
             self.visit(node.children[2])
             print("br $apnaloop")
@@ -565,7 +610,7 @@ class codeGenerator(NodeVisitor):
         for record in temp_list:
             self.symtab.insert(record)
         
-        if not isinstance(node.children[-1], nc.VoidNode):
+        if not isinstance(node.children[-2], nc.VoidNode):
             final_str += "(result i32)"
         
         print(final_str)

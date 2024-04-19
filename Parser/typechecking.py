@@ -45,7 +45,7 @@ class symbolTable:
         try:
             req_scope = self.symbol_table[self.scope_stack[-level] - 1]
             record = req_scope[-1]  # if we are return a value then we are in a function
-            print(req_scope)
+            # print(req_scope)
             if record["type"] == "function":
                 return record
             else:  # in the case let's say we are in a if block or loop block
@@ -177,7 +177,7 @@ class semanticCheck(NodeVisitor):
         right = self.visit(node.children[-1])
         
         if isinstance(left,tc.Array) and isinstance(right,tc.Array):
-            print(left.datatype,right.datatype)
+            # print(left.datatype,right.datatype)
             
             if left.datatype != right.datatype:
                 raise Exception("Type mismatch in variable change statement")
@@ -263,7 +263,7 @@ class semanticCheck(NodeVisitor):
     def visit_FunctionCall(self, node):
         
         record = self.symtab.lookup(node.children[0].val)
-        print(record is None)
+        # print(record is None)
         if record is None:
             # raise Exception("Function ", node.children[0].val, " not declared before call")
             raise Exception(f"Function {node.children[0].val.value} not declared before call")
@@ -279,8 +279,10 @@ class semanticCheck(NodeVisitor):
             )
 
         for i in range(len(param_types)):
-            if param_types[i] != param_types_f[i]:
+            if param_types[i] != param_types_f[i] and type(param_types) != type(param_types_f):
+                # print(param_types[i], param_types_f[i])
                 raise Exception("Type mismatch in parameter {}".format(i + 1))
+            
         if isinstance(record["return_type"],tc.Array) or isinstance(record["return_type"],tc.Tuple):
             return record["return_type"]
         return record["return_type"]()
@@ -313,7 +315,7 @@ class semanticCheck(NodeVisitor):
         record = self.symtab.lookup(node.val)
         if record is None:
             raise Exception(f"Variable {node.val} referenced before assignment")
-        print(record)
+        # print(record)
         if "object" in record:
             return record["object"]
         else:
@@ -364,8 +366,8 @@ class semanticCheck(NodeVisitor):
             self.visit(node.children[1])
             cond = self.visit(node.children[2])
             if not isinstance(cond, tc.Bool):
-                print(cond)
-                print(node.children[7])
+                # print(cond)
+                # print(node.children[7])
                 raise Exception("Inner operand does not evaluate to a boolean")
 
             # self.symtab.insert(record)
@@ -510,12 +512,15 @@ class semanticCheck(NodeVisitor):
         # TODO
         result = []
         for child in node.children:
+
             if isinstance(child, nc.VarNode):
                 record = self.symtab.lookup(child.val)
+                # print(record)
                 if record is None:
                     raise Exception("Variable referenced before assignment")
 
-                result.append(record["datatype"])
+                if('object' in record): result.append(tc.Array(record["datatype"]))
+                else: result.append(record["datatype"])
 
             elif isinstance(child, nc.NumberNode):
                 result.append(tc.Number)
@@ -528,6 +533,7 @@ class semanticCheck(NodeVisitor):
 
             elif isinstance(child, nc.CharNode):
                 result.append(tc.Char)
+
             elif isinstance(child, nc.ArrayNode):
                 result.append(tc.Array(self.get_datatype_(child.children[1])))
 
