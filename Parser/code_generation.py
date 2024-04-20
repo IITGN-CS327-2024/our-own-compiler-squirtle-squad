@@ -1,4 +1,5 @@
 import type_classes as tc
+import lark
 # import ast_transform
 import node_classes as nc
 
@@ -235,7 +236,8 @@ class codeGenerator(NodeVisitor):
 
         else: 
 
-            print(f"(local ${node.children[2].val} i32)")
+            # print(f"(local ${node.children[2].val} i32)")
+            # variable_visitor takes care of this
             if len(node.children) == 5:
                 self.visit(node.children[4])
                 print(f"local.set ${node.children[2].val}")
@@ -607,6 +609,12 @@ class codeGenerator(NodeVisitor):
             final_str += "(result i32)"
         
         print(final_str)
+
+        var_set = set()
+        self.variable_visitor(node.children[-1], var_set)
+        for var in var_set:
+            print(f"(local ${var} i32)")
+
         print("(local $var i32)")
         self.visit(node.children[-1])
         self.symtab.dec_scope()
@@ -632,6 +640,14 @@ class codeGenerator(NodeVisitor):
         if(len(node.children) == 2): self.visit(node.children[1])
         
         print('\n')
+
+    def variable_visitor(self, node, var_set):
+        if isinstance(node, nc.VariableDeclaration):
+            var_set.add(node.children[2].val)
+        else:
+            if not isinstance(node, lark.lexer.Token) and hasattr(node, "children"):
+                for child in node.children:
+                    self.variable_visitor(child, var_set)            
 
     
 
