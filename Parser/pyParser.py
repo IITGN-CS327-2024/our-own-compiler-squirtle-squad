@@ -254,6 +254,7 @@ def visualize(obj):
 
 if __name__ == "__main__": 
     file_path = sys.argv[1]
+    program_name = file_path.split('.')
 
     parser = Lark(grammar, parser='lalr', lexer=CustomLexer, strict=True)
     transformer = ast_transform.OurTransformer()
@@ -264,7 +265,10 @@ if __name__ == "__main__":
     graph = tree_to_graphviz(ast)
     graph.render('tree',format='png', view=True)
     semantic_checker.visit_Start(ast)
-    with open("output.wat", "w") as watfile:
+
+    new_path = f"question/wat/{program_name}.wat"
+
+    with open(new_path , "w") as watfile:
         sys.stdout = watfile
         code_generator.visit_Start(ast)
         sys.stdout = sys.__stdout__
