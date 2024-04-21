@@ -1,0 +1,25 @@
+func caesarEncrypt(arr int plaintext, int plaintextLength, int key) : void {
+  var int i = 0;
+  while(i < plaintextLength) {
+    while(plaintext[i] + key < 0) {
+      plaintext[i] = plaintext[i] + 26;
+    }
+    plaintext[i] = (plaintext[i] + key) % 26;
+    i++;
+  }
+
+  return;
+}
+
+func caesarDecrypt(arr int ciphertext, int ciphertextLength, int key) : void {
+  var int i = 0;
+  while(i < ciphertextLength) {
+    while(ciphertext[i] - key < 0) {
+      ciphertext[i] = ciphertext[i] + 26;
+    }
+    ciphertext[i] = (ciphertext[i] - key) % 26;
+    i++;
+  }
+
+  return ;
+}
