@@ -254,7 +254,7 @@ def visualize(obj):
 
 if __name__ == "__main__": 
     file_path = sys.argv[1]
-    program_name = file_path.split('.')
+    program_name = file_path.split('.')[0].split('_')[-1]
 
     parser = Lark(grammar, parser='lalr', lexer=CustomLexer, strict=True)
     transformer = ast_transform.OurTransformer()
