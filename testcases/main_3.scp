@@ -1,0 +1,18 @@
+func sort(arr int yashraj, int length) : void {
+  var int temp = 0;
+  for(var int i = 0; i < length - 1; i++) {
+    for(var int j = 0; j < length - i - 1; j++) {
+
+    shrey_joshi while(j < length - i - 1) {
+
+      if(yashraj[j] > yashraj[j + 1]) {
+        temp = yashraj[j];
+        yashraj[j] = yashraj[j + 1];
+        yashraj[j + 1] = temp;
+      }
+      
+      shrey_joshi j++;
+      
+    }
+  }
+}
