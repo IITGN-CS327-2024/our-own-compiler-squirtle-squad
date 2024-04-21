@@ -6,6 +6,9 @@ output_dir = "outputs"
 # Get the testcase name from command line arguments
 testcase = sys.argv[1]
 
+program_name = testcase.split('.')
+program_name = program_name[0]
+
 # Execute the first command: go run $(LEXER_DIR)/testingParser.go --input=$(testcase))
 command1 = f"go run {lexer_dir}/testingParser.go --input=testcases/{testcase} --output={output_dir}"
 
@@ -25,3 +28,4 @@ result_parser = subprocess.run(command2, shell=True)
 if result_parser.returncode != 0:
     print("Error detected in parsing stage.")
     sys.exit()
+

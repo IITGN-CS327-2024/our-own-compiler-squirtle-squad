@@ -264,6 +264,10 @@ if __name__ == "__main__":
     graph = tree_to_graphviz(ast)
     graph.render('tree',format='png', view=True)
     semantic_checker.visit_Start(ast)
-    code_generator.visit_Start(ast)
+    with open("output.wat", "w") as watfile:
+        sys.stdout = watfile
+        code_generator.visit_Start(ast)
+        sys.stdout = sys.__stdout__
+        print("Code generation successful")
 
     
