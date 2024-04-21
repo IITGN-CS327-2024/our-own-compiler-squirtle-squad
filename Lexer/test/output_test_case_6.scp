@@ -29,14 +29,6 @@
 {Type:/ Literal:/}
 {Type:NUMBER Literal:1}
 {Type:; Literal:;}
-{Type:/ Literal:/}
-{Type:/ Literal:/}
-{Type:IDENTIFIER Literal:quo}
-{Type:= Literal:=}
-{Type:IDENTIFIER Literal:dvd}
-{Type:/ Literal:/}
-{Type:IDENTIFIER Literal:dvr}
-{Type:; Literal:;}
 {Type:IF Literal:if}
 {Type:( Literal:(}
 {Type:IDENTIFIER Literal:dvr}
@@ -47,7 +39,9 @@
 {Type:THROW Literal:throw}
 {Type:IDENTIFIER Literal:ValueError}
 {Type:( Literal:(}
+{Type:" Literal:"}
 {Type:STRING Literal:Division by zero not permitted}
+{Type:" Literal:"}
 {Type:) Literal:)}
 {Type:; Literal:;}
 {Type:} Literal:}}
@@ -60,7 +54,9 @@
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Input Numbers!}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:CATCH Literal:catch}
@@ -71,7 +67,9 @@
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Division by zero not possible}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:CATCH Literal:catch}
@@ -82,7 +80,9 @@
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Unknown error occurred:\n}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:PRINT Literal:print}
 {Type:: Literal::}

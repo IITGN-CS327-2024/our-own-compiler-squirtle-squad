@@ -5,95 +5,108 @@ const (
 	EOF     = "EOF"     // End of file
 
 	// Identifies & Literals
-	Identifier  = "IDENTIFIER"
-	Number      = "NUMBER"
-	Char        = "CHARACTER"
-	String      = "STRING"
-	EmptyString = ""
+	Identifier  = "Identifier"
+	Number      = "Number"
+	Char        = "Char"
+	String      = "String"
+	EmptyString = "String"
+	EmptyChar   = "Char"
 
 	// Keywords
-	Function      = "FUNCTION"
-	ChildFunction = "CHILDFUNCTION"
-	Variable      = "VARIABLE"
-	Constant      = "CONSTANT"
-	Integer       = "INTEGER"
-	Boolean       = "BOOLEAN"
-	Array         = "ARRAY"
-	Tuple         = "TUPLE"
-	Exception     = "EXCEPTION"
-	True          = "TRUE"
-	False         = "FALSE"
-	If            = "IF"
-	ElseIf        = "ELSEIF"
-	Else          = "ELSE"
-	Return        = "RETURN"
-	Void          = "VOID"
-	Try           = "TRY"
-	Throw         = "THROW"
-	Catch         = "CATCH"
-	Print         = "PRINT"
-	For           = "FOR"
-	While         = "WHILE"
-	Length        = "LENGTH"
-	Slice         = "SLICE"
-	Break         = "BREAK"
-	Continue      = "CONTINUE"
-	Or            = "OR"
-	And           = "AND"
-	Not           = "NOT"
-	String_k      = "STRING_K"
-	Cons          = "CONS"
-	Head          = "HEAD"
-	Tail          = "TAIL"
-	Format        = "FORMAT"
-	Substr        = "SUBSTR"
-	Type          = "TYPE"
-	Main          = "MAIN"
-	Null          = "NULL"
+	Function            = "Function"
+	ChildFunction       = "CHILDFUNCTION"
+	Variable            = "Variable"
+	Constant            = "Constant"
+	Integer             = "Integer"
+	Boolean             = "Boolean"
+	Array               = "Array"
+	Tuple               = "Tuple"
+	Exception           = "Exception"
+	True                = "True"
+	False               = "False"
+	If                  = "If"
+	ElseIf              = "ElseIf"
+	Else                = "Else"
+	Return              = "Return"
+	Void                = "Void"
+	Try                 = "Try"
+	Throw               = "Throw"
+	Catch               = "Catch"
+	Print               = "Print"
+	For                 = "For"
+	While               = "While"
+	Length              = "Length"
+	Slice               = "Slice"
+	Break               = "Break"
+	Continue            = "Continue"
+	Or                  = "Or"
+	And                 = "And"
+	Not                 = "Not"
+	String_k            = "String_k"
+	Char_k              = "Char_k"
+	Cons                = "Cons"
+	Head                = "Head"
+	Tail                = "Tail"
+	Format              = "Format"
+	Substr              = "Substr"
+	Type                = "TYPE"
+	Main                = "Main"
+	Null                = "Null"
+	ValueException      = "ValueException"
+	TypeException       = "TypeException"
+	ArithmeticException = "ArithmeticException"
+	NullException       = "NullException"
+	IndexException      = "IndexException"
 
 	// Operators
-	Equal           = "=="
-	Assign          = "="
-	Plus            = "+"
-	Increment       = "++"
-	Minus           = "-"
-	Decrement       = "--"
-	Star            = "*"
-	Slash           = "/"
-	Mod             = "%"
-	Bang            = "!"
-	Dot             = "."
-	Less            = "<"
-	LessEqual       = "<="
-	Greater         = ">"
-	GreaterEqual    = ">="
-	NotEqual        = "!="
-	PlusEqual       = "+="
-	SlashEqual      = "/="
-	StarEqual       = "*="
-	MinusEqual      = "-="
-	ModEqual        = "%="
-	Power           = "**"
-	BitwiseNot      = "~"
-	BitwiseAnd      = "&"
-	BitwiseOr       = "|"
-	AndEqual        = "&="
-	OrEqual         = "|="
-	LeftShift       = "<<"
-	RightShift      = ">>"
-	LeftShiftEqual  = "<<="
-	RightShiftEqual = ">>="
+	Equal           = "Equal"
+	Assign          = "Assign"
+	Plus            = "Plus"
+	Increment       = "Increment"
+	Minus           = "Minus"
+	Decrement       = "Decrement"
+	Star            = "Star"
+	Slash           = "Slash"
+	Mod             = "Mod"
+	Bang            = "Bang"
+	Dot             = "Dot"
+	Less            = "Less"
+	LessEqual       = "LessEqual"
+	Greater         = "Greater"
+	GreaterEqual    = "GreaterEqual"
+	NotEqual        = "NotEqual"
+	PlusEqual       = "PlusEqual"
+	SlashEqual      = "SlashEqual"
+	StarEqual       = "StarEqual"
+	MinusEqual      = "MinusEqual"
+	ModEqual        = "ModEqual"
+	Power           = "Power"
+	BitwiseNot      = "BitwiseNot"
+	BitwiseAnd      = "BitwiseAnd"
+	BitwiseOr       = "BitwiseOr"
+	AndEqual        = "AndEqual"
+	OrEqual         = "OrEqual"
+	LeftShift       = "LeftShift"
+	RightShift      = "RightShift"
+	LeftShiftEqual  = "LeftShiftEqual"
+	RightShiftEqual = "RightShiftEqual"
 
 	// Delimiters
-	Comma        = ","
-	Colon        = ":"
-	Semicolon    = ";"
-	LeftParen    = "("
-	RightParen   = ")"
-	LeftBrace    = "{"
-	RightBrace   = "}"
-	LeftBracket  = "["
-	RightBracket = "]"
+	Comma        = "Comma"
+	Colon        = "Colon"
+	Semicolon    = "Semicolon"
+	LeftParen    = "LPar"
+	RightParen   = "RPar"
+	LeftBrace    = "LBrace"
+	RightBrace   = "RBrace"
+	LeftBracket  = "LSQB"
+	RightBracket = "RSQB"
+
+	// Quotations
+	SingleQuote       = "'"
+	DoubleQuote       = "\""
+	StartMultiComment = "/*"
+	EndMultiComment   = "*/"
 )
 
 // tokenType alias for a string -> just to keep things differentiated
@@ -105,45 +118,50 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"func":      Function,
-	"cfunc":     ChildFunction,
-	"var":       Variable,
-	"const":     Constant,
-	"int":       Integer,
-	"bool":      Boolean,
-	"char":      Char,
-	"arr":       Array,
-	"tuple":     Tuple,
-	"Exception": Exception,
-	"true":      True,
-	"false":     False,
-	"if":        If,
-	"elseif":    ElseIf,
-	"else":      Else,
-	"return":    Return,
-	"void":      Void,
-	"try":       Try,
-	"throw":     Throw,
-	"catch":     Catch,
-	"print":     Print,
-	"for":       For,
-	"while":     While,
-	"len":       Length,
-	"slice":     Slice,
-	"break":     Break,
-	"continue":  Continue,
-	"or":        Or,
-	"and":       And,
-	"not":       Not,
-	"string":    String_k,
-	"cons":      Cons,
-	"head":      Head,
-	"tail":      Tail,
-	"format":    Format,
-	"substr":    Substr,
-	"type":      Type,
-	"main":      Main,
-	"null":      Null,
+	"func": Function,
+	// "cfunc":               ChildFunction,
+	"var":                 Variable,
+	"const":               Constant,
+	"int":                 Integer,
+	"bool":                Boolean,
+	"char":                Char_k,
+	"arr":                 Array,
+	"tuple":               Tuple,
+	"Exception":           Exception,
+	"true":                True,
+	"false":               False,
+	"if":                  If,
+	"elseif":              ElseIf,
+	"else":                Else,
+	"return":              Return,
+	"void":                Void,
+	"try":                 Try,
+	"throw":               Throw,
+	"catch":               Catch,
+	"print":               Print,
+	"for":                 For,
+	"while":               While,
+	"len":                 Length,
+	"slice":               Slice,
+	"break":               Break,
+	"continue":            Continue,
+	"or":                  Or,
+	"and":                 And,
+	"not":                 Not,
+	"string":              String_k,
+	"cons":                Cons,
+	"head":                Head,
+	"tail":                Tail,
+	"format":              Format,
+	"substr":              Substr,
+	"type":                Type,
+	"main":                Main,
+	"null":                Null,
+	"ValueException":      ValueException,
+	"ArithmeticException": ArithmeticException,
+	"NullException":       NullException,
+	"TypeException":       TypeException,
+	"IndexException":      NullException,
 }
 
 // checks our keywords map for the scanned keyword.

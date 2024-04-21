@@ -1,0 +1,292 @@
+Contents of testcases/test_case_0.scp written to outputs/output_test_case_0.scp
+FUNCTION func
+IDENTIFIER sort
+LPAR (
+ARRAY arr
+INTEGER int
+IDENTIFIER yashraj
+COMMA ,
+INTEGER int
+IDENTIFIER length
+RPAR )
+COLON :
+VOID void
+LBRACE {
+VARIABLE var
+INTEGER int
+IDENTIFIER temp
+SEMICOLON ;
+VARIABLE var
+INTEGER int
+IDENTIFIER j
+SEMICOLON ;
+VARIABLE var
+INTEGER int
+IDENTIFIER i
+SEMICOLON ;
+WHILE while
+LPAR (
+IDENTIFIER i
+LESS <
+IDENTIFIER length
+RPAR )
+LBRACE {
+WHILE while
+LPAR (
+IDENTIFIER j
+LESS <
+IDENTIFIER length
+MINUS -
+IDENTIFIER i
+MINUS -
+NUMBER 1
+RPAR )
+LBRACE {
+IF if
+LPAR (
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+GREATER >
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+RPAR )
+LBRACE {
+IDENTIFIER temp
+ASSIGN =
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+SEMICOLON ;
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+RSQB ]
+ASSIGN =
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+SEMICOLON ;
+IDENTIFIER yashraj
+LSQB [
+IDENTIFIER j
+PLUS +
+NUMBER 1
+RSQB ]
+ASSIGN =
+IDENTIFIER temp
+SEMICOLON ;
+RBRACE }
+IDENTIFIER j
+INCREMENT ++
+SEMICOLON ;
+RBRACE }
+IDENTIFIER i
+INCREMENT ++
+SEMICOLON ;
+RBRACE }
+RBRACE }
+EOF 
+visit_Program
+visit_Statements
+visit_FunctionDeclaration
+visit_Statements
+visit_VariableDeclarationStatement
+visit_VariableDeclaration
+visit_VariableDeclarationStatement
+visit_VariableDeclaration
+visit_VariableDeclarationStatement
+visit_VariableDeclaration
+visit_LoopStatement
+visit_CompCondition
+visit_VarNode
+visit_VarNode
+visit_Statements
+visit_LoopStatement
+visit_CompCondition
+visit_VarNode
+visit_AddExpr
+visit_AddExpr
+visit_VarNode
+visit_VarNode
+visit_NumberNode
+visit_Statements
+visit_ConditionalStatement
+visit_IfStatement
+visit_CompCondition
+visit_Indexing
+visit_VarNode
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_Statements
+visit_VariableChangeStatement
+visit_VariableChange
+visit_VarNode
+visit_Indexing
+visit_VarNode
+visit_VariableChangeStatement
+visit_VariableChange
+visit_Indexing
+visit_VarNode
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_VariableChangeStatement
+visit_VariableChange
+visit_Indexing
+visit_AddExpr
+visit_VarNode
+visit_NumberNode
+visit_VarNode
+visit_ExpressionStatement
+visit_Iteration
+visit_VarNode
+visit_ExpressionStatement
+visit_Iteration
+visit_VarNode
+ (module
+                    ;; Memory with 1 page (64KB)
+                    (memory (export "memory") 1)
+
+                    (func $store_value_at_address (param $value i32) (param $address i32)
+                        ;; Store the value at the specified address in memory
+                        (i32.store (local.get $address) (local.get $value))
+                    )
+              
+                    (func $loadValueFromMemory (param $address i32) (result i32)
+                        (i32.load
+                        (local.get $address)  ;; Load value from specified address
+                        )
+                    )
+              
+                    (func $arrindexing (param $index i32) (param $address i32) (result i32)
+                        (local.get $index)   ;; Load the index parameter onto the stack
+                        (i32.const 4)        ;; Load the constant value 4 onto the stack
+                        (i32.mul)            ;; Multiply index by 4
+        
+                        ;; Add the address
+                        (local.get $address) ;; Load the address parameter onto the stack
+                        (i32.add)   
+                    )
+              
+                    (func $logical_or (param $a i32) (param $b i32) (result i32)
+                        ;; Perform bitwise OR
+                        local.get $a
+                        local.get $b
+                        i32.or
+                        ;; Convert result to 1 if non-zero (truthy), 0 otherwise (falsy)
+                        i32.const 0
+                        i32.ne
+                    )
+              
+                    (func $logical_not (param $a i32) (result i32)
+                        ;; Convert $a to 0 or 1 (0 if $a is zero, 1 otherwise)
+                        local.get $a
+                        i32.const 0
+                        i32.eq
+                    )
+              
+                    (func $logical_and (param $a i32) (param $b i32) (result i32)
+                        ;; Perform bitwise AND
+                        local.get $a
+                        local.get $b
+                        i32.and
+                        ;; Convert result to 0 or 1 (0 if result is zero, 1 otherwise)
+                        i32.const 1
+                        i32.eq
+                    )
+        
+(func $sort(param $yashraj i32)(param $length i32)
+(local $temp i32)
+i32.const 0
+local.set $temp
+
+
+(local $j i32)
+i32.const 0
+local.set $j
+
+
+(local $i i32)
+i32.const 0
+local.set $i
+
+
+(loop $apnaloop
+local.get $i
+
+
+local.get $length
+
+
+i32.lt_s
+
+
+i32.const 1
+i32.eq
+(if
+(then
+(loop $apnaloop
+local.get $j
+
+
+local.get $length
+
+
+local.get $i
+
+
+i32.sub
+
+
+i32.const 1
+
+
+i32.sub
+
+
+i32.lt_s
+
+
+i32.const 1
+i32.eq
+(if
+(then
+local.get $j
+
+
+i32.const 0
+(call $arrindexing)
+(call $loadValueFromMemory)
+local.get $j
+
+
+i32.const 1
+
+
+i32.add
+
+
+i32.const 0
+(call $arrindexing)
+(call $loadValueFromMemory)
+i32.gt_s
+
+
+i32.const 1
+i32.eq
+(if(
+then(
+Error detected in parsing stage.

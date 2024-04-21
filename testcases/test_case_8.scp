@@ -1,0 +1,31 @@
+var int thala = 7;
+shrey_joshi : var string thala = "far";
+
+if (true){
+    var string thala = "far";
+}   
+if (true){
+    var string thala = "far";
+    func header(arr int sample_arr) : int {
+    
+        if ( len(sample_arr) > 0){
+            return sample_arr[0];
+        }
+        else {
+          return 0;
+        }
+    }
+}
+
+var string aadi = "";
+var char c = 'c';
+
+shrey_joshi : for (thala; len(aadi)>0; aadi=aadi+'c'){print : aadi;}
+
+for (var int thala = 7; thala>0; thala--){
+    print : aadi;
+}
+
+func main() : void {
+    return;
+}

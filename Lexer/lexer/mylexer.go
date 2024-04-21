@@ -1,7 +1,9 @@
-package lexer 
+package lexer
 
 import (
 	"myproject/Lexer/token"
+	//"errors"
+	"log"
 )
 
 type Lexer struct {
@@ -9,6 +11,7 @@ type Lexer struct {
 	position     int
 	nextPosition int
 	ch           byte
+	reader       int // 1: opening double quote, 2: closing double quote, 3: opening single quote, 4: closing single quote, 5: Multi-line comments, 0: otherwise
 }
 
 func New(input string) *Lexer {
@@ -21,6 +24,40 @@ func (l *Lexer) NextToken() token.Token {
 
 	var tok token.Token
 	l.skipWhitespace()
+
+	if l.reader == 1 {
+		tok.Type = token.String
+		l.resetPos()
+		tok.Literal = l.readString()
+		if tok.Literal == "" {
+			tok.Type = token.EmptyString
+		}
+		l.readChar()
+		return tok
+	} else if l.reader == 3 {
+		tok.Type = token.Char
+		tok.Literal = string(l.ch)
+		if tok.Literal == "'" {
+			tok.Type = token.EmptyChar
+			tok.Literal = ""
+			l.resetPos()
+		} else if l.peekChar() != '\'' {
+			tok.Type = token.Illegal
+		}
+		l.reader = 4
+		l.readChar()
+		return tok
+	} else if l.reader == 5 {
+		l.skipMultiLineComment()
+		// if l.reader == 0 {
+		// 	// return token.Token{Type: token.EndMultiComment, Literal: "*/"}
+		// 	return l.NextToken()
+		// } else {
+		// 	return l.NextToken()
+		// }
+		l.readChar()
+		return l.NextToken()
+	}
 
 	switch l.ch {
 	case '=':
@@ -38,12 +75,12 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.PlusEqual, Literal: literal}
-		} else if(l.peekChar() == '+') {
+		} else if l.peekChar() == '+' {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.Increment, Literal: literal}
-		}else {
+		} else {
 			tok = newToken(token.Plus, l.ch)
 		}
 	case '.':
@@ -55,11 +92,11 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.MinusEqual, Literal: literal}
-		} else if(l.peekChar() == '-') {
-				ch := l.ch
-				l.readChar()
-				literal := string(ch) + string(l.ch)
-				tok = token.Token{Type: token.Decrement, Literal: literal}	
+		} else if l.peekChar() == '-' {
+			ch := l.ch
+			l.readChar()
+			literal := string(ch) + string(l.ch)
+			tok = token.Token{Type: token.Decrement, Literal: literal}
 		} else {
 			tok = newToken(token.Minus, l.ch)
 		}
@@ -97,11 +134,11 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.SlashEqual, Literal: literal}
-			
-		} else if l.peekChar() == '*' {
-			l.skipMultiLineComment()
-			return l.NextToken()
 
+		} else if l.peekChar() == '*' {
+			tok = token.Token{Type: token.StartMultiComment, Literal: "/*"}
+			l.reader = 5
+			return l.NextToken()
 		} else {
 			tok = newToken(token.Slash, l.ch)
 		}
@@ -111,18 +148,18 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.LessEqual, Literal: literal}
-			
+
 		} else if l.peekChar() == '<' {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			if(l.peekChar() != '=') {
+			if l.peekChar() != '=' {
 				tok = token.Token{Type: token.LeftShift, Literal: literal}
 			} else {
 				l.readChar()
 				literal += string(l.ch)
 				tok = token.Token{Type: token.LeftShiftEqual, Literal: literal}
-			}	
+			}
 		} else {
 			tok = newToken(token.Less, l.ch)
 		}
@@ -133,12 +170,12 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.GreaterEqual, Literal: literal}
-			
+
 		} else if l.peekChar() == '>' {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			if(l.peekChar() != '=') {
+			if l.peekChar() != '=' {
 				tok = token.Token{Type: token.RightShift, Literal: literal}
 			} else {
 				l.readChar()
@@ -167,14 +204,17 @@ func (l *Lexer) NextToken() token.Token {
 	case ']':
 		tok = newToken(token.RightBracket, l.ch)
 	case '"':
-		tok.Type = token.String
-		tok.Literal = l.readString()
-		if tok.Literal == "" {
-			tok.Type = token.EmptyString
+		tok = newToken(token.DoubleQuote, l.ch)
+		if l.reader == 0 {
+			l.reader = 1
+		} else {
+			l.reader = 0
 		}
+		l.readChar()
+		return l.NextToken()
 	case '~':
-		tok.Type = token.BitwiseNot 
-		tok.Literal = string(l.ch )
+		tok.Type = token.BitwiseNot
+		tok.Literal = string(l.ch)
 
 	case '%':
 		if l.peekChar() == '=' {
@@ -188,24 +228,38 @@ func (l *Lexer) NextToken() token.Token {
 
 	case '|':
 
-		if(l.peekChar() == '=') {
-			ch := l.ch 
+		if l.peekChar() == '=' {
+			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.OrEqual, Literal: literal}
-		} else {tok.Type = token.BitwiseOr 
-		tok.Literal = string(l.ch)} 
+		} else {
+			tok.Type = token.BitwiseOr
+			tok.Literal = string(l.ch)
+		}
 
 	case '&':
 
-		if(l.peekChar() == '=') {
-			ch := l.ch 
+		if l.peekChar() == '=' {
+			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
 			tok = token.Token{Type: token.AndEqual, Literal: literal}
-		} else {tok.Type = token.BitwiseAnd
-		tok.Literal = string(l.ch)}
-	
+		} else {
+			tok.Type = token.BitwiseAnd
+			tok.Literal = string(l.ch)
+		}
+
+	case '\'':
+		tok = newToken(token.SingleQuote, l.ch)
+		if l.reader == 0 {
+			l.reader = 3
+		} else {
+			l.reader = 0
+		}
+		l.readChar()
+		return l.NextToken()
+
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
@@ -213,7 +267,7 @@ func (l *Lexer) NextToken() token.Token {
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
-			if(tok.Literal == "shrey_joshi") {
+			if tok.Literal == "shrey_joshi" {
 				l.skipSingleLineComment()
 				return l.NextToken()
 			}
@@ -221,7 +275,10 @@ func (l *Lexer) NextToken() token.Token {
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Literal = l.readNumber()
-			tok.Type = token.Number 
+			tok.Type = token.Number
+			if isLetter(l.ch) {
+				log.Fatal("Invalid Decimal Literal")
+			}
 			return tok
 		} else {
 			tok = newToken(token.Illegal, l.ch)
@@ -242,20 +299,27 @@ func (l *Lexer) readChar() {
 	l.nextPosition += 1
 }
 
-
 func (l *Lexer) readString() string {
 	pos := l.position + 1
+	str := ""
 	for {
 		l.readChar()
-		if l.ch == '"' || l.ch == 0 {
+		if l.ch == '"' {
+			l.reader = 2
+			if l.position == pos {
+				l.resetPos()
+				return ""
+			}
+			str = l.input[pos:l.position]
+			l.resetPos()
 			break
+		} else if l.ch == 0 {
+			// str = l.input[pos:l.position]
+			// break
+			log.Fatal("String Literal was not terminated")
 		}
 	}
-
-	if pos == l.position { 
-		return ""}
-
-	return l.input[pos:l.position]
+	return str
 }
 
 func (l *Lexer) readNumber() string {
@@ -275,6 +339,12 @@ func (l *Lexer) readIdentifier() string {
 	}
 
 	return l.input[pos:l.position]
+}
+
+func (l *Lexer) resetPos() {
+	l.position -= 1
+	l.nextPosition -= 1
+	l.ch = l.input[l.position]
 }
 
 func isLetter(ch byte) bool {
@@ -311,12 +381,16 @@ func (l *Lexer) skipMultiLineComment() {
 
 	for !endFound {
 		if l.ch == 0 {
-			endFound = true
+			// endFound = true
+			// return errors.New("Comment Literal was not terminated")
+			// panic("Error: Comment Literal was not terminated")
+			log.Fatal("Comment Literal was not terminated")
 		}
 
 		if l.ch == '*' && l.peekChar() == '/' {
 			endFound = true
-			l.readChar()
+			l.reader = 0
+			// l.readChar()
 		}
 
 		l.readChar()

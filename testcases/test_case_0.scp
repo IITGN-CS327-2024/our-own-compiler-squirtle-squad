@@ -1,0 +1,16 @@
+func sort(arr int yashraj, int length) : void {
+  var int temp;
+  var int j;
+  var int i;
+  while(i < length ) {
+    while(j < length - i - 1) {
+      if(yashraj[j] > yashraj[j + 1]) {
+        temp = yashraj[j];
+        yashraj[j] = yashraj[j + 1];
+        yashraj[j + 1] = temp;
+      }
+      j++;
+    }
+    i++;
+  }
+}

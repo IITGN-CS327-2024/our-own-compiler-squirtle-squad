@@ -46,7 +46,9 @@
 {Type:STRING_K Literal:string}
 {Type:IDENTIFIER Literal:text}
 {Type:= Literal:=}
+{Type:" Literal:"}
 {Type:STRING Literal:Calling all Autobots}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:CONSTANT Literal:const}
 {Type:INTEGER Literal:int}
@@ -74,7 +76,9 @@
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Loop Failed}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:ELSEIF Literal:elseif}
@@ -86,14 +90,18 @@
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Function Works!}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:ELSE Literal:else}
 {Type:{ Literal:{}
 {Type:PRINT Literal:print}
 {Type:: Literal::}
+{Type:" Literal:"}
 {Type:STRING Literal:Function Failed}
+{Type:" Literal:"}
 {Type:; Literal:;}
 {Type:} Literal:}}
 {Type:} Literal:}}
