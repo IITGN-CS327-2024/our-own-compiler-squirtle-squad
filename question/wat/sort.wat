@@ -51,8 +51,8 @@
                     )
         
 (func $sort(param $yashraj i32)(param $length i32)
-(local $i i32)
 (local $j i32)
+(local $i i32)
 (local $temp i32)
 (local $var i32)
 i32.const 0
